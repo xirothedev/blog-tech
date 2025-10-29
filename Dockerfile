@@ -17,11 +17,18 @@ RUN corepack enable && yarn --version && yarn install --immutable
 # ---------- Builder ----------
 FROM base AS builder
 WORKDIR /app
-# Yarn Berry installs to .yarn/cache; no node_modules by default unless nodeLinker: node-modules
+# Bring over Yarn artifacts first for better caching
 COPY --from=deps /app/.yarn/ ./.yarn/
 COPY --from=deps /app/.pnp.* ./
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/yarn.lock ./yarn.lock
+COPY --from=deps /app/package.json ./package.json
+
+# Copy the rest of the source
 COPY . .
+
+# Ensure dependencies are fully prepared for this context (inline native builds when needed)
+RUN corepack enable && yarn install --immutable --inline-builds
+
 RUN yarn build
 
 # ---------- Production runner ----------
