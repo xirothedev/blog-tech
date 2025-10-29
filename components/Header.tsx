@@ -7,9 +7,17 @@ import ThemeSwitch from "./ThemeSwitch";
 import { cn } from "@/libs/utils";
 
 const Header = () => {
-  let headerClass = cn("flex items-center w-full bg-white dark:bg-gray-950 justify-between py-10");
+  let headerClass = cn(
+    "flex items-center w-full justify-between py-4 px-5 mt-4",
+    // Glass/blurred translucent background
+    "supports-[backdrop-filter]:backdrop-blur-md backdrop-saturate-150 bg-white/60 dark:bg-gray-900/30",
+    // More pronounced border and glass edge
+    "border border-white/40 dark:border-white/20 shadow-[0_1px_0_0_rgba(255,255,255,0.10)_inset,0_8px_24px_rgba(0,0,0,0.12)]",
+    // Shape
+    "rounded-full"
+  );
   if (siteMetadata.stickyNav) {
-    headerClass = cn(headerClass, "sticky top-0 z-50");
+    headerClass = cn(headerClass, "sticky top-4 z-50");
   }
 
   return (
@@ -17,7 +25,7 @@ const Header = () => {
       <Link href="/" aria-label={siteMetadata.headerTitle}>
         <div className="flex items-center justify-between">
           {typeof siteMetadata.headerTitle === "string" ? (
-            <div className="hidden h-6 text-2xl font-semibold sm:block">{siteMetadata.headerTitle}</div>
+            <div className="hidden text-2xl font-semibold sm:block">{siteMetadata.headerTitle}</div>
           ) : (
             siteMetadata.headerTitle
           )}
