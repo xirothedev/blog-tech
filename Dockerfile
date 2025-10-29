@@ -8,13 +8,18 @@ FROM base AS deps
 # Install libc6-compat for some npm packages
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-# Copy only package manager files for dependency install
-COPY package.json yarn.lock* .yarnrc* .npmrc* ./
-RUN yarn install --frozen-lockfile
+# Copy only package manager files for dependency install (Yarn Berry)
+COPY package.json yarn.lock* .npmrc* .yarnrc.yml* ./
+COPY .yarn/ ./.yarn/
+# Enable corepack so yarn@berry from packageManager is used
+RUN corepack enable && yarn --version && yarn install --immutable
 
 # ---------- Builder ----------
 FROM base AS builder
 WORKDIR /app
+# Yarn Berry installs to .yarn/cache; no node_modules by default unless nodeLinker: node-modules
+COPY --from=deps /app/.yarn/ ./.yarn/
+COPY --from=deps /app/.pnp.* ./
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN yarn build
