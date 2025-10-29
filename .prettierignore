@@ -1,0 +1,7 @@
+# Ignore artifacts:
+.github
+.husky
+.next
+node_modules
+.yarnrc.yml
+generated
