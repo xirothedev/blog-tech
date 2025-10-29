@@ -17,15 +17,15 @@ const components = {
   mail: Mail,
   github: Github,
   facebook: Facebook,
-  youtube: Youtube,
+  // youtube: Youtube,
   linkedin: Linkedin,
-  twitter: Twitter,
-  x: X,
-  mastodon: Mastodon,
-  threads: Threads,
-  instagram: Instagram,
-  medium: Medium,
-  bluesky: Bluesky,
+  // twitter: Twitter,
+  // x: X,
+  // mastodon: Mastodon,
+  // threads: Threads,
+  // instagram: Instagram,
+  // medium: Medium,
+  // bluesky: Bluesky,
 }
 
 type SocialIconProps = {
