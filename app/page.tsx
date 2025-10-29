@@ -9,6 +9,9 @@ export default async function Page() {
     if (ap !== bp) return bp - ap;
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
-  const posts = allCoreContent(sortedPosts);
+  const posts = allCoreContent(sortedPosts).map((p) => ({
+    ...p,
+    pinned: sortedPosts.find((b) => b._raw.flattenedPath === p.path)?.pinned ?? false,
+  }));
   return <Main posts={posts} />;
 }

@@ -15,7 +15,10 @@ export default async function BlogPage(props: { searchParams: Promise<{ page: st
 			if (ap !== bp) return bp - ap;
 			return new Date(b.date).getTime() - new Date(a.date).getTime();
 		}),
-	);
+	).map((p) => ({
+		...p,
+		pinned: allBlogs.find((b) => b._raw.flattenedPath === p.path)?.pinned ?? false,
+	}));
 	const pageNumber = 1;
 	const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
 	const initialDisplayPosts = posts.slice(0, POSTS_PER_PAGE * pageNumber);

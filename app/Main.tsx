@@ -41,7 +41,12 @@ export default function Home({ posts }) {
 															{title}
 														</Link>
 													</h2>
-													<div className="flex flex-wrap">
+													<div className="flex flex-wrap items-center gap-2">
+														{post.pinned && (
+															<span className="mr-3 inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-semibold text-yellow-800 ring-1 ring-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-200 dark:ring-yellow-800/60">
+																Pinned
+															</span>
+														)}
 														{tags.map((tag) => (
 															<Tag key={tag} text={tag} />
 														))}
