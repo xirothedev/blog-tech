@@ -242,7 +242,7 @@ Các thiết bị IoT thường sử dụng UDP:
    - Cần cẩn thận trong production
 
 5. **Dễ bị tấn công**
-   - DDoS attacks dễ dàng hơn (UDP amplification)
+   - [DDoS attacks](/blog/ddos-attack) dễ dàng hơn (UDP amplification)
    - Spoofing source IP address dễ hơn
 
 6. **Không có connection state**
@@ -308,7 +308,7 @@ RTP là giao thức được thiết kế trên UDP để cung cấp:
 
 ### 1. **UDP Amplification Attacks**
 
-UDP là một phương thức tấn công phổ biến trong các mối đe dọa từ chối dịch vụ phân tán (DDoS):
+UDP là một phương thức tấn công phổ biến trong các mối đe dọa [từ chối dịch vụ phân tán (DDoS)](/blog/ddos-attack):
 
 **Cơ chế:**
 - Attacker gửi UDP request với spoofed source IP (IP của victim)
@@ -466,7 +466,7 @@ class ReliableUDP {
 - **Authentication**: Xác thực tất cả packets
 - **Rate limiting**: Giới hạn số packets từ một source
 - **Firewall rules**: Stateful firewall để theo dõi UDP connections
-- **DDoS protection**: Implement protection chống amplification attacks
+- **[DDoS protection](/blog/ddos-attack)**: Implement protection chống amplification attacks
 
 ### 7. **Testing và Validation**
 

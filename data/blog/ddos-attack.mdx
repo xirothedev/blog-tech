@@ -6,7 +6,7 @@ tags: ["ddos", "security", "cybersecurity", "network-security", "attack"]
 draft: false
 summary: "Tìm hiểu về tấn công DDoS - một trong những mối đe dọa bảo mật mạng phổ biến nhất. Khám phá các loại tấn công, ai dễ bị tấn công, và cách bảo vệ hệ thống của bạn."
 authors: ["default"]
-images: ["/static/images/ddos/thumbnail.png"]
+images: ["/static/images/ddos-attack/thumbnail.png"]
 ---
 
 Tấn công DDoS (Distributed Denial of Service) là một trong những mối đe dọa bảo mật mạng phổ biến và nguy hiểm nhất hiện nay. Những cuộc tấn công này có thể làm gián đoạn hoàn toàn các dịch vụ trực tuyến, gây thiệt hại lớn về tài chính và danh tiếng cho các tổ chức. Từ các doanh nghiệp nhỏ đến các tập đoàn lớn như AWS, không ai có thể hoàn toàn miễn nhiễm trước các cuộc tấn công DDoS.
@@ -71,7 +71,7 @@ Loại tấn công này nhằm làm đầy băng thông mạng của mục tiêu
 
 #### 1. **UDP Flood**
 
-Gửi một lượng lớn UDP packets đến các cổng ngẫu nhiên của server:
+Gửi một lượng lớn [UDP](/blog/udp) packets đến các cổng ngẫu nhiên của server:
 
 ```
 Attacker → UDP packets → Target server
@@ -79,7 +79,7 @@ Result: Server cố gắng xử lý và phản hồi, dẫn đến quá tải
 ```
 
 **Đặc điểm:**
-- Sử dụng UDP (không cần connection)
+- Sử dụng [UDP](/blog/udp) (không cần connection)
 - Server phải tốn tài nguyên để xử lý mỗi packet
 - Dễ thực hiện và phổ biến
 
