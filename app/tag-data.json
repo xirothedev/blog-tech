@@ -1,4 +1,14 @@
 {
+  "ddos": 1,
+  "security": 1,
+  "cybersecurity": 1,
+  "network-security": 1,
+  "attack": 1,
+  "udp": 1,
+  "tcp": 1,
+  "networking": 1,
+  "protocol": 1,
+  "internet": 1,
   "vector-database": 1,
   "database": 1,
   "ai": 1,
@@ -7,5 +17,8 @@
   "story": 1,
   "career": 1,
   "web": 1,
-  "discord-bot": 1
+  "discord-bot": 1,
+  "next-js": 1,
+  "math": 1,
+  "ols": 1
 }
