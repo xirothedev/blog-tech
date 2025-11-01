@@ -1,8 +1,9 @@
 import { defineDocumentType, ComputedFields, makeSource } from "contentlayer2/source-files";
-import { writeFileSync } from "fs";
+import { writeFileSync, statSync, readFileSync } from "fs";
 import readingTime from "reading-time";
 import { slug } from "github-slugger";
 import path from "path";
+import matter from "gray-matter";
 import { fromHtmlIsomorphic } from "hast-util-from-html-isomorphic";
 // Remark packages
 import remarkGfm from "remark-gfm";
@@ -110,6 +111,32 @@ export const Blog = defineDocumentType(() => ({
 	},
 	computedFields: {
 		...computedFields,
+		lastmod: {
+			type: "date",
+			resolve: (doc) => {
+				try {
+					const filePath = path.join(root, "data", doc._raw.sourceFilePath);
+					// read file to get frontmatter
+					const fileContent = readFileSync(filePath, "utf-8");
+					const frontmatter = matter(fileContent);
+
+					// if lastmod is in frontmatter, use it
+					if (frontmatter.data.lastmod) {
+						return frontmatter.data.lastmod;
+					}
+
+					// if no lastmod, use file modification time
+					const stats = statSync(filePath);
+					const mtime = new Date(stats.mtime);
+					// Format: YYYY-MM-DD
+					return mtime.toISOString().split("T")[0];
+				} catch (error) {
+					// if cannot read file, fallback to date
+					console.warn(`Could not read file stats for ${doc._raw.sourceFilePath}, using date as fallback`);
+					return doc.date;
+				}
+			},
+		},
 		structuredData: {
 			type: "json",
 			resolve: (doc) => ({
