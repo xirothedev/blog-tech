@@ -1,0 +1,69 @@
+<svg width="800" height="320" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="320" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="400" y="40" font-family="Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Vector Database là gì?
+  </text>
+  
+  <!-- Traditional Database -->
+  <g transform="translate(50, 100)">
+    <rect x="0" y="0" width="300" height="180" rx="10" fill="#ffffff" stroke="#e74c3c" stroke-width="2"/>
+    <text x="150" y="30" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#e74c3c">
+      Database Truyền thống
+    </text>
+    <text x="150" y="60" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#34495e">
+      Lưu trữ dữ liệu dạng:
+    </text>
+    
+    <!-- Traditional data examples -->
+    <text x="20" y="90" font-family="Courier, monospace" font-size="12" fill="#34495e">
+      • ID: 1, Name: "Nguyễn Văn A"
+    </text>
+    <text x="20" y="110" font-family="Courier, monospace" font-size="12" fill="#34495e">
+      • ID: 2, Age: 25, City: "Hà Nội"
+    </text>
+    <text x="20" y="130" font-family="Courier, monospace" font-size="12" fill="#34495e">
+      • ID: 3, Price: 1000000
+    </text>
+    <text x="20" y="150" font-family="Courier, monospace" font-size="12" fill="#34495e">
+      • Tìm kiếm: Exact match
+    </text>
+  </g>
+  
+  <!-- Comparison Icon -->
+  <g transform="translate(370, 170)">
+    <!-- VS Circle -->
+    <circle cx="30" cy="30" r="25" fill="#3498db" fill-opacity="0.1" stroke="#3498db" stroke-width="2"/>
+    <text x="30" y="38" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#2980b9">
+      VS
+    </text>
+  </g>
+  
+  <!-- Vector Database -->
+  <g transform="translate(450, 100)">
+    <rect x="0" y="0" width="300" height="180" rx="10" fill="#ffffff" stroke="#27ae60" stroke-width="2"/>
+    <text x="150" y="30" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#27ae60">
+      Vector Database
+    </text>
+    <text x="150" y="60" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#34495e">
+      Lưu trữ dữ liệu dạng:
+    </text>
+    
+    <!-- Vector data examples -->
+    <text x="20" y="90" font-family="Courier, monospace" font-size="12" fill="#34495e">
+      • Vector: [0.23, 0.45, 0.67...]
+    </text>
+    <text x="20" y="110" font-family="Courier, monospace" font-size="12" fill="#34495e">
+      • Embedding của văn bản/hình ảnh
+    </text>
+    <text x="20" y="130" font-family="Courier, monospace" font-size="12" fill="#34495e">
+      • Tìm kiếm: Similarity search
+    </text>
+    <text x="20" y="150" font-family="Courier, monospace" font-size="12" fill="#34495e">
+      • Kết quả: Dựa trên độ tương đồng
+    </text>
+  </g>
+</svg>
+

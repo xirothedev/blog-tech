@@ -1,0 +1,154 @@
+<svg width="1000" height="800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1000" height="800" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="500" y="40" font-family="Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Vector Database được sử dụng ở đâu?
+  </text>
+  
+  <!-- Use Case 1: RAG -->
+  <g transform="translate(80, 100)">
+    <rect x="0" y="0" width="380" height="150" rx="10" fill="#3498db" fill-opacity="0.15" stroke="#3498db" stroke-width="2"/>
+    <text x="190" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#2980b9">
+      RAG
+    </text>
+    <text x="190" y="45" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#2980b9">
+      (Retrieval-Augmented Generation)
+    </text>
+    <text x="30" y="70" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • Chatbots thông minh với kiến thức từ tài liệu
+    </text>
+    <text x="30" y="90" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • Hệ thống hỏi đáp dựa trên documents
+    </text>
+    <text x="30" y="110" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • AI assistants với context awareness
+    </text>
+    <rect x="20" y="125" width="340" height="18" rx="3" fill="#ecf0f1"/>
+    <text x="190" y="137" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#7f8c8d">
+      Ví dụ: ChatGPT với tài liệu công ty
+    </text>
+  </g>
+  
+  <!-- Use Case 2: Recommendation -->
+  <g transform="translate(540, 100)">
+    <rect x="0" y="0" width="380" height="150" rx="10" fill="#e74c3c" fill-opacity="0.15" stroke="#e74c3c" stroke-width="2"/>
+    <text x="190" y="30" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#c0392b">
+      Recommendation Systems
+    </text>
+    <text x="30" y="60" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • Gợi ý sản phẩm tương tự
+    </text>
+    <text x="30" y="80" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • Tìm content tương đồng
+    </text>
+    <text x="30" y="100" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • User-based và item-based filtering
+    </text>
+    <rect x="20" y="125" width="340" height="18" rx="3" fill="#ecf0f1"/>
+    <text x="190" y="137" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#7f8c8d">
+      Ví dụ: Netflix, Amazon, Spotify
+    </text>
+  </g>
+  
+  <!-- Use Case 3: Semantic Search -->
+  <g transform="translate(80, 290)">
+    <rect x="0" y="0" width="380" height="150" rx="10" fill="#27ae60" fill-opacity="0.15" stroke="#27ae60" stroke-width="2"/>
+    <text x="190" y="30" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#229954">
+      Semantic Search
+    </text>
+    <text x="30" y="60" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • Tìm kiếm dựa trên ý nghĩa, không phải từ khóa
+    </text>
+    <text x="30" y="80" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • Tìm tài liệu liên quan về mặt ngữ nghĩa
+    </text>
+    <text x="30" y="100" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • Enterprise search với hiểu biết ngữ cảnh
+    </text>
+    <rect x="20" y="125" width="340" height="18" rx="3" fill="#ecf0f1"/>
+    <text x="190" y="137" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#7f8c8d">
+      Ví dụ: Tìm kiếm nội bộ công ty
+    </text>
+  </g>
+  
+  <!-- Use Case 4: Image/Video Search -->
+  <g transform="translate(540, 290)">
+    <rect x="0" y="0" width="380" height="150" rx="10" fill="#9b59b6" fill-opacity="0.15" stroke="#9b59b6" stroke-width="2"/>
+    <text x="190" y="30" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#8e44ad">
+      Image &amp; Video Search
+    </text>
+    <text x="30" y="60" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • Tìm hình ảnh tương tự (reverse image search)
+    </text>
+    <text x="30" y="80" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • Content-based image retrieval
+    </text>
+    <text x="30" y="100" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • Video recommendation dựa trên visual
+    </text>
+    <rect x="20" y="125" width="340" height="18" rx="3" fill="#ecf0f1"/>
+    <text x="190" y="137" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#7f8c8d">
+      Ví dụ: Google Images, Pinterest
+    </text>
+  </g>
+  
+  <!-- Use Case 5: Anomaly Detection -->
+  <g transform="translate(80, 480)">
+    <rect x="0" y="0" width="380" height="150" rx="10" fill="#f39c12" fill-opacity="0.15" stroke="#f39c12" stroke-width="2"/>
+    <text x="190" y="30" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#d68910">
+      Anomaly Detection
+    </text>
+    <text x="30" y="60" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • Phát hiện gian lận, bất thường
+    </text>
+    <text x="30" y="80" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • Security monitoring
+    </text>
+    <text x="30" y="100" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • Quality control trong sản xuất
+    </text>
+    <rect x="20" y="125" width="340" height="18" rx="3" fill="#ecf0f1"/>
+    <text x="190" y="137" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#7f8c8d">
+      Ví dụ: Phát hiện giao dịch bất thường
+    </text>
+  </g>
+  
+  <!-- Use Case 6: Drug Discovery -->
+  <g transform="translate(540, 480)">
+    <rect x="0" y="0" width="380" height="150" rx="10" fill="#16a085" fill-opacity="0.15" stroke="#16a085" stroke-width="2"/>
+    <text x="190" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#138d75">
+      Drug Discovery
+    </text>
+    <text x="190" y="45" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#138d75">
+      &amp; Bioinformatics
+    </text>
+    <text x="30" y="70" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • Tìm protein tương tự
+    </text>
+    <text x="30" y="90" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • Phân tích DNA sequence
+    </text>
+    <text x="30" y="110" font-family="Arial, sans-serif" font-size="13" fill="#34495e">
+      • Molecular similarity search
+    </text>
+    <rect x="20" y="125" width="340" height="18" rx="3" fill="#ecf0f1"/>
+    <text x="190" y="137" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#7f8c8d">
+      Ví dụ: Nghiên cứu dược phẩm
+    </text>
+  </g>
+  
+  <!-- Bottom summary -->
+  <rect x="100" y="670" width="800" height="100" rx="10" fill="#34495e" fill-opacity="0.1" stroke="#34495e" stroke-width="2"/>
+  <text x="500" y="700" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Vector Database là nền tảng cho các ứng dụng AI hiện đại
+  </text>
+  <text x="500" y="725" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#34495e">
+    Từ chatbots thông minh đến recommendation systems, vector database đang trở thành
+  </text>
+  <text x="500" y="750" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#34495e">
+    công nghệ quan trọng trong kỷ nguyên AI và machine learning
+  </text>
+</svg>
+
