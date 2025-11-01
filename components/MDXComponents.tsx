@@ -7,6 +7,7 @@ import CustomLink from "./Link";
 import TableWrapper from "./TableWrapper";
 import Video from "./Video";
 import VPSDecisionChecker from "./VPSDecisionChecker";
+import GitHubSourceLink from "./GitHubSourceLink";
 
 export const components: MDXComponents = {
 	Image,
@@ -17,4 +18,5 @@ export const components: MDXComponents = {
 	BlogNewsletterForm,
 	Video,
 	VPSDecisionChecker,
+	GitHubSourceLink,
 };
