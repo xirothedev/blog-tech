@@ -25,7 +25,7 @@ export default function Comments({ slug }: { slug: string }) {
 			config.giscusConfig = {
 				...config.giscusConfig,
 				// Use the resolved theme (dark or light) or fallback to the default theme
-				theme: mounted && resolvedTheme === "dark" 
+				theme: mounted && resolvedTheme === "dark"
 					? config.giscusConfig.darkTheme || "dark"
 					: config.giscusConfig.theme || "light",
 			};
