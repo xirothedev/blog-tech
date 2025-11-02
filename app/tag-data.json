@@ -1,4 +1,11 @@
 {
+  "nextjs": 1,
+  "deployment": 2,
+  "vps": 3,
+  "docker": 2,
+  "nginx": 2,
+  "self-hosting": 2,
+  "php": 1,
   "ddos": 1,
   "security": 1,
   "cybersecurity": 1,
@@ -14,11 +21,12 @@
   "ai": 1,
   "machine-learning": 1,
   "embedding": 1,
+  "server": 1,
+  "hosting": 1,
+  "cloud": 1,
+  "infrastructure": 1,
   "story": 1,
   "career": 1,
   "web": 1,
-  "discord-bot": 1,
-  "next-js": 1,
-  "math": 1,
-  "ols": 1
+  "discord-bot": 1
 }
