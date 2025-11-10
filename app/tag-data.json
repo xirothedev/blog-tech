@@ -26,7 +26,10 @@
   "cloud": 1,
   "infrastructure": 1,
   "story": 1,
-  "career": 1,
+  "career": 2,
   "web": 1,
-  "discord-bot": 1
+  "discord-bot": 1,
+  "system-design": 1,
+  "learning": 1,
+  "backend": 1
 }

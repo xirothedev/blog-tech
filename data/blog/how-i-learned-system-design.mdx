@@ -1,0 +1,233 @@
+---
+title: "How I Learned System Design"
+date: "2025-11-10"
+lastmod: "2025-11-10"
+tags: ["system-design", "learning", "career", "backend"]
+draft: false
+pinned: false
+summary: "The honest journey from total confusion to clarity in system design. Learn how to go from being totally lost to confidently discussing architecture in interviews."
+authors: ["singour"]
+images: ["/static/images/how-i-learned-system-design/architecture.png"]
+---
+
+– The honest journey from total confusion to clarity
+
+<Image src="/static/images/how-i-learned-system-design/architecture.png" alt="How I Learned System Design" width={1000} height={100} />
+
+<TOCInline toc={props.toc} />
+
+Let me be brutally honest with you.
+
+There was a time I used to skip every video or blog that said "System Design".
+I'd think, "This is for senior engineers, architects, not for me."
+
+I was wrong.
+
+Because one day, in an interview, they asked me:
+"Can you design a ride-sharing app like Uber?"
+And I froze.
+
+I talked about REST APIs.
+I mentioned MySQL.
+Then… silence.
+No clue how to handle scale, no idea about queues, or even how to store real-time location.
+
+That day I decided this won't happen again.
+Here's how I went from being totally lost to confidently discussing architecture in interviews, and even proposing better designs at work.
+
+## 1. First, I Accepted I Knew Nothing and That Was Okay
+
+System Design is intimidating at first.
+People throw words like "sharding", "CQRS", "load balancer", "eventual consistency"…
+
+At first, it made me feel dumb. But then I realized
+Everyone feels lost in the beginning.
+
+System design isn't a single topic. It's not a "chapter" you can complete in a week.
+It's a mix of:
+
+- How data flows
+- How services talk to each other
+- How systems survive under huge traffic
+- And how to make things fault-tolerant, fast, and reliable
+
+Once I accepted that this will take time, it felt lighter.
+I stopped chasing perfection and focused on small wins.
+
+## 2. I Broke Down "System Design" Into Mini Topics
+
+System Design is not one big subject; it's a set of interconnected building blocks.
+So I made a map for myself:
+
+### a) The Basics
+
+- What happens when you type a URL in the browser
+- What is DNS, Load Balancer, CDN
+- TCP vs UDP, HTTP vs HTTPS
+
+Even these basics were eye-opening. Like
+Did you know DNS is like a phonebook of the internet? And CDNs are why YouTube loads fast?
+
+### b) Data and Storage
+
+- SQL vs NoSQL
+- Indexing, Replication, Sharding
+- When to choose MongoDB vs PostgreSQL
+
+I learned this the hard way. In one project, we chose Mongo for transactional data. Later, we regretted it.
+
+### c) Scaling Techniques
+
+- Horizontal vs Vertical scaling
+- Caching (Redis, Memcached)
+- Load balancing (Round-robin, IP Hashing)
+
+I loved this part. It made me feel like I could finally design something for millions of users even if it was just on paper.
+
+### d) Architecture Patterns
+
+- Monolith vs Microservices
+- Event-Driven Architecture
+- Pub/Sub, Message Queues (Kafka, RabbitMQ)
+
+This made me understand why companies like Netflix use microservices not just because it's trendy, but because it makes sense at scale.
+
+## 3. I Watched Real People Think, Not Just Teach
+
+Instead of watching tutorial-style videos, I started watching mock interviews.
+
+And trust me, that changed everything.
+
+Because when someone thinks aloud, makes mistakes, backtracks, and justifies their choices, you learn how to think, not just copy.
+
+Channels that really helped:
+
+- Gaurav Sen explains from the ground up
+- Exponent mock interviews with real candidates
+- ByteByteGo visual, storytelling approach
+
+I learned how to:
+
+- Ask the right clarifying questions
+- Define functional and non-functional requirements
+- Walk through API design, DB choices, scaling logic
+- Always talk about tradeoffs, not just choices
+
+## 4. I Started Drawing Even If It Was Just on Paper
+
+One surprising thing that helped me?
+Drawing.
+
+I'm not an artist. But sketching out a flow from client → load balancer → app servers → DB made it click.
+
+When I drew:
+
+- The request flow felt real
+- I saw where bottlenecks could happen
+- I understood where to place a cache, when to use a queue
+
+Even today, when I'm stuck, I grab a pen and paper.
+That sketch often gives me the clarity that reading never did.
+
+## 5. I Practiced With Real System Design Problems
+
+Once I was confident with basics, I stopped watching and started designing.
+
+Here's how I practiced:
+
+- Pick a real-world system: WhatsApp, YouTube, Zomato, Instagram
+- Write the functional requirements first (what the system should do)
+- Then add non-functional requirements (scale, availability, latency)
+- Do rough estimation (users, QPS, DB size)
+- Design a high-level architecture
+
+Go deeper into:
+
+- DB schema
+- APIs
+- Scaling strategies
+- Handling failures
+- Edge cases
+
+I wrote one design per week.
+And not just one solution but multiple possibilities.
+
+Because in real interviews (and real jobs), there's rarely one perfect answer.
+It's all about justifying why you picked X over Y.
+
+## 6. I Applied It at Work
+
+Theory is useless unless you apply it.
+
+At work, I was working on a high-traffic service for EMI generation.
+It had Kafka events, REST APIs, complex transactions.
+
+This is where I started applying design principles:
+
+- I proposed breaking a monolith into services
+- Used queues for async communication
+- Introduced retries and dead-letter queues
+- And even debated Kafka vs gRPC (based on latency and control)
+
+It wasn't perfect. But it gave me confidence that system design isn't just interview stuff; it's a real, valuable skill that helps your team and your product.
+
+## 7. I Started Explaining to Others
+
+This was the final level.
+
+When you explain something—be it to a junior, an intern, or in a blog—you spot the gaps in your own understanding.
+
+So I:
+
+- Mentored juniors during onboarding
+- Took small sessions to explain caching, DB design, and queues
+- Wrote articles with diagrams
+- Started preparing juniors for design interviews
+
+Every time I explained something, I realized:
+If I can teach it simply, I actually understand it well.
+
+## My Honest Advice to You
+
+If you're starting today, or if you've failed in your first design interview, I want to tell you this:
+
+> [!IMPORTANT]
+> System Design is not magic.
+> You don't need 10 years of experience.
+> You don't need to memorize Gaurav Sen's diagrams.
+
+You just need to:
+
+- Start with basics
+- Think in real-world use cases
+- Build a structure
+- Practice weekly
+- Ask "why" behind every choice
+- And slowly improve
+
+Even if you give 30 minutes daily, in 3 months, you'll see the difference.
+
+## Final Thought: It's Not About Answers; It's About Approach
+
+In system design, you'll often feel uncertain. That's normal.
+What matters is how you approach a problem.
+
+When you explain:
+
+- What's the scale?
+- What's the bottleneck?
+- What are the tradeoffs of this DB vs that one?
+- What if this service fails?
+
+That's what makes you a strong engineer.
+Not the number of diagrams you memorized.
+
+So keep going.
+Start with "How does a URL work?" and end with designing Instagram.
+
+You'll be amazed at how far you've come—one system at a time.
+
+## If you made it till here, thank you ❤️
+
+I'm sharing more such learnings from real backend on my journey.
+
