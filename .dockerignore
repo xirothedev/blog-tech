@@ -7,7 +7,6 @@
 .wrangler
 docs
 node_modules
-scripts
 npm-debug.log
 
 .dev.vars
