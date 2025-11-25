@@ -4,11 +4,11 @@
   "private": true,
   "license": "LICENSE-GPL-3.0",
   "scripts": {
-    "start": "next dev",
+    "start": "next dev --turbo",
     "dev": "cross-env INIT_CWD=$PWD next dev",
     "build": "cross-env INIT_CWD=$PWD next build && cross-env NODE_OPTIONS='--experimental-json-modules' node ./scripts/postbuild.mjs",
     "serve": "next start",
-    "analyze": "cross-env ANALYZE=true next build",
+    "analyze": "cross-env ANALYZE=true next build --webpack",
     "lint": "eslint --fix pages app components lib layouts scripts",
     "prepare": "husky"
   },
