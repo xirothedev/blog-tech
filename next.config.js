@@ -95,10 +95,10 @@ module.exports = () => {
 
 			return config;
 		},
-		turbopack: {},
 		cacheComponents: true,
-		experimental: {
-			turbopackFileSystemCacheForDev: true,
-		},
+		// turbopack: {},
+		// experimental: {
+		// 	turbopackFileSystemCacheForDev: true,
+		// },
 	});
 };
