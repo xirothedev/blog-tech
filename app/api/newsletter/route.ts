@@ -1,7 +1,8 @@
 import { NewsletterAPI } from "pliny/newsletter";
 import siteMetadata from "@/data/siteMetadata";
 
-export const dynamic = "force-static";
+// MIGRATED: Removed export const dynamic = "force-static" (incompatible with Cache Components)
+// Route handlers are dynamic by default with Cache Components
 
 const handler = NewsletterAPI({
 	// @ts-ignore

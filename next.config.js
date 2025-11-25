@@ -96,6 +96,7 @@ module.exports = () => {
 			return config;
 		},
 		turbopack: {},
+		cacheComponents: true,
 		experimental: {
 			turbopackFileSystemCacheForDev: true,
 		},

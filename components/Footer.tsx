@@ -1,8 +1,13 @@
+import { connection } from "next/server";
 import Link from "./Link";
 import siteMetadata from "@/data/siteMetadata";
 import SocialIcon from "@/components/social-icons";
 
-export default function Footer() {
+export default async function Footer() {
+	// Defer to request-time before using non-deterministic Date per Cache Components requirements
+	await connection();
+	const currentYear = new Date().getFullYear();
+
 	return (
 		<footer>
 			<div className="mt-16 flex flex-col items-center">
@@ -22,7 +27,7 @@ export default function Footer() {
 				<div className="mb-2 flex space-x-2 text-sm text-gray-500 dark:text-gray-400">
 					<div>{siteMetadata.author}</div>
 					<div>{` • `}</div>
-					<div>{`© ${new Date().getFullYear()}`}</div>
+					<div>{`© ${currentYear}`}</div>
 					<div>{` • `}</div>
 					<Link href="https://xirothedev.site">Home</Link>
 				</div>
