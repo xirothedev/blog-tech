@@ -4,8 +4,8 @@
   "private": true,
   "license": "LICENSE-GPL-3.0",
   "scripts": {
-    "start": "next dev --turbo",
-    "dev": "cross-env INIT_CWD=$PWD next dev",
+    "start": "next dev",
+    "dev": "node ./scripts/dev-with-contentlayer.mjs",
     "build": "cross-env INIT_CWD=$PWD next build && cross-env NODE_OPTIONS='--experimental-json-modules' node ./scripts/postbuild.mjs",
     "serve": "next start",
     "analyze": "cross-env ANALYZE=true next build --webpack",
