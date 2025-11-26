@@ -70,6 +70,7 @@ module.exports = () => {
 		reactStrictMode: true,
 		trailingSlash: false,
 		pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
+		reactCompiler: true,
 		images: {
 			remotePatterns: [
 				{

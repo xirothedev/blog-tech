@@ -8,6 +8,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import js from "@eslint/js";
 import { FlatCompat } from "@eslint/eslintrc";
+import jsxA11y from "eslint-plugin-jsx-a11y";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,48 +16,83 @@ const compat = new FlatCompat({
 	baseDirectory: __dirname,
 });
 
+const overrideAnchorIsValid = (configs) =>
+	configs.map((config) => {
+		if (!config.rules?.["jsx-a11y/anchor-is-valid"]) {
+			return config;
+		}
+
+		return {
+			...config,
+			rules: {
+				...config.rules,
+				"jsx-a11y/anchor-is-valid": [
+					"error",
+					{
+						components: ["Link"],
+						specialLink: ["hrefLeft", "hrefRight"],
+						aspects: ["invalidHref", "preferButton"],
+					},
+				],
+			},
+		};
+	});
+
+const nextConfigs = overrideAnchorIsValid(next);
+const nextCoreWebVitalsConfigs = overrideAnchorIsValid(nextCoreWebVitals);
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default [...nextTypescript, {
-    ignores: [],
-}, js.configs.recommended, ...compat.extends("plugin:@typescript-eslint/eslint-recommended"), ...compat.extends("plugin:@typescript-eslint/recommended"), ...compat.extends("plugin:jsx-a11y/recommended"), ...compat.extends("plugin:prettier/recommended"), ...next, ...nextCoreWebVitals, {
-    plugins: {
-        "@typescript-eslint": typescriptEslint,
-    },
+export default [
+	...nextTypescript,
+	{
+		ignores: [],
+	},
+	js.configs.recommended,
+	...compat.extends("plugin:@typescript-eslint/eslint-recommended"),
+	...compat.extends("plugin:@typescript-eslint/recommended"),
+	...compat.extends("plugin:prettier/recommended"),
+	...nextConfigs,
+	...nextCoreWebVitalsConfigs,
+	{
+		plugins: {
+			"@typescript-eslint": typescriptEslint,
+			"jsx-a11y": jsxA11y,
+		},
+		languageOptions: {
+			globals: {
+				...globals.browser,
+				...globals.amd,
+				...globals.node,
+			},
 
-    languageOptions: {
-        globals: {
-            ...globals.browser,
-            ...globals.amd,
-            ...globals.node,
-        },
+			parser: tsParser,
+			ecmaVersion: 5,
+			sourceType: "commonjs",
 
-        parser: tsParser,
-        ecmaVersion: 5,
-        sourceType: "commonjs",
+			parserOptions: {
+				project: true,
+				tsconfigRootDir: __dirname,
+			},
+		},
 
-        parserOptions: {
-            project: true,
-            tsconfigRootDir: __dirname,
-        },
-    },
+		rules: {
+			"prettier/prettier": "off",
+			"react/react-in-jsx-scope": "off",
 
-    rules: {
-        "prettier/prettier": "off",
-        "react/react-in-jsx-scope": "off",
-
-        "jsx-a11y/anchor-is-valid": [
-            "error",
-            {
-                components: ["Link"],
-                specialLink: ["hrefLeft", "hrefRight"],
-                aspects: ["invalidHref", "preferButton"],
-            },
-        ],
-        "react/prop-types": "off",
-        "@typescript-eslint/no-unused-vars": "off",
-        "react/no-unescaped-entities": "off",
-        "@typescript-eslint/explicit-module-boundary-types": "off",
-        "@typescript-eslint/no-var-requires": "off",
-        "@typescript-eslint/ban-ts-comment": "off",
-    },
-}];
+			"jsx-a11y/anchor-is-valid": [
+				"error",
+				{
+					components: ["Link"],
+					specialLink: ["hrefLeft", "hrefRight"],
+					aspects: ["invalidHref", "preferButton"],
+				},
+			],
+			"react/prop-types": "off",
+			"@typescript-eslint/no-unused-vars": "off",
+			"react/no-unescaped-entities": "off",
+			"@typescript-eslint/explicit-module-boundary-types": "off",
+			"@typescript-eslint/no-var-requires": "off",
+			"@typescript-eslint/ban-ts-comment": "off",
+		},
+	},
+];
