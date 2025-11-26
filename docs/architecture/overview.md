@@ -9,18 +9,21 @@ This is a static site generation (SSG) blog built with Next.js 16 App Router arc
 ## Core Architecture Patterns
 
 ### 1. App Router Architecture
+
 - **Server Components by Default**: Most components render on the server for optimal performance
 - **Client Components**: Explicitly marked with `"use client"` for interactive features
 - **Route Groups**: Organized by content type (blog, tags, projects, about)
 - **Parallel Routes**: Support for multiple layout patterns
 
 ### 2. Content-First Architecture
+
 - **Contentlayer Integration**: Type-safe content processing at build time
 - **MDX Processing**: Advanced markdown with React component support
 - **Static Generation**: All content pre-rendered at build time
 - **Zero Runtime Dependencies**: No database or CMS required
 
 ### 3. Component-Based Architecture
+
 - **Reusable Components**: Modular design with clear separation of concerns
 - **Layout System**: Flexible layout selection based on content type
 - **Theme System**: System-based light/dark mode with persistence
@@ -29,38 +32,48 @@ This is a static site generation (SSG) blog built with Next.js 16 App Router arc
 ## Key Architectural Decisions
 
 ### Content Management with Contentlayer
+
 **Decision**: Use Contentlayer instead of traditional CMS
+
 - **Rationale**: Type-safe content access, better performance, improved developer experience
 - **Benefits**: Zero runtime database dependencies, static generation, TypeScript integration
 
 ### Server Components by Default
+
 **Decision**: Leverage React Server Components for most UI
+
 - **Rationale**: Reduced JavaScript bundle size, improved performance
 - **Implementation**: Client components only for stateful interactions
 
 ### Security-First Configuration
+
 **Decision**: Implement comprehensive security measures
+
 - **Features**: Content Security Policy, HTTPS enforcement, input sanitization
 - **Implementation**: Security headers, CSP policies, environment variable management
 
 ## Technology Stack
 
 ### Core Framework
+
 - **Next.js 16.0.4**: React framework with App Router
 - **React 19.2.0**: UI library with Server Components
 - **TypeScript**: Type safety and developer experience
 
 ### Styling and UI
+
 - **Tailwind CSS 4.0.5**: Utility-first CSS framework
 - **Prism Plus**: Syntax highlighting
 - **KaTeX**: Mathematical equation rendering
 
 ### Content Processing
+
 - **Contentlayer 2**: MDX content management
 - **Pliny**: Blog-specific utilities and features
 - **Remark/Rehype**: Markdown processing pipeline
 
 ### Development Tools
+
 - **ESLint**: Code quality and linting
 - **Prettier**: Code formatting
 - **Husky**: Git hooks
@@ -69,6 +82,7 @@ This is a static site generation (SSG) blog built with Next.js 16 App Router arc
 ## Data Flow Architecture
 
 ### Content Processing Pipeline
+
 ```
 MDX Files (/data/blog/)
     ↓
@@ -80,6 +94,7 @@ Runtime Component Rendering
 ```
 
 ### Request Flow
+
 1. **Static Generation**: All content pre-compiled at build time
 2. **Route Resolution**: Next.js App Router handles routing
 3. **Content Loading**: Type-safe data from generated Contentlayer types
@@ -167,13 +182,12 @@ Runtime Component Rendering
 │   ├── deployment/        # Deployment documentation
 │   └── development/       # Development workflow documentation
 ├── .contentlayer/         # Generated content types (auto-generated)
-├── .yarn/                 # Yarn Berry cache and configuration
 ├── next.config.js         # Next.js configuration
 ├── contentlayer.config.ts # Contentlayer configuration
 ├── eslint.config.mjs      # ESLint configuration
 ├── package.json           # Dependencies and scripts
 ├── tsconfig.json          # TypeScript configuration
-└── yarn.lock              # Yarn lockfile
+└── pnpm-lock.yaml         # pnpm lockfile
 ```
 
 ## Integration Architecture
@@ -181,21 +195,25 @@ Runtime Component Rendering
 ### External Service Integrations
 
 #### Analytics Stack
+
 - **Umami Analytics**: Privacy-focused analytics (US region)
 - **Vercel Analytics**: Performance monitoring and error tracking
 - **CSP Integration**: Proper script-src configuration for security
 
 #### Comment System
+
 - **Giscus**: GitHub-based commenting system
 - **Theme Integration**: Automatic dark/light mode switching
 - **Spam Prevention**: GitHub's native moderation tools
 
 #### Newsletter System
+
 - **Buttondown**: Email newsletter service
 - **API Integration**: Custom newsletter subscription endpoint
 - **Form Validation**: Client and server-side validation
 
 #### Search Functionality
+
 - **Kbar**: Client-side search interface
 - **Static Index**: Pre-generated search documents
 - **Contentlayer Integration**: Automatic index generation
@@ -203,12 +221,14 @@ Runtime Component Rendering
 ### Security Architecture
 
 #### Content Security Policy (CSP)
+
 - **Comprehensive Headers**: Production-ready CSP configuration
 - **Script Sources**: Whitelisted external domains
 - **Style Sources**: Controlled style loading
 - **Image Sources**: Secure image loading patterns
 
 #### Additional Security Measures
+
 - **HTTPS Enforcement**: Strict transport security
 - **XSS Protection**: Built-in Next.js XSS protection
 - **Input Sanitization**: MDX processing with proper escaping
@@ -217,12 +237,14 @@ Runtime Component Rendering
 ## Performance Architecture
 
 ### Build Optimizations
+
 - **Static Generation**: All content pre-rendered at build time
 - **Code Splitting**: Automatic route-based code splitting
 - **Image Optimization**: Next.js Image component with remote patterns
 - **Bundle Analysis**: Webpack Bundle Analyzer integration
 
 ### Runtime Optimizations
+
 - **Server Components**: Reduced JavaScript bundle size
 - **Component Caching**: Intelligent component memoization
 - **Static Assets**: Optimized asset delivery
@@ -231,18 +253,21 @@ Runtime Component Rendering
 ## Development Architecture
 
 ### Code Quality Pipeline
+
 - **TypeScript**: Full type safety throughout the application
 - **ESLint**: Comprehensive linting rules for TypeScript and React
 - **Prettier**: Consistent code formatting
 - **Husky**: Pre-commit hooks for quality assurance
 
 ### Development Workflow
+
 - **Hot Reloading**: Rapid development iteration
 - **Type Checking**: Compile-time TypeScript validation
 - **Linting**: Real-time code quality feedback
 - **Formatting**: Automatic code formatting on save
 
 ### Git Workflow
+
 - **Pre-commit Hooks**: Automatic code formatting and linting
 - **Quality Gates**: Lint-staged for staged file processing
 - **Commit Standards**: Consistent commit message format
@@ -250,6 +275,7 @@ Runtime Component Rendering
 ## Deployment Architecture
 
 ### Build Process
+
 ```bash
 Development Environment
     ↓
@@ -263,12 +289,14 @@ Production Deployment
 ```
 
 ### Deployment Targets
+
 - **Vercel**: Primary deployment platform
 - **Docker**: Container-based deployment
 - **GitHub Pages**: Static site hosting
 - **Static Export**: CDN deployment capability
 
 ### Configuration Management
+
 - **Environment Variables**: Runtime configuration
 - **Build-time Configuration**: Static configuration embedding
 - **Feature Flags**: Conditional feature activation

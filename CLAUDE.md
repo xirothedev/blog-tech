@@ -10,22 +10,23 @@ This is "Xiro The Dev - Blog Tech", a Next.js 16 blogging application built with
 
 ```bash
 # Development
-yarn dev              # Start development server with webpack
-yarn start            # Start production server
+pnpm dev              # Start development server with webpack
+pnpm start            # Start production server
 
 # Build & Deploy
-yarn build           # Build for production with post-processing
-yarn serve           # Start production server
-yarn analyze         # Build with bundle analyzer
+pnpm build           # Build for production with post-processing
+pnpm serve           # Start production server
+pnpm analyze         # Build with bundle analyzer
 
 # Code Quality
-yarn lint            # Run ESLint with auto-fix
-yarn prepare         # Setup husky hooks
+pnpm lint            # Run ESLint with auto-fix
+pnpm prepare         # Setup husky hooks
 ```
 
 ## Architecture & Structure
 
 ### Core Technologies
+
 - **Next.js 16.0.4** with App Router and React Server Components
 - **React 19.2.0** with React Strict Mode
 - **TypeScript** with path aliases (`@/` for root)
@@ -33,6 +34,7 @@ yarn prepare         # Setup husky hooks
 - **Contentlayer 2** for MDX content processing
 
 ### Key Directories
+
 - `/app/` - Next.js App Router pages and API routes
 - `/components/` - Reusable React components
 - `/layouts/` - Blog layout components (PostLayout, ListLayout, etc.)
@@ -41,12 +43,14 @@ yarn prepare         # Setup husky hooks
 - `/scripts/` - Build scripts (RSS generation post-build)
 
 ### Content Management
+
 - **MDX Support** with advanced plugins (GFM, KaTeX math, Prism syntax highlighting)
 - **Content Sources:** `/data/blog/` for posts, `/data/authors/` for author profiles
 - **Auto-generated** tag system and search index
 - **Contentlayer Configuration** in `contentlayer.config.ts` handles MDX transformation
 
 ### Features & Integrations
+
 - **Analytics:** Umami Analytics (US region)
 - **Comments:** Giscus for GitHub-based comments
 - **Search:** Kbar command palette search
@@ -56,30 +60,35 @@ yarn prepare         # Setup husky hooks
 ## Development Practices
 
 ### Code Quality Tools
+
 - **ESLint** with TypeScript, React, and accessibility rules
 - **Prettier** with Tailwind CSS plugin
 - **Husky** for pre-commit hooks
 - **lint-staged** for automated formatting
 
 ### Important Configuration
+
 - `next.config.js` - Contains security headers, CSP, and Contentlayer config
 - `tsconfig.json` - Path aliases: `@/components/*`, `@/app/*`, etc.
 - `eslint.config.mjs` - Modern ESLint flat config
-- **Package Manager:** Yarn Berry (v3.6.1)
+- **Package Manager:** pnpm (v10.19.0)
 
 ### Git Workflow
+
 - Pre-commit hooks run `lint-staged` for auto-formatting
 - No testing framework currently configured
 
 ## Content Creation
 
 ### Adding Blog Posts
+
 1. Create `.mdx` files in `/data/blog/`
 2. Use frontmatter with: title, date, tags, authors, etc.
 3. MDX supports math equations, citations, and GitHub alerts
 4. Contentlayer automatically processes and indexes content
 
 ### Supported Features
+
 - Math equations via KaTeX (`$$` blocks)
 - Citations and bibliography support
 - Syntax highlighting with Prism Plus
@@ -88,12 +97,14 @@ yarn prepare         # Setup husky hooks
 ## Deployment
 
 ### Primary Options
+
 - **Vercel** (recommended)
 - **Docker** with multi-stage builds
 - **GitHub Pages** workflow included
 - **Static export** capability
 
 ### Performance Optimizations
+
 - Webpack bundling (Turbopack disabled for compatibility)
 - Component caching enabled
 - Bundle analysis tools available

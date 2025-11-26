@@ -17,6 +17,7 @@ The project includes advanced features such as mathematical equation support, ci
 ## Key Features
 
 ### 🚀 Performance & Architecture
+
 - **Next.js 16.0.4** with App Router and React Server Components
 - **React 19.2.0** with React Strict Mode
 - **TypeScript** with full type safety
@@ -25,6 +26,7 @@ The project includes advanced features such as mathematical equation support, ci
 - **Near-perfect Lighthouse scores** (95+ performance)
 
 ### 🎨 Design & User Experience
+
 - **Tailwind CSS 4.0.5** for modern styling
 - **Dark/Light theme** with system preference detection
 - **Mobile-responsive design** with mobile-first approach
@@ -32,6 +34,7 @@ The project includes advanced features such as mathematical equation support, ci
 - **Smooth animations** and transitions
 
 ### 📝 Content Management
+
 - **MDX support** with advanced plugins
 - **Contentlayer 2** for type-safe content processing
 - **Mathematical equations** via KaTeX
@@ -41,18 +44,21 @@ The project includes advanced features such as mathematical equation support, ci
 - **Multi-author support** with author profiles
 
 ### 🔍 Search & Navigation
+
 - **Kbar command palette** for keyboard navigation
 - **Tag-based organization** with automatic tag pages
 - **RSS feeds** for content syndication
 - **Sitemap generation** for SEO
 
 ### 💬 Interactivity
+
 - **Giscus comments** powered by GitHub discussions
 - **Interactive components** (VPS Decision Checker, etc.)
 - **Newsletter integration** with Buttondown
 - **Social media integration** with custom icons
 
 ### 🔒 Security & SEO
+
 - **Comprehensive Content Security Policy**
 - **Security headers** (HSTS, XSS protection, etc.)
 - **SEO optimization** with structured data
@@ -62,21 +68,25 @@ The project includes advanced features such as mathematical equation support, ci
 ## Technology Stack
 
 ### Core Framework
+
 - **Next.js 16.0.4** - React framework with App Router
 - **React 19.2.0** - UI library with Server Components
 - **TypeScript** - Type safety and developer experience
 
 ### Styling & UI
+
 - **Tailwind CSS 4.0.5** - Utility-first CSS framework
 - **Prism Plus** - Advanced syntax highlighting
 - **KaTeX** - Mathematical equation rendering
 
 ### Content Processing
+
 - **Contentlayer 2** - MDX content management
 - **Pliny** - Blog-specific utilities and features
 - **Remark/Rehype** - Markdown processing pipeline
 
 ### Development Tools
+
 - **ESLint** - Code quality and linting
 - **Prettier** - Code formatting
 - **Husky** - Git hooks
@@ -100,26 +110,30 @@ The project includes advanced features such as mathematical equation support, ci
 ## Quick Start
 
 1. **Clone the repository**
-   ```bash
-   git clone https://github.com/xirothedev/blog-tech.git
-   cd blog-tech
-   ```
+
+    ```bash
+    git clone https://github.com/xirothedev/blog-tech.git
+    cd blog-tech
+    ```
 
 2. **Install dependencies**
-   ```bash
-   yarn install
-   ```
+
+    ```bash
+    pnpm install
+    ```
 
 3. **Configure environment variables**
-   ```bash
-   cp .env.example .env.local
-   # Edit .env.local with your configuration
-   ```
+
+    ```bash
+    cp .env.example .env.local
+    # Edit .env.local with your configuration
+    ```
 
 4. **Start development server**
-   ```bash
-   yarn dev
-   ```
+
+    ```bash
+    pnpm dev
+    ```
 
 5. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
@@ -127,7 +141,9 @@ The project includes advanced features such as mathematical equation support, ci
 ## Configuration
 
 ### Site Metadata
+
 Edit `data/siteMetadata.js` to configure:
+
 - Site title and description
 - Author information
 - Social media links
@@ -135,11 +151,13 @@ Edit `data/siteMetadata.js` to configure:
 - Comment system settings
 
 ### Content Management
+
 - **Blog posts**: Add `.mdx` files to `data/blog/`
 - **Authors**: Create author profiles in `data/authors/`
 - **Projects**: Update `data/projectsData.ts`
 
 ### Navigation
+
 Edit `data/headerNavLinks.ts` to customize the navigation menu.
 
 ## Content Creation
@@ -148,35 +166,39 @@ Edit `data/headerNavLinks.ts` to customize the navigation menu.
 
 1. Create a new `.mdx` file in `data/blog/`
 2. Add frontmatter with required fields:
-   ```yaml
-   ---
-   title: "Your Post Title"
-   date: "2025-11-26"
-   tags: ["tag1", "tag2"]
-   authors: ["default"]
-   summary: "Brief description for SEO"
-   ---
-   ```
+    ```yaml
+    ---
+    title: "Your Post Title"
+    date: "2025-11-26"
+    tags: ["tag1", "tag2"]
+    authors: ["default"]
+    summary: "Brief description for SEO"
+    ---
+    ```
 3. Write your content using Markdown and MDX syntax
 
 ### Advanced Features
 
 **Mathematical Content:**
+
 ```markdown
 Inline math: $E = mc^2$
 
 Display math:
+
 $$
 \int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
 $$
 ```
 
 **Citations:**
+
 ```markdown
 Here is some text with a citation [@author2023].
 ```
 
 **Interactive Components:**
+
 ```markdown
 <VPSDecisionChecker />
 ```
@@ -184,6 +206,7 @@ Here is some text with a citation [@author2023].
 ## Deployment
 
 ### Docker Deployment
+
 ```bash
 # Build and run
 docker build -t blog-tech .
@@ -191,17 +214,20 @@ docker run -p 3000:3000 blog-tech
 ```
 
 ### Vercel Deployment
+
 1. Connect your GitHub repository to Vercel
 2. Configure environment variables
 3. Deploy automatically on push to main branch
 
 ### Static Export
+
 ```bash
-EXPORT=true UNOPTIMIZED=1 yarn build
+EXPORT=true UNOPTIMIZED=1 pnpm build
 # Deploy the `out` folder to any static hosting service
 ```
 
 ### Environment Variables
+
 ```bash
 # Analytics
 NEXT_PUBLIC_UMAMI_ID="your-umami-website-id"
@@ -220,17 +246,17 @@ BUTTONDOWN_API_KEY="your-buttondown-api-key"
 
 ```bash
 # Development
-yarn dev              # Start development server with webpack
-yarn start            # Start production server
+pnpm dev              # Start development server with webpack
+pnpm start            # Start production server
 
 # Build & Deploy
-yarn build           # Build for production with post-processing
-yarn serve           # Start production server
-yarn analyze         # Build with bundle analyzer
+pnpm build           # Build for production with post-processing
+pnpm serve           # Start production server
+pnpm analyze         # Build with bundle analyzer
 
 # Code Quality
-yarn lint            # Run ESLint with auto-fix
-yarn prepare         # Setup husky hooks
+pnpm lint            # Run ESLint with auto-fix
+pnpm prepare         # Setup husky hooks
 ```
 
 ## Documentation

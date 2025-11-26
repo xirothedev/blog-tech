@@ -8,7 +8,6 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import js from "@eslint/js";
 import { FlatCompat } from "@eslint/eslintrc";
-import jsxA11y from "eslint-plugin-jsx-a11y";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -45,7 +44,7 @@ const nextCoreWebVitalsConfigs = overrideAnchorIsValid(nextCoreWebVitals);
 export default [
 	...nextTypescript,
 	{
-		ignores: [],
+		ignores: [".contentlayer/**"],
 	},
 	js.configs.recommended,
 	...compat.extends("plugin:@typescript-eslint/eslint-recommended"),
@@ -56,7 +55,6 @@ export default [
 	{
 		plugins: {
 			"@typescript-eslint": typescriptEslint,
-			"jsx-a11y": jsxA11y,
 		},
 		languageOptions: {
 			globals: {
@@ -78,15 +76,8 @@ export default [
 		rules: {
 			"prettier/prettier": "off",
 			"react/react-in-jsx-scope": "off",
+			"react-hooks/set-state-in-effect": "off",
 
-			"jsx-a11y/anchor-is-valid": [
-				"error",
-				{
-					components: ["Link"],
-					specialLink: ["hrefLeft", "hrefRight"],
-					aspects: ["invalidHref", "preferButton"],
-				},
-			],
 			"react/prop-types": "off",
 			"@typescript-eslint/no-unused-vars": "off",
 			"react/no-unescaped-entities": "off",

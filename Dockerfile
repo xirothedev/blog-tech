@@ -8,28 +8,26 @@ FROM base AS deps
 # Install libc6-compat for some npm packages
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-# Copy only package manager files for dependency install (Yarn Berry)
-COPY package.json yarn.lock* .npmrc* .yarnrc.yml* ./
-COPY .yarn/ ./.yarn/
-# Enable corepack so yarn@berry from packageManager is used
-RUN corepack enable && yarn --version && yarn install --immutable
+# Copy only package manager files for dependency install
+COPY package.json pnpm-lock.yaml* .npmrc* ./
+# Enable corepack so pnpm from packageManager is used
+RUN corepack enable && pnpm --version && pnpm install --frozen-lockfile
 
 # ---------- Builder ----------
 FROM base AS builder
 WORKDIR /app
-# Bring over Yarn artifacts first for better caching
-COPY --from=deps /app/.yarn/ ./.yarn/
-COPY --from=deps /app/.pnp.* ./
-COPY --from=deps /app/yarn.lock ./yarn.lock
+# Bring over dependency artifacts first for better caching
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=deps /app/package.json ./package.json
 
 # Copy the rest of the source
 COPY . .
 
 # Ensure dependencies are fully prepared for this context (inline native builds when needed)
-RUN corepack enable && yarn install --immutable --inline-builds
+RUN corepack enable && pnpm install --frozen-lockfile
 
-RUN yarn build
+RUN pnpm build
 
 # ---------- Production runner ----------
 FROM base AS runner

@@ -48,4 +48,4 @@ jobs:
 
       # Optional: add test step here if you have tests
       # - name: Run tests
-      #   run: yarn test
+      #   run: pnpm test
