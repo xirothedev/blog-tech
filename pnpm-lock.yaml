@@ -35,6 +35,9 @@ importers:
       body-scroll-lock:
         specifier: 4.0.0-beta.0
         version: 4.0.0-beta.0
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       contentlayer2:
         specifier: 0.5.8
         version: 0.5.8(esbuild@0.27.0)
