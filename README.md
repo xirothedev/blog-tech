@@ -94,7 +94,7 @@ The project includes advanced features such as mathematical equation support, ci
 
 ## Project Structure
 
-```
+```bash
 /home/xiro/workspace/blog-tech/
 ├── app/                    # Next.js App Router pages
 ├── components/            # Reusable React components
@@ -166,6 +166,7 @@ Edit `data/headerNavLinks.ts` to customize the navigation menu.
 
 1. Create a new `.mdx` file in `data/blog/`
 2. Add frontmatter with required fields:
+
     ```yaml
     ---
     title: "Your Post Title"
@@ -175,6 +176,7 @@ Edit `data/headerNavLinks.ts` to customize the navigation menu.
     summary: "Brief description for SEO"
     ---
     ```
+
 3. Write your content using Markdown and MDX syntax
 
 ### Advanced Features
