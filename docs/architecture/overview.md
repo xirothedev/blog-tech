@@ -83,13 +83,13 @@ This is a static site generation (SSG) blog built with Next.js 16 App Router arc
 
 ### Content Processing Pipeline
 
-```
+```markdown
 MDX Files (/data/blog/)
-    ↓
+↓
 Contentlayer Build Process
-    ↓
+↓
 Generated TypeScript Types
-    ↓
+↓
 Runtime Component Rendering
 ```
 
@@ -103,7 +103,7 @@ Runtime Component Rendering
 
 ## Directory Structure
 
-```
+```bash
 /home/xiro/workspace/blog-tech/
 ├── app/                    # Next.js App Router (Server Components)
 │   ├── about/             # About page

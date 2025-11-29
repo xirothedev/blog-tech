@@ -5,7 +5,8 @@ This document provides a comprehensive overview of the component architecture fo
 ## Component Organization and Structure
 
 ### Directory Structure
-```
+
+```bash
 /components/
 ├── MDXComponents.tsx          # Central MDX component registry
 ├── LayoutWrapper.tsx         # Main layout wrapper
@@ -42,7 +43,8 @@ This document provides a comprehensive overview of the component architecture fo
 ## Layout Hierarchy and Structure
 
 ### Main Layout Hierarchy
-```
+
+```bash
 app/layout.tsx (Root Layout)
 ├── ThemeProviders (theme-providers.tsx)
 ├── Analytics (Vercel + Pliny)
@@ -59,6 +61,7 @@ app/layout.tsx (Root Layout)
 ```
 
 ### Layout Wrapper Pattern
+
 The `LayoutWrapper` component serves as the root layout wrapper, providing the fundamental page structure:
 
 ```typescript
@@ -76,6 +79,7 @@ export default function LayoutWrapper({ children }) {
 ```
 
 ### Post Layout Structure
+
 Blog posts use a sophisticated layout with sidebar and content areas:
 
 ```typescript
@@ -94,20 +98,24 @@ Blog posts use a sophisticated layout with sidebar and content areas:
 ## Server vs Client Component Architecture
 
 ### Server Components (Default)
+
 **Purpose**: Static content, data fetching, SEO optimization
 **Characteristics**: No interactivity, can use `await`, better performance
 
 **Examples**:
+
 - `Footer.tsx` - Uses server-side `connection()` for data
 - `PostLayout.tsx` - Receives props from parent components
 - `LayoutWrapper.tsx` - Static layout structure
 - `PageTitle.tsx` - Simple content display
 
 ### Client Components (Explicit `"use client"`)
+
 **Purpose**: State management, user interactions, browser APIs
 **Characteristics**: Can use React hooks, handle events, browser-specific features
 
 **Examples**:
+
 - `ThemeSwitch.tsx` - Theme switching with `useTheme` hook
 - `MobileNav.tsx` - Menu visibility state management
 - `VPSDecisionChecker.tsx` - Interactive questionnaire logic
@@ -117,66 +125,79 @@ Blog posts use a sophisticated layout with sidebar and content areas:
 ## MDX Component System
 
 ### Central MDX Registry
+
 The `MDXComponents.tsx` file serves as a central registry for custom MDX components:
 
 ```typescript
 export const components: MDXComponents = {
-  Image,
-  TOCInline,
-  a: CustomLink,
-  pre: Pre,
-  table: TableWrapper,
-  BlogNewsletterForm,
-  Video,
-  VPSDecisionChecker,
-  GitHubSourceLink,
+	Image,
+	TOCInline,
+	a: CustomLink,
+	pre: Pre,
+	table: TableWrapper,
+	BlogNewsletterForm,
+	Video,
+	VPSDecisionChecker,
+	GitHubSourceLink,
 };
 ```
 
 ### Custom MDX Components
 
 #### Image Component
+
 Enhanced with Next.js Image optimization:
+
 - Automatic sizing and optimization
 - Responsive image loading
 - Performance improvements
 
 #### Link Component
+
 Smart link handling:
+
 - Internal vs external link detection
 - Anchor link handling
 - Security attributes
 
 #### TableWrapper
+
 Adds responsive behavior to tables:
+
 - Horizontal scrolling for wide tables
 - Mobile-friendly table display
 - Consistent styling
 
 #### Interactive Components
+
 - `VPSDecisionChecker` - Interactive decision-making tool
 - `Video` - Custom video player with controls
 - `GitHubSourceLink` - Direct repository linking
 
 ### MDX Usage Pattern
+
 ```markdown
 <!-- In MDX files -->
+
 ![Alt text](/path/to/image.jpg)
 
 <!-- Automatically becomes: -->
 <Image src="/path/to/image.jpg" alt="Alt text" />
 
 [Link text](https://example.com)
+
 <!-- Becomes: -->
+
 <CustomLink href="https://example.com">Link text</CustomLink>
 
 <VPSDecisionChecker />
 <!-- Interactive component embedded directly -->
 ```
 
-## Interactive Components
+## Interactive Component
 
 ### Theme Switch Component
+
 Client component handling theme switching with persistence:
 
 ```typescript
@@ -200,6 +221,7 @@ const ThemeSwitch = () => {
 ```
 
 ### Mobile Navigation Component
+
 Sophisticated mobile navigation with body scroll lock:
 
 ```typescript
@@ -233,6 +255,7 @@ const MobileNav = () => {
 ```
 
 ### VPS Decision Checker
+
 Complex interactive component with scoring system:
 
 ```typescript
@@ -266,23 +289,26 @@ const VPSDecisionChecker = () => {
 ## State Management Architecture
 
 ### 1. Local Component State
+
 **Theme State**: Managed by `next-themes` library
 **Navigation State**: React `useState` for mobile menu
 **Form State**: Local state for interactive components
 **Scroll State**: `useState` and `useEffect` for scroll position
 
 ### 2. Props-Based Data Flow
+
 ```typescript
 interface PostLayoutProps {
-  content: CoreContent<Blog>;
-  authorDetails: CoreContent<Authors>[];
-  next?: { path: string; title: string };
-  prev?: { path: string; title: string };
-  children: ReactNode; // MDX content
+	content: CoreContent<Blog>;
+	authorDetails: CoreContent<Authors>[];
+	next?: { path: string; title: string };
+	prev?: { path: string; title: string };
+	children: ReactNode; // MDX content
 }
 ```
 
 ### 3. Context-Based State
+
 ```typescript
 // Theme context from next-themes
 const { theme, setTheme, resolvedTheme } = useTheme();
@@ -296,11 +322,13 @@ const { theme, setTheme, resolvedTheme } = useTheme();
 ## Design System and Patterns
 
 ### Typography System
+
 - **Primary Font**: Space Grotesk with CSS variable integration
 - **Fallback Font**: Inter for system compatibility
 - **Font Loading**: Optimized with `display: swap`
 
 ### Color System
+
 - **Theme-based**: CSS variables for light/dark mode
 - **Primary Colors**: Blue-based accent system
 - **Grayscale**: Consistent gray scale for text hierarchy
@@ -309,7 +337,9 @@ const { theme, setTheme, resolvedTheme } = useTheme();
 ### Component Patterns
 
 #### Container Pattern
+
 `SectionContainer` provides consistent max-width and centering:
+
 ```typescript
 <div className="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">
   {children}
@@ -317,18 +347,23 @@ const { theme, setTheme, resolvedTheme } = useTheme();
 ```
 
 #### Layout Pattern
+
 `LayoutWrapper` ensures consistent page structure:
+
 - Header navigation
 - Main content area
 - Footer with social links
 
 #### Button Pattern
+
 Consistent styling across interactive elements:
+
 - Hover states
 - Focus management
 - Accessibility features
 
 ### Responsive Design Patterns
+
 ```typescript
 // Mobile-first approach
 <div className="hidden sm:flex md:max-w-72 lg:max-w-96">
@@ -342,6 +377,7 @@ Consistent styling across interactive elements:
 ## Component Communication
 
 ### 1. Parent-Child Communication
+
 ```typescript
 // Props passing
 <Header
@@ -354,6 +390,7 @@ Consistent styling across interactive elements:
 ```
 
 ### 2. Configuration-Based Sharing
+
 ```typescript
 // Centralized configuration
 export const siteMetadata = {
@@ -372,6 +409,7 @@ export const siteMetadata = {
 ```
 
 ### 3. Server-to-Client Data Transfer
+
 - **Content Data**: Passed via props from page components
 - **Metadata**: From `siteMetadata` configuration
 - **Static Props**: Next.js data fetching methods
@@ -380,6 +418,7 @@ export const siteMetadata = {
 ## Performance Optimization
 
 ### 1. Image Optimization
+
 ```typescript
 <Image
   src={src}
@@ -392,11 +431,13 @@ export const siteMetadata = {
 ```
 
 ### 2. Code Splitting
+
 - Dynamic imports for heavy components
 - Client components marked with `"use client"`
 - Suspense boundaries for loading states
 
 ### 3. Lazy Loading
+
 - Images lazy loaded by default
 - Components loaded on demand
 - Scroll-based lazy loading
@@ -404,24 +445,28 @@ export const siteMetadata = {
 ## Accessibility Features
 
 ### 1. Semantic HTML
+
 - Proper heading hierarchy (h1-h6)
 - ARIA labels where needed
 - Semantic form elements
 - Role attributes for custom components
 
 ### 2. Keyboard Navigation
+
 - Tab navigation support
 - Keyboard event handling
 - Focus management in mobile menu
 - Skip links for screen readers
 
 ### 3. Screen Reader Support
+
 - `sr-only` classes for visually hidden content
 - ARIA labels for interactive elements
 - Proper alt text for images
 - Descriptive link text
 
 ### 4. Theme Accessibility
+
 - Dynamic theme switching
 - Color contrast compliance
 - Focus state visibility
@@ -430,6 +475,7 @@ export const siteMetadata = {
 ## Usage Patterns and Examples
 
 ### Layout Usage
+
 ```typescript
 // Root layout
 <LayoutWrapper>
@@ -445,6 +491,7 @@ export const siteMetadata = {
 ```
 
 ### Interactive Component Usage
+
 ```typescript
 // Theme switcher
 <ThemeSwitch />
@@ -457,7 +504,8 @@ export const siteMetadata = {
 ```
 
 ### MDX Content Integration
-```markdown
+
+````markdown
 ---
 title: "My Blog Post"
 date: "2023-12-01"
@@ -476,51 +524,56 @@ Here's some content with [links](https://example.com) and images.
 ## Code Example
 
 ```javascript
-console.log('Hello World');
+console.log("Hello World");
 ```
-```
+````
 
+````markdown
 ## Configuration and Theming
 
 ### Site Metadata Configuration
+
 ```typescript
 const siteMetadata = {
-  title: "Xiro The Dev - Blog Tech",
-  author: "Xiro",
-  theme: "system",
-  analytics: {
-    umamiAnalytics: {
-      umamiWebsiteId: process.env.NEXT_UMAMI_ID,
-    },
-  },
-  search: {
-    provider: "kbar",
-    kbarConfig: {
-      searchDocumentsPath: "/search.json",
-    },
-  },
-  comments: {
-    provider: "giscus",
-    giscusConfig: {
-      // Giscus configuration
-    },
-  },
+	title: "Xiro The Dev - Blog Tech",
+	author: "Xiro",
+	theme: "system",
+	analytics: {
+		umamiAnalytics: {
+			umamiWebsiteId: process.env.NEXT_UMAMI_ID,
+		},
+	},
+	search: {
+		provider: "kbar",
+		kbarConfig: {
+			searchDocumentsPath: "/search.json",
+		},
+	},
+	comments: {
+		provider: "giscus",
+		giscusConfig: {
+			// Giscus configuration
+		},
+	},
 };
 ```
+````
 
 ### Theme Configuration
+
 - System preference detection
 - Manual theme switching
 - Persistent theme storage (localStorage)
 - Theme-aware components
 
 ### Navigation Configuration
+
 ```typescript
 const headerNavLinks = [
-  { href: "/", title: "Home" },
-  { href: "/blog", title: "Blog" },
-  { href: "/tags", title: "Tags" },
-  { href: "/about", title: "About" },
+	{ href: "/", title: "Home" },
+	{ href: "/blog", title: "Blog" },
+	{ href: "/tags", title: "Tags" },
+	{ href: "/about", title: "About" },
 ];
 ```
 
