@@ -28,7 +28,7 @@
 		"gray-matter": "^4.0.3",
 		"hast-util-from-html-isomorphic": "^2.0.0",
 		"image-size": "2.0.2",
-		"next": "16.0.7",
+		"next": "16.0.10",
 		"next-contentlayer2": "0.5.8",
 		"next-themes": "^0.4.6",
 		"pliny": "0.4.1",
@@ -83,5 +83,10 @@
 	"packageManager": "pnpm@10.19.0",
 	"resolutions": {
 		"@types/react": "19.2.7"
+	},
+	"pnpm": {
+		"overrides": {
+			"js-yaml": "4.1.1"
+		}
 	}
 }
