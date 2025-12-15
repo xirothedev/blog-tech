@@ -18,7 +18,7 @@ The project includes advanced features such as mathematical equation support, ci
 
 ### 🚀 Performance & Architecture
 
-- **Next.js 16.0.4** with App Router and React Server Components
+- **Next.js 16.x.x** with App Router and React Server Components
 - **React 19.2.0** with React Strict Mode
 - **TypeScript** with full type safety
 - **Yarn Berry** for modern package management
