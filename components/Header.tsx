@@ -4,6 +4,7 @@ import { Link } from "@/i18n/routing";
 import MobileNav from "./MobileNav";
 import SearchButton from "./SearchButton";
 import ThemeSwitch from "./ThemeSwitch";
+import LanguageToggle from "./LanguageToggle";
 import { cn } from "@/libs/utils";
 
 const Header = () => {
@@ -46,6 +47,7 @@ const Header = () => {
 						))}
 				</div>
 				<SearchButton />
+				<LanguageToggle />
 				<ThemeSwitch />
 				<MobileNav />
 			</div>

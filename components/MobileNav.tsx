@@ -5,6 +5,7 @@ import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from "bo
 import { Fragment, useState, useEffect, useRef } from "react";
 import headerNavLinks from "@/data/headerNavLinks";
 import { Link } from "@/i18n/routing";
+import LanguageToggle from "./LanguageToggle";
 
 const MobileNav = () => {
 	const [navShow, setNavShow] = useState(false);
@@ -82,6 +83,9 @@ const MobileNav = () => {
 										{link.title}
 									</Link>
 								))}
+								<div className="mb-4 py-2 pr-4">
+									<LanguageToggle />
+								</div>
 							</nav>
 
 							<button
