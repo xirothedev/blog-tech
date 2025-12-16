@@ -190,8 +190,26 @@ export const Authors = defineDocumentType(() => ({
 		linkedin: { type: "string" },
 		github: { type: "string" },
 		layout: { type: "string" },
+		locale: { type: "string", default: "vi" },
 	},
-	computedFields,
+	computedFields: {
+		...computedFields,
+		locale: {
+			type: "string",
+			resolve: (doc) => {
+				// Auto-detect locale from filename: *.en.mdx -> "en", *.vi.mdx -> "vi"
+				const fileName = doc._raw.sourceFilePath;
+				if (fileName.match(/\.en\.mdx$/)) {
+					return "en";
+				}
+				if (fileName.match(/\.vi\.mdx$/)) {
+					return "vi";
+				}
+				// Fallback to frontmatter locale or default "vi"
+				return doc.locale || "vi";
+			},
+		},
+	},
 }));
 
 export default makeSource({

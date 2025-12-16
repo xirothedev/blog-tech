@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import siteMetadata from "@/data/siteMetadata";
-import { getSiteMetadata } from "@/data/getSiteMetadata";
 import type { Locale } from "@/i18n/config";
 
 interface PageSEOProps {
@@ -11,8 +10,8 @@ interface PageSEOProps {
 	[key: string]: unknown;
 }
 
-export async function genPageMetadata({ title, description, image, locale, ...rest }: PageSEOProps): Promise<Metadata> {
-	const metadata = locale ? await getSiteMetadata(locale) : siteMetadata;
+export function genPageMetadata({ title, description, image, locale, ...rest }: PageSEOProps): Metadata {
+	const metadata = siteMetadata;
 	const ogLocale = locale === "vi" ? "vi_VN" : "en_US";
 
 	return {

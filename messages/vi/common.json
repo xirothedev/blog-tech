@@ -51,6 +51,9 @@
 	"video": {
 		"notSupported": "Trình duyệt của bạn không hỗ trợ thẻ video."
 	},
+	"about": {
+		"title": "Giới thiệu"
+	},
 	"vpsChecker": {
 		"intro": "Hãy trả lời các câu hỏi sau để xác định xem VPS có phù hợp với bạn không:",
 		"yes": "Có",

@@ -51,6 +51,9 @@
 	"video": {
 		"notSupported": "Your browser does not support the video tag."
 	},
+	"about": {
+		"title": "About"
+	},
 	"vpsChecker": {
 		"intro": "Please answer the following questions to determine if VPS is right for you:",
 		"yes": "Yes",
