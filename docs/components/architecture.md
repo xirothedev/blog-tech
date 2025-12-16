@@ -12,7 +12,6 @@ This document provides a comprehensive overview of the component architecture fo
 ├── LayoutWrapper.tsx         # Main layout wrapper
 ├── Header.tsx                # Navigation header
 ├── Footer.tsx                # Footer component
-├── Link.tsx                  # Custom Link component
 ├── Image.tsx                 # Enhanced Image component
 ├── Tag.tsx                   # Tag component
 ├── SectionContainer.tsx      # Container wrapper

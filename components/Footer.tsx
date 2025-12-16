@@ -1,5 +1,5 @@
 import { connection } from "next/server";
-import Link from "./Link";
+import Link from "next/link";
 import siteMetadata from "@/data/siteMetadata";
 import SocialIcon from "@/components/social-icons";
 

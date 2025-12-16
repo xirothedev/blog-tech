@@ -2,20 +2,21 @@ import ListLayout from "@/layouts/ListLayoutWithTags";
 import { allCoreContent, sortPosts } from "pliny/utils/contentlayer";
 import { allBlogs } from "contentlayer/generated";
 import { notFound } from "next/navigation";
+import { locales } from "@/i18n/config";
+import { setRequestLocale } from "next-intl/server";
 
 const POSTS_PER_PAGE = 5;
 
-export const generateStaticParams = async () => {
-	const totalPages = Math.ceil(allBlogs.length / POSTS_PER_PAGE);
-	const paths = Array.from({ length: totalPages }, (_, i) => ({ page: (i + 1).toString() }));
+export const generateStaticParams = async () =>
+	locales.flatMap((locale) => {
+		const totalPages = Math.ceil(allBlogs.length / POSTS_PER_PAGE);
+		return Array.from({ length: totalPages }, (_, i) => ({ locale, page: (i + 1).toString() }));
+	});
 
-	return paths;
-};
-
-export default async function Page(props: { params: Promise<{ page: string }> }) {
-	const params = await props.params;
+export default async function Page({ params }: { params: { locale: string; page: string } }) {
+	setRequestLocale(params.locale);
 	const posts = allCoreContent(sortPosts(allBlogs));
-	const pageNumber = parseInt(params.page as string);
+	const pageNumber = parseInt(params.page);
 	const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
 
 	// Return 404 for invalid page numbers or empty pages

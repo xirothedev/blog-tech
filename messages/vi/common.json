@@ -1,0 +1,11 @@
+{
+	"appName": "My App",
+	"nav": {
+		"dashboard": "Bảng điều khiển",
+		"settings": "Cài đặt"
+	},
+	"auth": {
+		"signIn": "Đăng nhập",
+		"signOut": "Đăng xuất"
+	}
+}

@@ -132,7 +132,6 @@ Runtime Component Rendering
 │   ├── Header.tsx         # Navigation header component
 │   ├── Image.tsx          # Enhanced image component
 │   ├── LayoutWrapper.tsx  # Main layout wrapper component
-│   ├── Link.tsx           # Custom link component
 │   ├── MDXComponents.tsx  # MDX component registry
 │   ├── MobileNav.tsx      # Mobile navigation menu
 │   ├── PageTitle.tsx      # Page title component

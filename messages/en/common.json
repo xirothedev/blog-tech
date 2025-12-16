@@ -1,0 +1,11 @@
+{
+	"appName": "My App",
+	"nav": {
+		"dashboard": "Dashboard",
+		"settings": "Settings"
+	},
+	"auth": {
+		"signIn": "Sign in",
+		"signOut": "Sign out"
+	}
+}

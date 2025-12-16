@@ -1,4 +1,4 @@
-import Link from "@/components/Link";
+import { Link } from "@/i18n/routing";
 import Image from "next/image";
 import Tag from "@/components/Tag";
 import siteMetadata from "@/data/siteMetadata";
@@ -24,7 +24,7 @@ export default function Home({ posts }) {
 							<div className="md:col-span-3">
 								{posts[0].images?.[0] && (
 									<div className="relative w-full overflow-hidden rounded-lg">
-										<div className="relative aspect-[16/9] w-full">
+										<div className="relative aspect-16/9 w-full">
 											<Image
 												src={posts[0].images[0]}
 												alt={posts[0].title}
@@ -38,8 +38,8 @@ export default function Home({ posts }) {
 								)}
 							</div>
 							<div className="flex flex-col justify-center md:col-span-2">
-								<div className="mb-2 text-sm font-medium text-primary-500">Latest writing</div>
-								<h2 className="mb-2 text-2xl font-bold leading-8 tracking-tight text-gray-900 dark:text-gray-100">
+								<div className="text-primary-500 mb-2 text-sm font-medium">Latest writing</div>
+								<h2 className="mb-2 text-2xl leading-8 font-bold tracking-tight text-gray-900 dark:text-gray-100">
 									<Link href={`/blog/${posts[0].slug}`}>{posts[0].title}</Link>
 								</h2>
 								<div className="mb-3 text-sm text-gray-500 dark:text-gray-400">

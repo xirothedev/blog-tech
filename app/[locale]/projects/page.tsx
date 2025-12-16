@@ -1,10 +1,12 @@
 import projectsData from "@/data/projectsData";
 import Card from "@/components/Card";
 import { genPageMetadata } from "app/seo";
+import { setRequestLocale } from "next-intl/server";
+import { Metadata } from "next";
+export const metadata: Metadata = genPageMetadata({ title: "Projects" });
 
-export const metadata = genPageMetadata({ title: "Projects" });
-
-export default function Projects() {
+export default function Projects({ params }: { params: { locale: string } }) {
+	setRequestLocale(params.locale);
 	return (
 		<>
 			<div className="divide-y divide-gray-200 dark:divide-gray-700">

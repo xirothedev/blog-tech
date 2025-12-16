@@ -4,23 +4,29 @@ import ListLayout from "@/layouts/ListLayoutWithTags";
 import { allBlogs } from "contentlayer/generated";
 import tagData from "app/tag-data.json";
 import { notFound } from "next/navigation";
+import { locales } from "@/i18n/config";
+import { setRequestLocale } from "next-intl/server";
 
 const POSTS_PER_PAGE = 10;
 
 export const generateStaticParams = async () => {
 	const tagCounts = tagData as Record<string, number>;
-	return Object.keys(tagCounts).flatMap((tag) => {
-		const postCount = tagCounts[tag];
-		const totalPages = Math.max(1, Math.ceil(postCount / POSTS_PER_PAGE));
-		return Array.from({ length: totalPages }, (_, i) => ({
-			tag: encodeURI(tag),
-			page: (i + 1).toString(),
-		}));
-	});
+	return locales.flatMap((locale) =>
+		Object.keys(tagCounts).flatMap((tag) => {
+			const postCount = tagCounts[tag];
+			const totalPages = Math.max(1, Math.ceil(postCount / POSTS_PER_PAGE));
+			return Array.from({ length: totalPages }, (_, i) => ({
+				locale,
+				tag: encodeURI(tag),
+				page: (i + 1).toString(),
+			}));
+		}),
+	);
 };
 
-export default async function TagPage(props: { params: Promise<{ tag: string; page: string }> }) {
+export default async function TagPage(props: { params: Promise<{ locale: string; tag: string; page: string }> }) {
 	const params = await props.params;
+	setRequestLocale(params.locale);
 	const tag = decodeURI(params.tag);
 	const title = tag[0].toUpperCase() + tag.split(" ").join("-").slice(1);
 	const pageNumber = parseInt(params.page);

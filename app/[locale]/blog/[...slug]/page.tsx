@@ -13,6 +13,8 @@ import PostBanner from "@/layouts/PostBanner";
 import { Metadata } from "next";
 import siteMetadata from "@/data/siteMetadata";
 import { notFound } from "next/navigation";
+import { locales } from "@/i18n/config";
+import { setRequestLocale } from "next-intl/server";
 
 const defaultLayout = "PostLayout";
 const layouts = {
@@ -21,7 +23,9 @@ const layouts = {
 	PostBanner,
 };
 
-export async function generateMetadata(props: { params: Promise<{ slug: string[] }> }): Promise<Metadata | undefined> {
+export async function generateMetadata(props: {
+	params: Promise<{ locale: string; slug: string[] }>;
+}): Promise<Metadata | undefined> {
 	const params = await props.params;
 	const slug = decodeURI(params.slug.join("/"));
 	const post = allBlogs.find((p) => p.slug === slug);
@@ -54,11 +58,11 @@ export async function generateMetadata(props: { params: Promise<{ slug: string[]
 			title: post.title,
 			description: post.summary,
 			siteName: siteMetadata.title,
-			locale: "en_US",
+			locale: params.locale === "vi" ? "vi_VN" : "en_US",
 			type: "article",
 			publishedTime: publishedAt,
 			modifiedTime: modifiedAt,
-			url: "./",
+			url: `/${params.locale}/blog/${slug}`,
 			images: ogImages,
 			authors: authors.length > 0 ? authors : [siteMetadata.author],
 		},
@@ -71,12 +75,17 @@ export async function generateMetadata(props: { params: Promise<{ slug: string[]
 	};
 }
 
-export const generateStaticParams = async () => {
-	return allBlogs.map((p) => ({ slug: p.slug.split("/").map((name) => decodeURI(name)) }));
-};
+export const generateStaticParams = async () =>
+	locales.flatMap((locale) =>
+		allBlogs.map((p) => ({
+			locale,
+			slug: p.slug.split("/").map((name) => decodeURI(name)),
+		})),
+	);
 
-export default async function Page(props: { params: Promise<{ slug: string[] }> }) {
+export default async function Page(props: { params: Promise<{ locale: string; slug: string[] }> }) {
 	const params = await props.params;
+	setRequestLocale(params.locale);
 	const slug = decodeURI(params.slug.join("/"));
 	// Filter out drafts in production
 	const sortedCoreContents = allCoreContent(sortPosts(allBlogs));

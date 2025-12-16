@@ -1,15 +1,13 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { slug } from "github-slugger";
-import { formatDate } from "pliny/utils/formatDate";
-import { CoreContent } from "pliny/utils/contentlayer";
-import type { Blog } from "contentlayer/generated";
-import Link from "@/components/Link";
-import Image from "next/image";
 import Tag from "@/components/Tag";
 import siteMetadata from "@/data/siteMetadata";
+import { Link, usePathname } from "@/i18n/routing";
 import tagData from "app/tag-data.json";
+import type { Blog } from "contentlayer/generated";
+import { slug } from "github-slugger";
+import { CoreContent } from "pliny/utils/contentlayer";
+import { formatDate } from "pliny/utils/formatDate";
 
 interface PaginationProps {
 	totalPages: number;
@@ -69,6 +67,7 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
 
 export default function ListLayoutWithTags({ posts, title, initialDisplayPosts = [], pagination }: ListLayoutProps) {
 	const pathname = usePathname();
+	const normalizedPath = pathname.replace(/^\/(en|vi)(?=\/|$)/, "");
 	const tagCounts = tagData as Record<string, number>;
 	const tagKeys = Object.keys(tagCounts);
 	const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a]);
@@ -86,7 +85,7 @@ export default function ListLayoutWithTags({ posts, title, initialDisplayPosts =
 				<div className="flex sm:space-x-24">
 					<div className="hidden h-full max-h-screen max-w-[280px] min-w-[280px] flex-wrap overflow-auto rounded-sm bg-gray-50 pt-5 shadow-md sm:flex dark:bg-gray-900/70 dark:shadow-gray-800/40">
 						<div className="px-6 py-4">
-							{pathname.startsWith("/blog") ? (
+							{normalizedPath.startsWith("/blog") ? (
 								<h3 className="text-primary-500 font-bold uppercase">All Posts</h3>
 							) : (
 								<Link
@@ -100,7 +99,7 @@ export default function ListLayoutWithTags({ posts, title, initialDisplayPosts =
 								{sortedTags.map((t) => {
 									return (
 										<li key={t} className="my-3">
-											{decodeURI(pathname.split("/tags/")[1]) === slug(t) ? (
+											{decodeURI(normalizedPath.split("/tags/")[1] ?? "") === slug(t) ? (
 												<h3 className="text-primary-500 inline px-3 py-2 text-sm font-bold uppercase">
 													{`${t} (${tagCounts[t]})`}
 												</h3>
@@ -150,7 +149,9 @@ export default function ListLayoutWithTags({ posts, title, initialDisplayPosts =
 																Pinned
 															</span>
 														)}
-														{tags?.map((tag) => <Tag key={tag} text={tag} />)}
+														{tags?.map((tag) => (
+															<Tag key={tag} text={tag} />
+														))}
 													</div>
 												</div>
 												<div className="prose max-w-none text-gray-500 dark:text-gray-400">
