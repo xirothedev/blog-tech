@@ -6,31 +6,32 @@ tags: ["nextjs", "deployment", "vps", "docker", "nginx", "self-hosting"]
 draft: false
 summary: "Hướng dẫn chi tiết cách deploy ứng dụng Next.js lên VPS sử dụng Docker, PostgreSQL và Nginx. Bao gồm các bước từ setup server đến production deployment."
 authors: ["default"]
+locale: "vi"
 images: ["/static/images/vps/deploy-nextjs-vps/thumbnail.png"]
 ---
 
 Deploy Next.js lên VPS là một kỹ năng quan trọng cho các developer muốn tự quản lý infrastructure của mình. So với các platform như Vercel, việc self-host trên VPS cho bạn kiểm soát hoàn toàn, tùy chỉnh cao và chi phí có thể thấp hơn. Bài viết này sẽ hướng dẫn bạn deploy Next.js app lên [VPS](/blog/vps) sử dụng Docker, PostgreSQL và Nginx.
 
-<TOCInline 
-  toc={[
-    { value: "Tổng quan", url: "#tổng-quan", depth: 2 },
-    { value: "Prerequisites", url: "#prerequisites", depth: 2 },
-    { value: "Kiến trúc Deployment", url: "#kiến-trúc-deployment", depth: 2 },
-    { value: "Setup Server", url: "#setup-server", depth: 2 },
-    { value: "Cài đặt Docker và Docker Compose", url: "#cài-đặt-docker-và-docker-compose", depth: 2 },
-    { value: "Setup Nginx", url: "#setup-nginx", depth: 2 },
-    { value: "Cấu hình Next.js Application", url: "#cấu-hình-nextjs-application", depth: 2 },
-    { value: "Cấu hình PostgreSQL", url: "#cấu-hình-postgresql", depth: 2 },
-    { value: "Deploy Script", url: "#deploy-script", depth: 2 },
-    { value: "SSL Certificate với Let's Encrypt", url: "#ssl-certificate-với-lets-encrypt", depth: 2 },
-    { value: "Rate Limiting và Security", url: "#rate-limiting-và-security", depth: 2 },
-    { value: "Update và Maintenance", url: "#update-và-maintenance", depth: 2 },
-    { value: "Troubleshooting", url: "#troubleshooting", depth: 2 },
-    { value: "Best Practices", url: "#best-practices", depth: 2 },
-    { value: "Kết luận", url: "#kết-luận", depth: 2 },
-  ]}
-  asDisclosure={true}
-  collapse={false}
+<TOCInline
+	toc={[
+		{ value: "Tổng quan", url: "#tổng-quan", depth: 2 },
+		{ value: "Prerequisites", url: "#prerequisites", depth: 2 },
+		{ value: "Kiến trúc Deployment", url: "#kiến-trúc-deployment", depth: 2 },
+		{ value: "Setup Server", url: "#setup-server", depth: 2 },
+		{ value: "Cài đặt Docker và Docker Compose", url: "#cài-đặt-docker-và-docker-compose", depth: 2 },
+		{ value: "Setup Nginx", url: "#setup-nginx", depth: 2 },
+		{ value: "Cấu hình Next.js Application", url: "#cấu-hình-nextjs-application", depth: 2 },
+		{ value: "Cấu hình PostgreSQL", url: "#cấu-hình-postgresql", depth: 2 },
+		{ value: "Deploy Script", url: "#deploy-script", depth: 2 },
+		{ value: "SSL Certificate với Let's Encrypt", url: "#ssl-certificate-với-lets-encrypt", depth: 2 },
+		{ value: "Rate Limiting và Security", url: "#rate-limiting-và-security", depth: 2 },
+		{ value: "Update và Maintenance", url: "#update-và-maintenance", depth: 2 },
+		{ value: "Troubleshooting", url: "#troubleshooting", depth: 2 },
+		{ value: "Best Practices", url: "#best-practices", depth: 2 },
+		{ value: "Kết luận", url: "#kết-luận", depth: 2 },
+	]}
+	asDisclosure={true}
+	collapse={false}
 />
 
 ## Tổng quan
@@ -39,18 +40,19 @@ Hướng dẫn này dựa trên [next-self-host repository](https://github.com/l
 
 ### Stack công nghệ:
 
-| Component | Technology | Mục đích |
-|-----------|------------|----------|
-| **Application** | Next.js | React framework với SSR/SSG |
-| **Database** | PostgreSQL | Relational database |
-| **Containerization** | Docker & Docker Compose | Isolate và quản lý containers |
-| **Web Server** | Nginx | Reverse proxy, SSL termination, static files |
-| **SSL** | Let's Encrypt | HTTPS encryption |
-| **OS** | Ubuntu Linux | Server operating system |
+| Component            | Technology              | Mục đích                                     |
+| -------------------- | ----------------------- | -------------------------------------------- |
+| **Application**      | Next.js                 | React framework với SSR/SSG                  |
+| **Database**         | PostgreSQL              | Relational database                          |
+| **Containerization** | Docker & Docker Compose | Isolate và quản lý containers                |
+| **Web Server**       | Nginx                   | Reverse proxy, SSL termination, static files |
+| **SSL**              | Let's Encrypt           | HTTPS encryption                             |
+| **OS**               | Ubuntu Linux            | Server operating system                      |
 
 ### Tại sao Self-hosting?
 
 **Ưu điểm:**
+
 - ✅ Kiểm soát hoàn toàn infrastructure
 - ✅ Chi phí có thể thấp hơn (không phụ thuộc vào usage-based pricing)
 - ✅ Tùy chỉnh cao (cài đặt bất kỳ phần mềm nào)
@@ -58,6 +60,7 @@ Hướng dẫn này dựa trên [next-self-host repository](https://github.com/l
 - ✅ Không bị giới hạn bởi platform rules
 
 **Nhược điểm:**
+
 - ❌ Cần quản lý và maintain server
 - ❌ Trách nhiệm về security và updates
 - ❌ Cần kiến thức về DevOps
@@ -70,18 +73,21 @@ Trước khi bắt đầu, bạn cần chuẩn bị:
 ### 1. **Domain Name**
 
 Mua một domain name và chuẩn bị cấu hình DNS:
+
 - Tạo A record trỏ đến IP của VPS
 - Thời gian propagate: thường 5-30 phút, có thể đến 48 giờ
 
 ### 2. **VPS Server**
 
 Yêu cầu tối thiểu cho Next.js app:
+
 - **RAM**: 2GB+ (khuyến nghị 4GB+)
 - **CPU**: 2 cores+ (khuyến nghị 4 cores)
 - **Storage**: 20GB+ (khuyến nghị 40GB+)
 - **OS**: Ubuntu 20.04 LTS hoặc mới hơn
 
 **Nơi mua VPS:**
+
 - DigitalOcean (Droplets)
 - AWS EC2
 - Azure VMs
@@ -97,7 +103,12 @@ Yêu cầu tối thiểu cho Next.js app:
 
 ## Kiến trúc Deployment
 
-<Image width={1000} height={600} src="/static/images/vps/deploy-nextjs-vps/architecture.svg" alt="Kiến trúc Deployment" />
+<Image
+	width={1000}
+	height={600}
+	src="/static/images/vps/deploy-nextjs-vps/architecture.svg"
+	alt="Kiến trúc Deployment"
+/>
 
 ### Luồng request:
 
@@ -245,6 +256,7 @@ sudo systemctl enable nginx
 ```
 
 Kiểm tra Nginx hoạt động:
+
 - Truy cập `http://your_server_ip` trong browser
 - Hoặc dùng curl: `curl http://localhost`
 
@@ -254,17 +266,18 @@ Bạn sẽ thấy Nginx welcome page nếu cài đặt thành công.
 
 Các lệnh quản lý Nginx thường dùng:
 
-| Lệnh | Mô tả |
-|------|-------|
-| `sudo systemctl stop nginx` | Dừng Nginx |
-| `sudo systemctl start nginx` | Khởi động Nginx |
-| `sudo systemctl restart nginx` | Khởi động lại Nginx |
-| `sudo systemctl reload nginx` | Reload config không dừng service |
-| `sudo systemctl status nginx` | Kiểm tra trạng thái |
-| `sudo systemctl disable nginx` | Tắt auto-start |
-| `sudo systemctl enable nginx` | Bật auto-start |
+| Lệnh                           | Mô tả                            |
+| ------------------------------ | -------------------------------- |
+| `sudo systemctl stop nginx`    | Dừng Nginx                       |
+| `sudo systemctl start nginx`   | Khởi động Nginx                  |
+| `sudo systemctl restart nginx` | Khởi động lại Nginx              |
+| `sudo systemctl reload nginx`  | Reload config không dừng service |
+| `sudo systemctl status nginx`  | Kiểm tra trạng thái              |
+| `sudo systemctl disable nginx` | Tắt auto-start                   |
+| `sudo systemctl enable nginx`  | Bật auto-start                   |
 
 **Reload vs Restart:**
+
 - `reload`: Load config mới mà không drop connections (khuyên dùng cho production)
 - `restart`: Dừng và start lại service (có thể drop connections)
 
@@ -283,13 +296,13 @@ Nội dung file config cơ bản cho Next.js:
 server {
     listen 80;
     listen [::]:80;
-    
+
     server_name your-domain.com www.your-domain.com;
-    
+
     # Logging
     access_log /var/log/nginx/your-domain.access.log;
     error_log /var/log/nginx/your-domain.error.log;
-    
+
     location / {
         proxy_pass http://localhost:3000;
         proxy_http_version 1.1;
@@ -324,15 +337,15 @@ sudo rm /etc/nginx/sites-enabled/default
 
 ### Cấu trúc file và thư mục Nginx quan trọng
 
-| File/Directory | Mô tả |
-|----------------|-------|
-| `/etc/nginx/nginx.conf` | File config chính của Nginx |
+| File/Directory                | Mô tả                                   |
+| ----------------------------- | --------------------------------------- |
+| `/etc/nginx/nginx.conf`       | File config chính của Nginx             |
 | `/etc/nginx/sites-available/` | Chứa server block configs (chưa active) |
-| `/etc/nginx/sites-enabled/` | Symbolic links đến active server blocks |
-| `/var/www/html/` | Default web root directory |
-| `/var/log/nginx/access.log` | Access logs |
-| `/var/log/nginx/error.log` | Error logs |
-| `/etc/nginx/snippets/` | Reusable config snippets |
+| `/etc/nginx/sites-enabled/`   | Symbolic links đến active server blocks |
+| `/var/www/html/`              | Default web root directory              |
+| `/var/log/nginx/access.log`   | Access logs                             |
+| `/var/log/nginx/error.log`    | Error logs                              |
+| `/etc/nginx/snippets/`        | Reusable config snippets                |
 
 ### Kiểm tra cấu hình
 
@@ -412,49 +425,49 @@ CMD ["bun", "run", "server.js"]
 
 ```yaml
 services:
-  web:
-    build: .
-    ports:
-      - '3000:3000'
-    environment:
-      - NODE_ENV=production
-    depends_on:
-      - db
-    networks:
-      - my_network
+    web:
+        build: .
+        ports:
+            - "3000:3000"
+        environment:
+            - NODE_ENV=production
+        depends_on:
+            - db
+        networks:
+            - my_network
 
-  db:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - '5432:5432'
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - my_network
+    db:
+        image: postgres:latest
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        networks:
+            - my_network
 
-  cron:
-    image: alpine/curl
-    command: >
-      sh -c "
-        echo '*/10 * * * * curl -X POST http://web:3000/db/clear' > /etc/crontabs/root && \
-        crond -f -l 2
-      "
-    depends_on:
-      - web
-    networks:
-      - my_network
+    cron:
+        image: alpine/curl
+        command: >
+            sh -c "
+              echo '*/10 * * * * curl -X POST http://web:3000/db/clear' > /etc/crontabs/root && \
+              crond -f -l 2
+            "
+        depends_on:
+            - web
+        networks:
+            - my_network
 
 volumes:
-  postgres_data:
+    postgres_data:
 
 networks:
-  my_network:
-    name: my_network
-    driver: bridge
+    my_network:
+        name: my_network
+        driver: bridge
 ```
 
 ## Cấu hình PostgreSQL
@@ -503,16 +516,16 @@ Deploy script tự động hóa toàn bộ quá trình deployment. Dựa trên [
 
 ### Các bước script thực hiện:
 
-| Bước | Công việc | Chi tiết |
-|------|-----------|----------|
-| **1. Setup Packages** | Cài đặt dependencies | curl, git, Docker, Docker Compose, Nginx |
-| **2. Clone Repository** | Download source code | Clone từ GitHub hoặc từ local |
-| **3. Generate SSL** | Tạo SSL certificate | Sử dụng Certbot (Let's Encrypt) |
-| **4. Build Application** | Build Next.js app | Docker build với Dockerfile |
-| **5. Configure Nginx** | Setup reverse proxy | Cấu hình HTTPS, rate limiting |
-| **6. Setup Database** | Initialize PostgreSQL | Tạo database và tables |
-| **7. Start Services** | Khởi động containers | docker-compose up -d |
-| **8. Setup Cron** | Automated tasks | Các job định kỳ (optional) |
+| Bước                     | Công việc             | Chi tiết                                 |
+| ------------------------ | --------------------- | ---------------------------------------- |
+| **1. Setup Packages**    | Cài đặt dependencies  | curl, git, Docker, Docker Compose, Nginx |
+| **2. Clone Repository**  | Download source code  | Clone từ GitHub hoặc từ local            |
+| **3. Generate SSL**      | Tạo SSL certificate   | Sử dụng Certbot (Let's Encrypt)          |
+| **4. Build Application** | Build Next.js app     | Docker build với Dockerfile              |
+| **5. Configure Nginx**   | Setup reverse proxy   | Cấu hình HTTPS, rate limiting            |
+| **6. Setup Database**    | Initialize PostgreSQL | Tạo database và tables                   |
+| **7. Start Services**    | Khởi động containers  | docker-compose up -d                     |
+| **8. Setup Cron**        | Automated tasks       | Các job định kỳ (optional)               |
 
 ### Sử dụng Deploy Script
 
@@ -612,7 +625,7 @@ Cấu hình rate limiting trong Nginx để bảo vệ server:
 # /etc/nginx/nginx.conf
 http {
     limit_req_zone $binary_remote_addr zone=api_limit:10m rate=10r/s;
-    
+
     server {
         location /api {
             limit_req zone=api_limit burst=20 nodelay;
@@ -631,13 +644,13 @@ server {
     # SSL configuration
     ssl_certificate /etc/letsencrypt/live/your-domain.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/your-domain.com/privkey.pem;
-    
+
     # Security headers
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-XSS-Protection "1; mode=block" always;
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-    
+
     # Proxy settings
     location / {
         proxy_pass http://localhost:3000;
@@ -703,26 +716,26 @@ echo "Update completed!"
 
 ### Maintenance Commands
 
-| Mục đích | Command | Mô tả |
-|----------|---------|-------|
-| **Check containers** | `docker-compose ps` | Xem trạng thái containers |
-| **View logs** | `docker-compose logs web` | Xem logs của Next.js app |
-| **View DB logs** | `docker-compose logs db` | Xem logs của PostgreSQL |
-| **Restart services** | `docker-compose restart` | Khởi động lại tất cả services |
-| **Stop services** | `docker-compose down` | Dừng và xóa containers |
-| **Start services** | `docker-compose up -d` | Khởi động containers trong background |
-| **Restart Nginx** | `sudo systemctl restart nginx` | Khởi động lại Nginx |
-| **Enter Next.js container** | `docker exec -it myapp-web-1 sh` | Vào trong container |
-| **Enter DB container** | `docker exec -it myapp-db-1 psql -U user -d db` | Vào PostgreSQL CLI |
+| Mục đích                    | Command                                         | Mô tả                                 |
+| --------------------------- | ----------------------------------------------- | ------------------------------------- |
+| **Check containers**        | `docker-compose ps`                             | Xem trạng thái containers             |
+| **View logs**               | `docker-compose logs web`                       | Xem logs của Next.js app              |
+| **View DB logs**            | `docker-compose logs db`                        | Xem logs của PostgreSQL               |
+| **Restart services**        | `docker-compose restart`                        | Khởi động lại tất cả services         |
+| **Stop services**           | `docker-compose down`                           | Dừng và xóa containers                |
+| **Start services**          | `docker-compose up -d`                          | Khởi động containers trong background |
+| **Restart Nginx**           | `sudo systemctl restart nginx`                  | Khởi động lại Nginx                   |
+| **Enter Next.js container** | `docker exec -it myapp-web-1 sh`                | Vào trong container                   |
+| **Enter DB container**      | `docker exec -it myapp-db-1 psql -U user -d db` | Vào PostgreSQL CLI                    |
 
 ### Backup Strategy
 
-| Loại Backup | Tần suất | Cách thực hiện |
-|-------------|---------|----------------|
-| **Database Backup** | Daily | `pg_dump` hoặc Docker volume backup |
-| **Application Code** | Per deployment | Git repository |
-| **Environment Variables** | On changes | Secure storage (vault, encrypted file) |
-| **Docker Volumes** | Weekly | Volume backup scripts |
+| Loại Backup               | Tần suất       | Cách thực hiện                         |
+| ------------------------- | -------------- | -------------------------------------- |
+| **Database Backup**       | Daily          | `pg_dump` hoặc Docker volume backup    |
+| **Application Code**      | Per deployment | Git repository                         |
+| **Environment Variables** | On changes     | Secure storage (vault, encrypted file) |
+| **Docker Volumes**        | Weekly         | Volume backup scripts                  |
 
 ### Backup Database
 
@@ -738,15 +751,15 @@ docker exec -i myapp-db-1 psql -U myuser mydatabase < backup_20250101.sql
 
 ### Các vấn đề thường gặp
 
-| Vấn đề | Nguyên nhân có thể | Giải pháp |
-|--------|-------------------|-----------|
-| **Container không start** | Docker service không chạy | `sudo systemctl start docker` |
-| **Port đã được sử dụng** | Port 3000/80/443 đã bị chiếm | `sudo lsof -i :3000` và kill process |
-| **SSL certificate fail** | DNS chưa propagate | Đợi DNS update, kiểm tra `dig your-domain.com` |
-| **Database connection error** | Connection string sai | Kiểm tra DATABASE_URL trong .env |
-| **Nginx 502 Bad Gateway** | Next.js app không chạy | Kiểm tra `docker-compose logs web` |
-| **Build failed** | Dependencies issues | Xóa node_modules và rebuild |
-| **Permission denied** | User không có quyền | `sudo chown -R user:user /opt/nextjs-app` |
+| Vấn đề                        | Nguyên nhân có thể           | Giải pháp                                      |
+| ----------------------------- | ---------------------------- | ---------------------------------------------- |
+| **Container không start**     | Docker service không chạy    | `sudo systemctl start docker`                  |
+| **Port đã được sử dụng**      | Port 3000/80/443 đã bị chiếm | `sudo lsof -i :3000` và kill process           |
+| **SSL certificate fail**      | DNS chưa propagate           | Đợi DNS update, kiểm tra `dig your-domain.com` |
+| **Database connection error** | Connection string sai        | Kiểm tra DATABASE_URL trong .env               |
+| **Nginx 502 Bad Gateway**     | Next.js app không chạy       | Kiểm tra `docker-compose logs web`             |
+| **Build failed**              | Dependencies issues          | Xóa node_modules và rebuild                    |
+| **Permission denied**         | User không có quyền          | `sudo chown -R user:user /opt/nextjs-app`      |
 
 ### Debug Commands
 
@@ -811,58 +824,59 @@ sudo certbot certificates
 
 ### 1. **Environment Variables**
 
-| Biến | Mô tả | Bảo mật |
-|------|-------|---------|
-| `DATABASE_URL` | PostgreSQL connection string | ✅ Không commit vào Git |
-| `NODE_ENV` | Environment (production/development) | ✅ Set trong Docker |
-| `NEXT_PUBLIC_*` | Public environment variables | ⚠️ Sẽ exposed trong client |
-| `API_KEYS` | Third-party API keys | ✅ Không expose public |
+| Biến            | Mô tả                                | Bảo mật                    |
+| --------------- | ------------------------------------ | -------------------------- |
+| `DATABASE_URL`  | PostgreSQL connection string         | ✅ Không commit vào Git    |
+| `NODE_ENV`      | Environment (production/development) | ✅ Set trong Docker        |
+| `NEXT_PUBLIC_*` | Public environment variables         | ⚠️ Sẽ exposed trong client |
+| `API_KEYS`      | Third-party API keys                 | ✅ Không expose public     |
 
 **Security:**
+
 - Sử dụng `.env` file và thêm vào `.gitignore`
 - Không commit sensitive data
 - Sử dụng secrets management (AWS Secrets, Vault)
 
 ### 2. **Docker Best Practices**
 
-| Practice | Lý do | Implementation |
-|----------|-------|----------------|
-| **Multi-stage builds** | Giảm image size | Separate build và runtime stages |
-| **Non-root user** | Security | Run container với non-root user |
-| **.dockerignore** | Faster builds | Exclude node_modules, .git |
-| **Health checks** | Auto-recovery | Healthcheck trong docker-compose |
-| **Resource limits** | Prevent resource exhaustion | Set CPU/memory limits |
+| Practice               | Lý do                       | Implementation                   |
+| ---------------------- | --------------------------- | -------------------------------- |
+| **Multi-stage builds** | Giảm image size             | Separate build và runtime stages |
+| **Non-root user**      | Security                    | Run container với non-root user  |
+| **.dockerignore**      | Faster builds               | Exclude node_modules, .git       |
+| **Health checks**      | Auto-recovery               | Healthcheck trong docker-compose |
+| **Resource limits**    | Prevent resource exhaustion | Set CPU/memory limits            |
 
 ### 3. **Next.js Optimization**
 
-| Feature | Benefit | Configuration |
-|---------|---------|---------------|
-| **Image Optimization** | Reduce bandwidth | Next/Image với image loader |
-| **Static Generation** | Faster pages | `generateStaticParams` |
-| **ISR (Incremental Static Regeneration)** | Fresh content | `revalidate` option |
-| **Caching** | Better performance | Cache headers, Redis |
-| **Middleware** | Request processing | `middleware.ts` |
+| Feature                                   | Benefit            | Configuration               |
+| ----------------------------------------- | ------------------ | --------------------------- |
+| **Image Optimization**                    | Reduce bandwidth   | Next/Image với image loader |
+| **Static Generation**                     | Faster pages       | `generateStaticParams`      |
+| **ISR (Incremental Static Regeneration)** | Fresh content      | `revalidate` option         |
+| **Caching**                               | Better performance | Cache headers, Redis        |
+| **Middleware**                            | Request processing | `middleware.ts`             |
 
 ### 4. **Monitoring**
 
 Setup monitoring để theo dõi:
 
-| Metric | Tool | Purpose |
-|--------|------|---------|
-| **Server Resources** | htop, Prometheus | CPU, RAM, Disk usage |
-| **Application Logs** | Docker logs, ELK | Debug và error tracking |
-| **Uptime** | UptimeRobot, Pingdom | Monitor availability |
-| **Performance** | New Relic, Datadog | APM monitoring |
-| **Errors** | Sentry | Error tracking |
+| Metric               | Tool                 | Purpose                 |
+| -------------------- | -------------------- | ----------------------- |
+| **Server Resources** | htop, Prometheus     | CPU, RAM, Disk usage    |
+| **Application Logs** | Docker logs, ELK     | Debug và error tracking |
+| **Uptime**           | UptimeRobot, Pingdom | Monitor availability    |
+| **Performance**      | New Relic, Datadog   | APM monitoring          |
+| **Errors**           | Sentry               | Error tracking          |
 
 ### 5. **Backup và Disaster Recovery**
 
-| Component | Backup Method | Frequency |
-|-----------|---------------|-----------|
-| **Database** | pg_dump | Daily |
-| **Docker Volumes** | Volume backup | Weekly |
-| **Configuration Files** | Git repository | On changes |
-| **SSL Certificates** | Let's Encrypt auto-renew | Automatic |
+| Component               | Backup Method            | Frequency  |
+| ----------------------- | ------------------------ | ---------- |
+| **Database**            | pg_dump                  | Daily      |
+| **Docker Volumes**      | Volume backup            | Weekly     |
+| **Configuration Files** | Git repository           | On changes |
+| **SSL Certificates**    | Let's Encrypt auto-renew | Automatic  |
 
 ### 6. **Security Checklist**
 
@@ -909,7 +923,7 @@ Deploy Next.js lên VPS là một quá trình phức tạp nhưng mang lại nhi
 > **Bắt đầu với staging**: Trước khi deploy production, hãy test trên staging environment để đảm bảo mọi thứ hoạt động đúng!
 
 > [!NOTE]
+>
 > - [Next.js Self-Host Repository](https://github.com/leerob/next-self-host)
 > - [Next.js Docker Deployment Guide](https://nextjs.org/docs/deployment#docker-image)
 > - [Docker Compose Documentation](https://docs.docker.com/compose/)
-

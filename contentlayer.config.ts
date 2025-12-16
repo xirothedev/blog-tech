@@ -47,7 +47,12 @@ const computedFields: ComputedFields = {
 	readingTime: { type: "json", resolve: (doc) => readingTime(doc.body.raw) },
 	slug: {
 		type: "string",
-		resolve: (doc) => doc._raw.flattenedPath.replace(/^.+?(\/)/, ""),
+		resolve: (doc) => {
+			// Remove locale suffix (.en or .vi) from slug
+			let slugPath = doc._raw.flattenedPath.replace(/^.+?(\/)/, "");
+			slugPath = slugPath.replace(/\.(en|vi)\.mdx$/, ".mdx");
+			return slugPath.replace(/\.mdx$/, "");
+		},
 	},
 	path: {
 		type: "string",
@@ -108,9 +113,26 @@ export const Blog = defineDocumentType(() => ({
 		layout: { type: "string" },
 		bibliography: { type: "string" },
 		canonicalUrl: { type: "string" },
+		// Logical language of the post, used for locale-specific routing
+		locale: { type: "string", default: "vi" },
 	},
 	computedFields: {
 		...computedFields,
+		locale: {
+			type: "string",
+			resolve: (doc) => {
+				// Auto-detect locale from filename: *.en.mdx -> "en", *.vi.mdx -> "vi"
+				const fileName = doc._raw.sourceFilePath;
+				if (fileName.match(/\.en\.mdx$/)) {
+					return "en";
+				}
+				if (fileName.match(/\.vi\.mdx$/)) {
+					return "vi";
+				}
+				// Fallback to frontmatter locale or default "vi"
+				return doc.locale || "vi";
+			},
+		},
 		lastmod: {
 			type: "date",
 			resolve: (doc) => {

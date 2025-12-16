@@ -14,7 +14,11 @@ export default async function Page({ params }: PageProps) {
 	const localeValue = locale as Locale;
 	setRequestLocale(localeValue);
 
-	const sortedPosts = sortPosts(allBlogs).sort((a, b) => {
+	// Lọc blog theo locale, fallback về tất cả nếu chưa có bản dịch
+	const localeBlogs = allBlogs.filter((b) => b.locale === localeValue);
+	const sourceBlogs = localeBlogs.length > 0 ? localeBlogs : allBlogs;
+
+	const sortedPosts = sortPosts(sourceBlogs).sort((a, b) => {
 		const ap = a.pinned ? 1 : 0;
 		const bp = b.pinned ? 1 : 0;
 		if (ap !== bp) return bp - ap;

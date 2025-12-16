@@ -4,7 +4,7 @@ import ListLayout from "@/layouts/ListLayoutWithTags";
 import { allBlogs } from "contentlayer/generated";
 import tagData from "app/tag-data.json";
 import { notFound } from "next/navigation";
-import { locales } from "@/i18n/config";
+import { locales, type Locale } from "@/i18n/config";
 import { setRequestLocale } from "next-intl/server";
 
 const POSTS_PER_PAGE = 10;
@@ -26,12 +26,15 @@ export const generateStaticParams = async () => {
 
 export default async function TagPage(props: { params: Promise<{ locale: string; tag: string; page: string }> }) {
 	const params = await props.params;
-	setRequestLocale(params.locale);
+	const localeValue = params.locale as Locale;
+	setRequestLocale(localeValue);
 	const tag = decodeURI(params.tag);
 	const title = tag[0].toUpperCase() + tag.split(" ").join("-").slice(1);
 	const pageNumber = parseInt(params.page);
+	const localeBlogs = allBlogs.filter((post) => post.locale === localeValue);
+	const sourceBlogs = localeBlogs.length > 0 ? localeBlogs : allBlogs;
 	const filteredPosts = allCoreContent(
-		sortPosts(allBlogs.filter((post) => post.tags && post.tags.map((t) => slug(t)).includes(tag))),
+		sortPosts(sourceBlogs.filter((post) => post.tags && post.tags.map((t) => slug(t)).includes(tag))),
 	);
 	const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
 

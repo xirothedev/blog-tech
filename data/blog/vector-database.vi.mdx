@@ -6,45 +6,57 @@ tags: ["vector-database", "database", "ai", "machine-learning", "embedding"]
 draft: false
 summary: "Khám phá Vector Database - công nghệ đang cách mạng hóa cách chúng ta tìm kiếm và làm việc với dữ liệu trong kỷ nguyên AI. Tìm hiểu cách hoạt động, lý do cần thiết và các ứng dụng thực tế."
 authors: ["default"]
+locale: "vi"
 images: ["/static/images/vector-database/thumbnail.png"]
 ---
 
 Vector Database (Cơ sở dữ liệu Vector) là một trong những công nghệ quan trọng nhất trong kỷ nguyên AI hiện tại. Từ ChatGPT đến các hệ thống recommendation của Netflix, vector database đang là nền tảng cho nhiều ứng dụng AI hiện đại. Trong bài viết này, chúng ta sẽ cùng tìm hiểu về vector database một cách chi tiết và dễ hiểu.
 
-<TOCInline 
-  toc={[
-    { value: "Vector Database là gì?", url: "#vector-database-là-gì", depth: 2 },
-    { value: "Điểm khác biệt cốt lõi", url: "#điểm-khác-biệt-cốt-lõi", depth: 3 },
-    { value: "Embedding là gì?", url: "#embedding-là-gì", depth: 3 },
-    { value: "Vector Database hoạt động như thế nào?", url: "#vector-database-hoạt-động-như-thế-nào", depth: 2 },
-    { value: "Vì sao cần Vector Database?", url: "#vì-sao-cần-vector-database", depth: 2 },
-    { value: "So sánh với Database Truyền thống", url: "#so-sánh-với-database-truyền-thống", depth: 3 },
-    { value: "Semantic Search - Tìm kiếm theo ngữ nghĩa", url: "#1-semantic-search---tìm-kiếm-theo-ngữ-nghĩa", depth: 3 },
-    { value: "Performance cho AI/ML", url: "#2-performance-cho-aiml", depth: 3 },
-    { value: "Hỗ trợ Multi-modal", url: "#3-hỗ-trợ-multi-modal", depth: 3 },
-    { value: "Nền tảng cho AI Applications", url: "#4-nền-tảng-cho-ai-applications", depth: 3 },
-    { value: "Vector Database được sử dụng ở đâu?", url: "#vector-database-được-sử-dụng-ở-đâu", depth: 2 },
-    { value: "Các Vector Database phổ biến", url: "#các-vector-database-phổ-biến", depth: 2 },
-    { value: "Kết luận", url: "#kết-luận", depth: 2 },
-  ]}
-  asDisclosure={true}
-  collapse={false}
+<TOCInline
+	toc={[
+		{ value: "Vector Database là gì?", url: "#vector-database-là-gì", depth: 2 },
+		{ value: "Điểm khác biệt cốt lõi", url: "#điểm-khác-biệt-cốt-lõi", depth: 3 },
+		{ value: "Embedding là gì?", url: "#embedding-là-gì", depth: 3 },
+		{ value: "Vector Database hoạt động như thế nào?", url: "#vector-database-hoạt-động-như-thế-nào", depth: 2 },
+		{ value: "Vì sao cần Vector Database?", url: "#vì-sao-cần-vector-database", depth: 2 },
+		{ value: "So sánh với Database Truyền thống", url: "#so-sánh-với-database-truyền-thống", depth: 3 },
+		{
+			value: "Semantic Search - Tìm kiếm theo ngữ nghĩa",
+			url: "#1-semantic-search---tìm-kiếm-theo-ngữ-nghĩa",
+			depth: 3,
+		},
+		{ value: "Performance cho AI/ML", url: "#2-performance-cho-aiml", depth: 3 },
+		{ value: "Hỗ trợ Multi-modal", url: "#3-hỗ-trợ-multi-modal", depth: 3 },
+		{ value: "Nền tảng cho AI Applications", url: "#4-nền-tảng-cho-ai-applications", depth: 3 },
+		{ value: "Vector Database được sử dụng ở đâu?", url: "#vector-database-được-sử-dụng-ở-đâu", depth: 2 },
+		{ value: "Các Vector Database phổ biến", url: "#các-vector-database-phổ-biến", depth: 2 },
+		{ value: "Kết luận", url: "#kết-luận", depth: 2 },
+	]}
+	asDisclosure={true}
+	collapse={false}
 />
 
 ## Vector Database là gì?
 
-<Image width={800} height={320} src="/static/images/vector-database/what-is-vector-database.svg" alt="Vector Database là gì" />
+<Image
+	width={800}
+	height={320}
+	src="/static/images/vector-database/what-is-vector-database.svg"
+	alt="Vector Database là gì"
+/>
 
 Vector Database (hay còn gọi là Vector Store) là một loại cơ sở dữ liệu chuyên dụng được thiết kế để **lưu trữ, quản lý và tìm kiếm dữ liệu dạng vector** (embeddings). Khác với database truyền thống lưu trữ dữ liệu dạng số, chuỗi hoặc boolean, vector database làm việc với các mảng số nhiều chiều đại diện cho embedding của các đối tượng.
 
 ### Điểm khác biệt cốt lõi
 
 **Database Truyền thống:**
+
 - Lưu trữ: `ID: 1, Name: "Nguyễn Văn A", Age: 25`
 - Tìm kiếm: Exact match - chỉ tìm thấy khi giá trị khớp chính xác
 - Ví dụ: Tìm `name = car` sẽ không tìm thấy `xe hơi` hay `ô tô`
 
 **Vector Database:**
+
 - Lưu trữ: Vector embeddings như `[0.23, -0.45, 0.67, ..., 0.12]` (thường 384-1536 chiều)
 - Tìm kiếm: Similarity search - tìm dựa trên độ tương đồng về mặt ngữ nghĩa
 - Ví dụ: Tìm `xe hơi` có thể trả về `ô tô`, `xe cộ`, `automobile` dựa trên ý nghĩa
@@ -54,12 +66,17 @@ Vector Database (hay còn gọi là Vector Store) là một loại cơ sở dữ
 Embedding là cách biểu diễn dữ liệu phức tạp (văn bản, hình ảnh, âm thanh) thành các vector số trong không gian nhiều chiều. Các đối tượng có ý nghĩa tương đồng sẽ có vector gần nhau trong không gian này.
 
 - **Văn bản**: "Xe hơi" và "Ô tô" → vectors gần nhau
-- **Hình ảnh**: Ảnh mèo và ảnh cat → vectors gần nhau  
+- **Hình ảnh**: Ảnh mèo và ảnh cat → vectors gần nhau
 - **Âm thanh**: Giọng nói cùng người → vectors gần nhau
 
 ## Vector Database hoạt động như thế nào?
 
-<Image width={1000} height={1000} src="/static/images/vector-database/how-it-works.svg" alt="Vector Database hoạt động như thế nào" />
+<Image
+	width={1000}
+	height={1000}
+	src="/static/images/vector-database/how-it-works.svg"
+	alt="Vector Database hoạt động như thế nào"
+/>
 
 Quá trình làm việc với Vector Database gồm 3 bước chính:
 
@@ -72,6 +89,7 @@ Dữ liệu đầu vào (văn bản, hình ảnh, âm thanh) được chuyển �
 - **Âm thanh**: Wav2Vec, Whisper embeddings
 
 **Ví dụ:**
+
 ```
 Input: "Xe hơi màu đỏ"
 ↓ Embedding Model (BERT)
@@ -95,17 +113,19 @@ Khi có query, hệ thống sẽ:
 3. **Trả về Top-K results**: Các vectors có độ tương đồng cao nhất
 
 **Các phương pháp tính similarity:**
+
 - **Cosine Similarity**: Đo góc giữa 2 vectors (phổ biến nhất)
 - **Euclidean Distance**: Khoảng cách Euclid
 - **Dot Product**: Tích vô hướng
 
 **Ví dụ:**
+
 ```
 Query: "Xe ô tô"
 ↓
 Top 3 Results:
 1. "Xe hơi màu đỏ" - Similarity: 0.95
-2. "Ô tô thể thao" - Similarity: 0.87  
+2. "Ô tô thể thao" - Similarity: 0.87
 3. "Xe cộ giao thông" - Similarity: 0.82
 ```
 
@@ -113,37 +133,41 @@ Top 3 Results:
 
 ### So sánh với Database Truyền thống
 
-| Đặc điểm | Database Truyền thống | Vector Database |
-|----------|---------------------|-----------------|
-| **Loại dữ liệu** | Số, chuỗi, boolean | Vectors (embeddings) |
-| **Phương thức tìm kiếm** | Exact match | Similarity search |
-| **Ví dụ Query** | `SELECT * WHERE name = "car"` | Tìm vectors gần nhất với query vector |
-| **Use Cases** | E-commerce, CRM, Financial records | Semantic search, RAG, Recommendation, AI apps |
-| **Hạn chế** | ❌ Không hiểu ngữ nghĩa<br/>❌ Không tìm được `xe hơi` khi search `ô tô` | ✅ Hiểu ngữ nghĩa<br/>✅ Tìm được kết quả liên quan về nghĩa |
+| Đặc điểm                 | Database Truyền thống                                                    | Vector Database                                              |
+| ------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------ |
+| **Loại dữ liệu**         | Số, chuỗi, boolean                                                       | Vectors (embeddings)                                         |
+| **Phương thức tìm kiếm** | Exact match                                                              | Similarity search                                            |
+| **Ví dụ Query**          | `SELECT * WHERE name = "car"`                                            | Tìm vectors gần nhất với query vector                        |
+| **Use Cases**            | E-commerce, CRM, Financial records                                       | Semantic search, RAG, Recommendation, AI apps                |
+| **Hạn chế**              | ❌ Không hiểu ngữ nghĩa<br/>❌ Không tìm được `xe hơi` khi search `ô tô` | ✅ Hiểu ngữ nghĩa<br/>✅ Tìm được kết quả liên quan về nghĩa |
 
 ### 1. **Semantic Search - Tìm kiếm theo ngữ nghĩa**
 
 Database truyền thống không hiểu được ý nghĩa. Nếu bạn tìm `car`, nó sẽ không tìm thấy `xe hơi` hay `automobile`. Vector database giải quyết vấn đề này bằng cách tìm kiếm dựa trên ý nghĩa.
 
 **Ví dụ thực tế:**
+
 - Tìm `thời tiết hôm nay` → Tìm được `khí hậu hiện tại`, `nhiệt độ ngày nay`
 - Tìm `ảnh mèo đen` → Tìm được tất cả ảnh mèo đen dù có caption khác nhau
 
 ### 2. **Performance cho AI/ML**
 
 Vector database được tối ưu hóa đặc biệt cho similarity search:
+
 - Có thể tìm kiếm trong **hàng triệu đến hàng tỷ vectors** trong vài milliseconds
 - Database truyền thống sẽ rất chậm khi phải so sánh từng vector với query
 
 ### 3. **Hỗ trợ Multi-modal**
 
 Một vector database có thể lưu trữ embeddings từ nhiều loại dữ liệu khác nhau:
+
 - Văn bản, hình ảnh, âm thanh trong cùng một không gian vector
 - Tìm kiếm cross-modal: Tìm ảnh bằng text query, tìm text bằng image query
 
 ### 4. **Nền tảng cho AI Applications**
 
 Nhiều ứng dụng AI hiện đại phụ thuộc vào vector database:
+
 - **RAG (Retrieval-Augmented Generation)**: ChatGPT với knowledge base
 - **Recommendation Systems**: Netflix, Amazon, Spotify
 - **Anomaly Detection**: Phát hiện gian lận, bất thường
@@ -156,6 +180,7 @@ Nhiều ứng dụng AI hiện đại phụ thuộc vào vector database:
 ### 1. **🤖 RAG (Retrieval-Augmented Generation)**
 
 RAG cho phép LLM truy cập kiến thức từ tài liệu bên ngoài:
+
 - Chatbots thông minh với knowledge base riêng
 - Hệ thống hỏi đáp dựa trên documents công ty
 - AI assistants có thể trả lời về thông tin mới nhất
@@ -165,6 +190,7 @@ RAG cho phép LLM truy cập kiến thức từ tài liệu bên ngoài:
 ### 2. **🎯 Recommendation Systems**
 
 Gợi ý sản phẩm, nội dung dựa trên similarity:
+
 - **Product recommendations**: Amazon gợi ý sản phẩm tương tự
 - **Content recommendations**: Netflix gợi ý phim, Spotify gợi ý nhạc
 - **User-based filtering**: Tìm users có sở thích tương tự
@@ -172,6 +198,7 @@ Gợi ý sản phẩm, nội dung dựa trên similarity:
 ### 3. **🔍 Semantic Search**
 
 Tìm kiếm dựa trên ý nghĩa thay vì từ khóa:
+
 - **Enterprise search**: Tìm tài liệu nội bộ công ty
 - **E-commerce search**: Tìm sản phẩm bằng mô tả tự nhiên
 - **Document retrieval**: Tìm văn bản liên quan về mặt ngữ nghĩa
@@ -179,6 +206,7 @@ Tìm kiếm dựa trên ý nghĩa thay vì từ khóa:
 ### 4. **🖼️ Image & Video Search**
 
 Tìm kiếm hình ảnh/video dựa trên nội dung:
+
 - **Reverse image search**: Google Images, TinEye
 - **Visual similarity**: Pinterest "More like this"
 - **Content-based retrieval**: Tìm video có cảnh tương tự
@@ -186,6 +214,7 @@ Tìm kiếm hình ảnh/video dựa trên nội dung:
 ### 5. **⚠️ Anomaly Detection**
 
 Phát hiện các pattern bất thường:
+
 - **Fraud detection**: Phát hiện giao dịch gian lận
 - **Security monitoring**: Phát hiện intrusion bất thường
 - **Quality control**: Phát hiện sản phẩm lỗi trong sản xuất
@@ -193,6 +222,7 @@ Phát hiện các pattern bất thường:
 ### 6. **💊 Drug Discovery & Bioinformatics**
 
 Nghiên cứu khoa học với similarity search:
+
 - Tìm protein tương tự
 - Phân tích DNA sequence similarity
 - Molecular similarity search trong phát triển thuốc
@@ -200,31 +230,37 @@ Nghiên cứu khoa học với similarity search:
 ## Các Vector Database phổ biến
 
 ### 1. **Pinecone**
+
 - Cloud-native, fully managed
 - Dễ sử dụng, có free tier
 - Tốt cho prototyping và production
 
 ### 2. **Weaviate**
+
 - Open-source, self-hosted
 - Hỗ trợ nhiều vectorizers tích hợp
 - GraphQL API
 
 ### 3. **Milvus**
+
 - Open-source, high performance
 - Hỗ trợ distributed deployment
 - Được sử dụng rộng rãi trong production
 
 ### 4. **Qdrant**
+
 - Open-source, written in Rust
 - Fast và memory-efficient
 - Good documentation
 
 ### 5. **Chroma**
+
 - Lightweight, simple API
 - Tốt cho local development
 - Python-first
 
 ### 6. **PGvector (PostgreSQL extension)**
+
 - Extension cho PostgreSQL
 - Tận dụng PostgreSQL ecosystem
 - Phù hợp khi đã có PostgreSQL
@@ -244,5 +280,6 @@ Khi AI và machine learning tiếp tục phát triển, việc hiểu và sử d
 > **Bước tiếp theo**: Thử nghiệm với một vector database như Pinecone hoặc Milvus để hiểu rõ hơn cách chúng hoạt động trong thực tế. Bắt đầu với một project nhỏ như semantic search cho documents của bạn!
 
 > [!NOTE]
+>
 > - [Vector Database - Wikipedia](https://en.wikipedia.org/wiki/Vector_database)
 > - [Embedding - Wikipedia](https://en.wikipedia.org/wiki/Embedding)

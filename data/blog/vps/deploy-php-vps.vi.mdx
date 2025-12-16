@@ -6,31 +6,32 @@ tags: ["php", "deployment", "vps", "docker", "nginx", "self-hosting"]
 draft: false
 summary: "Hướng dẫn chi tiết cách deploy ứng dụng PHP lên VPS sử dụng Docker, MySQL và Nginx. Bao gồm các bước từ setup server đến production deployment."
 authors: ["default"]
+locale: "vi"
 images: ["/static/images/vps/deploy-php-vps/thumbnail.png"]
 ---
 
 Deploy PHP lên VPS là một kỹ năng cần thiết cho các developer muốn tự quản lý infrastructure của mình. So với các shared hosting services, việc self-host trên VPS cho bạn kiểm soát hoàn toàn, tùy chỉnh cao và hiệu năng tốt hơn. Bài viết này sẽ hướng dẫn bạn deploy PHP app lên [VPS](/blog/vps) sử dụng Docker, MySQL và Nginx.
 
-<TOCInline 
-  toc={[
-    { value: "Tổng quan", url: "#tổng-quan", depth: 2 },
-    { value: "Prerequisites", url: "#prerequisites", depth: 2 },
-    { value: "Kiến trúc Deployment", url: "#kiến-trúc-deployment", depth: 2 },
-    { value: "Setup Server", url: "#setup-server", depth: 2 },
-    { value: "Cài đặt Docker và Docker Compose", url: "#cài-đặt-docker-và-docker-compose", depth: 2 },
-    { value: "Setup Nginx", url: "#setup-nginx", depth: 2 },
-    { value: "Cấu hình PHP Application", url: "#cấu-hình-php-application", depth: 2 },
-    { value: "Cấu hình MySQL", url: "#cấu-hình-mysql", depth: 2 },
-    { value: "Deploy Script", url: "#deploy-script", depth: 2 },
-    { value: "SSL Certificate với Let's Encrypt", url: "#ssl-certificate-với-lets-encrypt", depth: 2 },
-    { value: "Rate Limiting và Security", url: "#rate-limiting-và-security", depth: 2 },
-    { value: "Update và Maintenance", url: "#update-và-maintenance", depth: 2 },
-    { value: "Troubleshooting", url: "#troubleshooting", depth: 2 },
-    { value: "Best Practices", url: "#best-practices", depth: 2 },
-    { value: "Kết luận", url: "#kết-luận", depth: 2 },
-  ]}
-  asDisclosure={true}
-  collapse={false}
+<TOCInline
+	toc={[
+		{ value: "Tổng quan", url: "#tổng-quan", depth: 2 },
+		{ value: "Prerequisites", url: "#prerequisites", depth: 2 },
+		{ value: "Kiến trúc Deployment", url: "#kiến-trúc-deployment", depth: 2 },
+		{ value: "Setup Server", url: "#setup-server", depth: 2 },
+		{ value: "Cài đặt Docker và Docker Compose", url: "#cài-đặt-docker-và-docker-compose", depth: 2 },
+		{ value: "Setup Nginx", url: "#setup-nginx", depth: 2 },
+		{ value: "Cấu hình PHP Application", url: "#cấu-hình-php-application", depth: 2 },
+		{ value: "Cấu hình MySQL", url: "#cấu-hình-mysql", depth: 2 },
+		{ value: "Deploy Script", url: "#deploy-script", depth: 2 },
+		{ value: "SSL Certificate với Let's Encrypt", url: "#ssl-certificate-với-lets-encrypt", depth: 2 },
+		{ value: "Rate Limiting và Security", url: "#rate-limiting-và-security", depth: 2 },
+		{ value: "Update và Maintenance", url: "#update-và-maintenance", depth: 2 },
+		{ value: "Troubleshooting", url: "#troubleshooting", depth: 2 },
+		{ value: "Best Practices", url: "#best-practices", depth: 2 },
+		{ value: "Kết luận", url: "#kết-luận", depth: 2 },
+	]}
+	asDisclosure={true}
+	collapse={false}
 />
 
 ## Tổng quan
@@ -41,19 +42,20 @@ Hướng dẫn này sẽ hướng dẫn bạn deploy ứng dụng PHP đơn gi�
 
 ### Stack công nghệ:
 
-| Component | Technology | Mục đích |
-|-----------|------------|----------|
-| **Application** | PHP 8.2 | Server-side scripting language |
-| **Database** | MySQL 8.0 | Relational database |
-| **Containerization** | Docker & Docker Compose | Isolate và quản lý containers |
-| **Web Server** | Nginx | Reverse proxy, SSL termination, PHP-FPM handler |
-| **PHP Runtime** | PHP-FPM | FastCGI Process Manager cho PHP |
-| **SSL** | Let's Encrypt | HTTPS encryption |
-| **OS** | Ubuntu Linux | Server operating system |
+| Component            | Technology              | Mục đích                                        |
+| -------------------- | ----------------------- | ----------------------------------------------- |
+| **Application**      | PHP 8.2                 | Server-side scripting language                  |
+| **Database**         | MySQL 8.0               | Relational database                             |
+| **Containerization** | Docker & Docker Compose | Isolate và quản lý containers                   |
+| **Web Server**       | Nginx                   | Reverse proxy, SSL termination, PHP-FPM handler |
+| **PHP Runtime**      | PHP-FPM                 | FastCGI Process Manager cho PHP                 |
+| **SSL**              | Let's Encrypt           | HTTPS encryption                                |
+| **OS**               | Ubuntu Linux            | Server operating system                         |
 
 ### Tại sao Self-hosting PHP?
 
 **Ưu điểm:**
+
 - ✅ Kiểm soát hoàn toàn infrastructure
 - ✅ Chi phí có thể thấp hơn managed hosting
 - ✅ Tùy chỉnh PHP extensions và config
@@ -61,6 +63,7 @@ Hướng dẫn này sẽ hướng dẫn bạn deploy ứng dụng PHP đơn gi�
 - ✅ Không bị giới hạn bởi hosting provider rules
 
 **Nhược điểm:**
+
 - ❌ Cần quản lý và maintain server
 - ❌ Trách nhiệm về security và updates
 - ❌ Cần kiến thức về DevOps
@@ -73,18 +76,21 @@ Trước khi bắt đầu, bạn cần chuẩn bị:
 ### 1. **Domain Name**
 
 Mua một domain name và chuẩn bị cấu hình DNS:
+
 - Tạo A record trỏ đến IP của VPS
 - Thời gian propagate: thường 5-30 phút, có thể đến 48 giờ
 
 ### 2. **VPS Server**
 
 Yêu cầu tối thiểu cho PHP app:
+
 - **RAM**: 1GB+ (khuyến nghị 2GB+)
 - **CPU**: 1 core+ (khuyến nghị 2 cores)
 - **Storage**: 20GB+ (khuyến nghị 40GB+)
 - **OS**: Ubuntu 20.04 LTS hoặc mới hơn
 
 **Nơi mua VPS:**
+
 - DigitalOcean (Droplets)
 - AWS EC2
 - Azure VMs
@@ -100,7 +106,12 @@ Yêu cầu tối thiểu cho PHP app:
 
 ## Kiến trúc Deployment
 
-<Image width={1000} height={600} src="/static/images/vps/deploy-php-vps/architecture.svg" alt="Kiến trúc Deployment PHP" />
+<Image
+	width={1000}
+	height={600}
+	src="/static/images/vps/deploy-php-vps/architecture.svg"
+	alt="Kiến trúc Deployment PHP"
+/>
 
 ### Luồng request:
 
@@ -251,27 +262,27 @@ Nội dung file config cho PHP với PHP-FPM:
 server {
     listen 80;
     listen [::]:80;
-    
+
     server_name your-domain.com www.your-domain.com;
-    
+
     root /var/www/html;
     index index.php index.html index.htm;
-    
+
     # Logging
     access_log /var/log/nginx/your-domain.access.log;
     error_log /var/log/nginx/your-domain.error.log;
-    
+
     location / {
         try_files $uri $uri/ =404;
     }
-    
+
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
         fastcgi_pass php-fpm:9000;  # PHP-FPM container
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         include fastcgi_params;
     }
-    
+
     location ~ /\.ht {
         deny all;
     }
@@ -340,56 +351,56 @@ CMD ["php-fpm"]
 
 ```yaml
 services:
-  nginx:
-    image: nginx:alpine
-    ports:
-      - '80:80'
-      - '443:443'
-    volumes:
-      - ./src:/var/www/html:ro
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-    depends_on:
-      - php-fpm
-    networks:
-      - app_network
+    nginx:
+        image: nginx:alpine
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./src:/var/www/html:ro
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+        depends_on:
+            - php-fpm
+        networks:
+            - app_network
 
-  php-fpm:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - ./src:/var/www/html
-      - ./public:/var/www/html/public
-    environment:
-      - DB_HOST=mysql
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-    depends_on:
-      - mysql
-    networks:
-      - app_network
+    php-fpm:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - ./src:/var/www/html
+            - ./public:/var/www/html/public
+        environment:
+            - DB_HOST=mysql
+            - DB_NAME=${DB_NAME}
+            - DB_USER=${DB_USER}
+            - DB_PASSWORD=${DB_PASSWORD}
+        depends_on:
+            - mysql
+        networks:
+            - app_network
 
-  mysql:
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - mysql_data:/var/lib/mysql
-    ports:
-      - '3306:3306'
-    networks:
-      - app_network
+    mysql:
+        image: mysql:8.0
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${DB_NAME}
+            MYSQL_USER: ${DB_USER}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        volumes:
+            - mysql_data:/var/lib/mysql
+        ports:
+            - "3306:3306"
+        networks:
+            - app_network
 
 volumes:
-  mysql_data:
+    mysql_data:
 
 networks:
-  app_network:
-    driver: bridge
+    app_network:
+        driver: bridge
 ```
 
 ### 4. **Ví dụ PHP Application (index.php)**
@@ -456,7 +467,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
     <div class="container">
         <h1>🚀 PHP Application trên VPS</h1>
-        
+
         <div class="info">
             <strong>Server Info:</strong><br>
             PHP Version: <?php echo phpversion(); ?><br>
@@ -465,7 +476,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <h2>Database Connection: ✅ Connected</h2>
-        
+
         <table>
             <thead>
                 <tr>
@@ -547,16 +558,16 @@ Deploy script tự động hóa toàn bộ quá trình deployment:
 
 ### Các bước script thực hiện:
 
-| Bước | Công việc | Chi tiết |
-|------|-----------|----------|
-| **1. Setup Packages** | Cài đặt dependencies | curl, git, Docker, Docker Compose, Nginx |
-| **2. Clone Repository** | Download source code | Clone từ Git hoặc copy local files |
-| **3. Generate SSL** | Tạo SSL certificate | Sử dụng Certbot (Let's Encrypt) |
-| **4. Build Application** | Build PHP-FPM container | Docker build với Dockerfile |
-| **5. Configure Nginx** | Setup reverse proxy | Cấu hình HTTPS, PHP-FPM integration |
-| **6. Setup Database** | Initialize MySQL | Tạo database và tables |
-| **7. Start Services** | Khởi động containers | docker-compose up -d |
-| **8. Setup Cron** | Automated tasks | SSL renewal, backups |
+| Bước                     | Công việc               | Chi tiết                                 |
+| ------------------------ | ----------------------- | ---------------------------------------- |
+| **1. Setup Packages**    | Cài đặt dependencies    | curl, git, Docker, Docker Compose, Nginx |
+| **2. Clone Repository**  | Download source code    | Clone từ Git hoặc copy local files       |
+| **3. Generate SSL**      | Tạo SSL certificate     | Sử dụng Certbot (Let's Encrypt)          |
+| **4. Build Application** | Build PHP-FPM container | Docker build với Dockerfile              |
+| **5. Configure Nginx**   | Setup reverse proxy     | Cấu hình HTTPS, PHP-FPM integration      |
+| **6. Setup Database**    | Initialize MySQL        | Tạo database và tables                   |
+| **7. Start Services**    | Khởi động containers    | docker-compose up -d                     |
+| **8. Setup Cron**        | Automated tasks         | SSL renewal, backups                     |
 
 ### Sử dụng Deploy Script
 
@@ -659,7 +670,7 @@ sudo systemctl status certbot.timer
 # /etc/nginx/nginx.conf
 http {
     limit_req_zone $binary_remote_addr zone=api_limit:10m rate=10r/s;
-    
+
     server {
         location / {
             limit_req zone=api_limit burst=20 nodelay;
@@ -678,7 +689,7 @@ server {
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-XSS-Protection "1; mode=block" always;
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-    
+
     # Hide PHP version
     fastcgi_hide_header X-Powered-By;
 }
@@ -704,26 +715,26 @@ log_errors = On
 
 ### Maintenance Commands
 
-| Mục đích | Command | Mô tả |
-|----------|---------|-------|
-| **Check containers** | `docker-compose ps` | Xem trạng thái containers |
-| **View PHP logs** | `docker-compose logs php-fpm` | Xem logs của PHP-FPM |
-| **View Nginx logs** | `docker-compose logs nginx` | Xem logs của Nginx |
-| **View MySQL logs** | `docker-compose logs mysql` | Xem logs của MySQL |
-| **Restart services** | `docker-compose restart` | Khởi động lại tất cả services |
-| **Stop services** | `docker-compose down` | Dừng và xóa containers |
-| **Start services** | `docker-compose up -d` | Khởi động containers trong background |
-| **Enter PHP container** | `docker exec -it php-fpm-1 sh` | Vào trong PHP container |
-| **Enter MySQL container** | `docker exec -it mysql-1 mysql -u root -p` | Vào MySQL CLI |
+| Mục đích                  | Command                                    | Mô tả                                 |
+| ------------------------- | ------------------------------------------ | ------------------------------------- |
+| **Check containers**      | `docker-compose ps`                        | Xem trạng thái containers             |
+| **View PHP logs**         | `docker-compose logs php-fpm`              | Xem logs của PHP-FPM                  |
+| **View Nginx logs**       | `docker-compose logs nginx`                | Xem logs của Nginx                    |
+| **View MySQL logs**       | `docker-compose logs mysql`                | Xem logs của MySQL                    |
+| **Restart services**      | `docker-compose restart`                   | Khởi động lại tất cả services         |
+| **Stop services**         | `docker-compose down`                      | Dừng và xóa containers                |
+| **Start services**        | `docker-compose up -d`                     | Khởi động containers trong background |
+| **Enter PHP container**   | `docker exec -it php-fpm-1 sh`             | Vào trong PHP container               |
+| **Enter MySQL container** | `docker exec -it mysql-1 mysql -u root -p` | Vào MySQL CLI                         |
 
 ### Backup Strategy
 
-| Loại Backup | Tần suất | Cách thực hiện |
-|-------------|---------|----------------|
-| **Database Backup** | Daily | `mysqldump` hoặc Docker volume backup |
-| **Application Code** | Per deployment | Git repository |
-| **Environment Variables** | On changes | Secure storage |
-| **Docker Volumes** | Weekly | Volume backup scripts |
+| Loại Backup               | Tần suất       | Cách thực hiện                        |
+| ------------------------- | -------------- | ------------------------------------- |
+| **Database Backup**       | Daily          | `mysqldump` hoặc Docker volume backup |
+| **Application Code**      | Per deployment | Git repository                        |
+| **Environment Variables** | On changes     | Secure storage                        |
+| **Docker Volumes**        | Weekly         | Volume backup scripts                 |
 
 ### Backup Database
 
@@ -739,13 +750,13 @@ docker exec -i php-simple-app-mysql-1 mysql -u myuser -pmypassword myapp_db < ba
 
 ### Các vấn đề thường gặp
 
-| Vấn đề | Nguyên nhân có thể | Giải pháp |
-|--------|-------------------|-----------|
-| **502 Bad Gateway** | PHP-FPM không chạy | Kiểm tra `docker-compose ps` và logs |
-| **Database connection error** | Connection string sai | Kiểm tra DB credentials trong .env |
-| **Nginx 404** | File paths không đúng | Kiểm tra root và index settings |
-| **PHP errors không hiện** | display_errors = Off | Kiểm tra php.ini hoặc logs |
-| **SSL certificate fail** | DNS chưa propagate | Đợi DNS update |
+| Vấn đề                        | Nguyên nhân có thể    | Giải pháp                            |
+| ----------------------------- | --------------------- | ------------------------------------ |
+| **502 Bad Gateway**           | PHP-FPM không chạy    | Kiểm tra `docker-compose ps` và logs |
+| **Database connection error** | Connection string sai | Kiểm tra DB credentials trong .env   |
+| **Nginx 404**                 | File paths không đúng | Kiểm tra root và index settings      |
+| **PHP errors không hiện**     | display_errors = Off  | Kiểm tra php.ini hoặc logs           |
+| **SSL certificate fail**      | DNS chưa propagate    | Đợi DNS update                       |
 
 ### Debug Commands
 
@@ -771,33 +782,33 @@ docker exec mysql-1 mysql -u myuser -pmypassword -e "SHOW DATABASES;"
 
 ### 1. **Environment Variables**
 
-| Biến | Mô tả | Bảo mật |
-|------|-------|---------|
-| `DB_HOST` | MySQL host | ✅ Không commit vào Git |
-| `DB_NAME` | Database name | ⚠️ Có thể commit nếu không sensitive |
-| `DB_USER` | Database user | ✅ Không commit |
-| `DB_PASSWORD` | Database password | ✅ Không commit |
-| `APP_ENV` | Environment (prod/dev) | ✅ Set trong Docker |
+| Biến          | Mô tả                  | Bảo mật                              |
+| ------------- | ---------------------- | ------------------------------------ |
+| `DB_HOST`     | MySQL host             | ✅ Không commit vào Git              |
+| `DB_NAME`     | Database name          | ⚠️ Có thể commit nếu không sensitive |
+| `DB_USER`     | Database user          | ✅ Không commit                      |
+| `DB_PASSWORD` | Database password      | ✅ Không commit                      |
+| `APP_ENV`     | Environment (prod/dev) | ✅ Set trong Docker                  |
 
 ### 2. **PHP Best Practices**
 
-| Practice | Benefit | Implementation |
-|----------|---------|----------------|
-| **Use prepared statements** | Prevent SQL injection | PDO or mysqli |
-| **Error handling** | Better debugging | try-catch blocks |
-| **Input validation** | Security | Filter input, validate |
-| **Cache opcache** | Performance | Enable OPcache |
-| **Composer autoload** | Better code organization | Use PSR-4 autoloading |
+| Practice                    | Benefit                  | Implementation         |
+| --------------------------- | ------------------------ | ---------------------- |
+| **Use prepared statements** | Prevent SQL injection    | PDO or mysqli          |
+| **Error handling**          | Better debugging         | try-catch blocks       |
+| **Input validation**        | Security                 | Filter input, validate |
+| **Cache opcache**           | Performance              | Enable OPcache         |
+| **Composer autoload**       | Better code organization | Use PSR-4 autoloading  |
 
 ### 3. **Docker Best Practices**
 
-| Practice | Lý do | Implementation |
-|----------|-------|----------------|
-| **Multi-stage builds** | Giảm image size | Separate build và runtime |
-| **Non-root user** | Security | Run với www-data user |
-| **.dockerignore** | Faster builds | Exclude vendor, .git |
-| **Health checks** | Auto-recovery | Healthcheck trong docker-compose |
-| **Resource limits** | Prevent exhaustion | Set CPU/memory limits |
+| Practice               | Lý do              | Implementation                   |
+| ---------------------- | ------------------ | -------------------------------- |
+| **Multi-stage builds** | Giảm image size    | Separate build và runtime        |
+| **Non-root user**      | Security           | Run với www-data user            |
+| **.dockerignore**      | Faster builds      | Exclude vendor, .git             |
+| **Health checks**      | Auto-recovery      | Healthcheck trong docker-compose |
+| **Resource limits**    | Prevent exhaustion | Set CPU/memory limits            |
 
 ### 4. **Security Checklist**
 
@@ -829,7 +840,7 @@ Deploy PHP lên VPS là một quá trình có thể phức tạp nhưng mang l�
 ### Tài nguyên tham khảo
 
 - 📦 [PHP Simple App Example](/examples/php-simple-app) - Source code mẫu
-  <GitHubSourceLink path="examples/php-simple-app" />
+    <GitHubSourceLink path="examples/php-simple-app" />
 - 📚 [PHP Documentation](https://www.php.net/docs.php)
 - 🐳 [Docker Documentation](https://docs.docker.com/)
 - 🌐 [Nginx Documentation](https://nginx.org/en/docs/)
@@ -847,7 +858,7 @@ Deploy PHP lên VPS là một quá trình có thể phức tạp nhưng mang l�
 > **Bắt đầu với example**: Sử dụng [php-simple-app](/examples/php-simple-app) như một starting point để hiểu cách setup và customize cho project của bạn!
 
 > [!NOTE]
+>
 > - [PHP Official Documentation](https://www.php.net/)
 > - [Docker PHP Images](https://hub.docker.com/_/php)
 > - [Nginx PHP-FPM Configuration](https://www.nginx.com/resources/wiki/start/topics/examples/phpfcgi/)
-

@@ -1,0 +1,271 @@
+---
+title: "Hành Trình Mình Học System Design"
+date: "2025-11-10"
+lastmod: "2025-11-10"
+tags: ["system-design", "learning", "career", "backend"]
+draft: false
+pinned: false
+summary: 'Hành trình chân thật từ mù mờ hoàn toàn đến lúc hiểu rõ System Design. Cách mình đi từ "mù tịt" cho đến tự tin nói về kiến trúc trong phỏng vấn.'
+authors: ["singour"]
+locale: "vi"
+images: ["/static/images/how-i-learned-system-design/architecture.png"]
+---
+
+– Một hành trình chân thật từ mông lung đến rõ ràng
+
+<Image
+	src="/static/images/how-i-learned-system-design/architecture.png"
+	alt="How I Learned System Design"
+	width={1000}
+	height={100}
+/>
+
+<TOCInline toc={props.toc} />
+
+Hãy để mình nói thật với bạn.
+
+Đã có thời gian mình **bỏ qua tất cả** video hay bài viết nào có chữ "System Design".
+Mình nghĩ: _"Cái này dành cho senior engineer, kiến trúc sư hệ thống, không phải cho mình."_
+
+Mình đã sai.
+
+Vì một ngày, trong buổi phỏng vấn, người ta hỏi mình:
+
+> "Bạn có thể thiết kế một app gọi xe giống Uber không?"
+
+Và mình **đứng hình**.
+
+Mình nói vài câu về REST API.  
+Mình nhắc tới MySQL.  
+Rồi… im lặng.
+
+Không biết xử lý scale thế nào, không hiểu hàng đợi, thậm chí không biết lưu vị trí real-time ra sao.
+
+Ngày hôm đó mình quyết định: **chuyện này sẽ không xảy ra lần thứ hai.**
+
+Dưới đây là cách mình đi từ **mù mờ hoàn toàn** đến lúc **tự tin nói về kiến trúc trong phỏng vấn**, thậm chí còn có thể đề xuất những thiết kế tốt hơn ở nơi làm việc.
+
+## 1. Đầu tiên, mình chấp nhận là mình “chẳng biết gì” – và điều đó không sao cả
+
+System Design ban đầu trông rất đáng sợ.
+
+Người ta ném vào mặt bạn đủ loại thuật ngữ:
+"sharding", "CQRS", "load balancer", "eventual consistency"…
+
+Lúc đầu, những thứ đó làm mình cảm thấy… ngu ngốc.  
+Nhưng rồi mình nhận ra:
+
+> **Ai cũng lạc lối ở giai đoạn đầu.**
+
+System Design không phải là một môn học đơn lẻ.  
+Nó không phải là một “chương” mà bạn có thể hoàn thành trong một tuần.
+
+Nó là sự kết hợp của:
+
+- Cách dữ liệu chảy trong hệ thống
+- Cách các service giao tiếp với nhau
+- Cách hệ thống sống sót khi traffic tăng khủng khiếp
+- Và cách để mọi thứ vẫn **chịu lỗi tốt**, **nhanh**, và **ổn định**
+
+Khi mình chấp nhận rằng việc này sẽ tốn thời gian, mọi thứ trở nên nhẹ nhàng hơn.  
+Mình ngừng đuổi theo sự hoàn hảo, và tập trung vào **những bước tiến nhỏ**.
+
+## 2. Mình chia nhỏ "System Design" thành các mảnh nhỏ
+
+System Design **không phải** một khối kiến thức khổng lồ duy nhất;  
+Nó là tập hợp những khối nhỏ liên kết với nhau.
+
+Vì vậy mình tự vẽ cho mình một cái “bản đồ”:
+
+### a) Những phần cơ bản
+
+- Chuyện gì xảy ra khi bạn gõ một URL trên trình duyệt
+- DNS là gì, Load Balancer là gì, CDN là gì
+- TCP vs UDP, HTTP vs HTTPS
+
+Ngay cả những phần cơ bản này cũng mở mang rất nhiều.  
+Ví dụ:
+
+- DNS giống như _sổ danh bạ_ của Internet
+- CDN là lý do tại sao YouTube load nhanh đến thế
+
+### b) Dữ liệu và lưu trữ
+
+- SQL vs NoSQL
+- Indexing, Replication, Sharding
+- Khi nào nên chọn MongoDB, khi nào nên chọn PostgreSQL
+
+Mình đã học phần này theo kiểu “đập mặt vào tường”.  
+Trong một dự án, tụi mình chọn Mongo cho dữ liệu giao dịch. Về sau, tụi mình **hối hận**.
+
+### c) Kỹ thuật scale
+
+- Scale ngang (Horizontal) vs scale dọc (Vertical)
+- Caching (Redis, Memcached)
+- Load balancing (Round-robin, IP Hashing, …)
+
+Đây là phần mình rất thích. Nó khiến mình cảm thấy:
+
+> _"À, hóa ra mình cũng có thể thiết kế hệ thống cho hàng triệu user — dù mới chỉ là trên giấy."_
+
+### d) Các pattern kiến trúc
+
+- Monolith vs Microservices
+- Event-Driven Architecture
+- Pub/Sub, Message Queue (Kafka, RabbitMQ, …)
+
+Lúc này mình mới thật sự hiểu tại sao các công ty như Netflix dùng microservices —  
+Không phải vì nó “ngầu” hay “hot trend”,  
+Mà vì ở quy mô đó, nó **thật sự hợp lý**.
+
+## 3. Mình xem cách người khác “nghĩ”, chứ không chỉ “dạy”
+
+Thay vì chỉ xem các video tutorial đơn thuần, mình bắt đầu xem **mock interview**.
+
+Tin mình đi, điều đó **thay đổi mọi thứ**.
+
+Bởi vì khi một người suy nghĩ thành lời, mắc lỗi, quay lại, và giải thích lý do tại sao họ chọn A thay vì B,  
+bạn học được **cách tư duy**, chứ không chỉ copy lời giải.
+
+Những kênh giúp mình rất nhiều:
+
+- **Gaurav Sen** – giải thích từ gốc rễ
+- **Exponent** – mock interview với ứng viên thật
+- **ByteByteGo** – visuals + storytelling cực dễ nuốt
+
+Mình học được cách:
+
+- Hỏi câu hỏi làm rõ yêu cầu
+- Xác định functional và non-functional requirements
+- Đi qua thiết kế API, chọn DB, cách scale
+- Luôn nói về **trade-off**, không chỉ “chọn X” rồi thôi
+
+## 4. Mình bắt đầu _vẽ_, dù chỉ trên giấy
+
+Điều bất ngờ nhất giúp mình?
+
+> Vẽ.
+
+Mình không hề biết vẽ đẹp.  
+Nhưng việc phác lại flow từ **client → load balancer → app servers → DB** khiến mọi thứ bỗng _click_.
+
+Khi mình vẽ:
+
+- Luồng request trở nên “thật” hơn
+- Mình nhìn ra chỗ nào dễ trở thành bottleneck
+- Mình hiểu chỗ nào cần cache, chỗ nào nên dùng queue
+
+Đến bây giờ, mỗi khi bị tắc, mình vẫn lấy giấy bút ra vẽ.  
+Bản sketch đó thường cho mình sự rõ ràng mà đọc thêm tài liệu không mang lại được.
+
+## 5. Mình luyện tập với các bài System Design thực tế
+
+Khi đã thấy ổn với phần nền tảng, mình ngừng chỉ xem — và **bắt đầu tự thiết kế**.
+
+Cách mình luyện:
+
+- Chọn một hệ thống thật: WhatsApp, YouTube, Zomato, Instagram…
+- Viết ra **functional requirements** trước (hệ thống cần làm gì)
+- Sau đó thêm **non-functional requirements** (scale, availability, latency…)
+- Ước lượng sơ (users, QPS, dung lượng DB…)
+- Vẽ ra kiến trúc tổng quan
+
+Rồi đào sâu vào:
+
+- Thiết kế schema DB
+- Thiết kế API
+- Chiến lược scale
+- Cách xử lý lỗi
+- Edge cases
+
+Mình cố gắng viết **một bản thiết kế mỗi tuần**.  
+Và không chỉ một hướng, mà thử nhiều phương án khác nhau.
+
+Vì trong phỏng vấn (và ngoài đời), gần như không bao giờ có **một** câu trả lời hoàn hảo.  
+Quan trọng là bạn giải thích được **tại sao bạn chọn X thay vì Y.**
+
+## 6. Mình áp dụng vào công việc
+
+Lý thuyết mà không áp dụng thì… vô nghĩa.
+
+Ở công ty, mình làm trong một service traffic cao về sinh khoản trả góp (EMI).  
+Nó có Kafka events, REST API, transaction phức tạp.
+
+Đây là nơi mình bắt đầu áp dụng các nguyên tắc system design:
+
+- Đề xuất tách một monolith thành nhiều service nhỏ hơn
+- Dùng queue để giao tiếp bất đồng bộ
+- Thêm cơ chế retry và dead-letter queue
+- Thậm chí tranh luận Kafka vs gRPC (dựa trên độ trễ và mức độ kiểm soát)
+
+Không phải lần nào cũng hoàn hảo.  
+Nhưng nó cho mình **niềm tin** rằng system design không chỉ là thứ dành cho phỏng vấn —  
+Nó là một kỹ năng **thật**, giúp team và sản phẩm tốt hơn.
+
+## 7. Mình bắt đầu giải thích lại cho người khác
+
+Đây là “level cuối”.
+
+Khi bạn giải thích điều gì đó — cho một bạn junior, một intern, hay qua blog —  
+bạn sẽ nhìn thấy những lỗ hổng trong chính hiểu biết của mình.
+
+Mình đã:
+
+- Hỗ trợ, mentor các bạn mới trong quá trình onboarding
+- Tổ chức những buổi chia sẻ nhỏ về caching, thiết kế DB, queues
+- Viết bài kèm diagram
+- Giúp các bạn junior chuẩn bị cho phỏng vấn system design
+
+Mỗi lần mình giải thích, mình nhận ra:
+
+> **Nếu mình có thể diễn đạt đơn giản, nghĩa là mình đã hiểu thật sự.**
+
+## Lời khuyên chân thành mình muốn gửi đến bạn
+
+Nếu bạn mới bắt đầu hôm nay,  
+hoặc từng “toang” trong buổi phỏng vấn system design đầu tiên,  
+mình muốn nói với bạn thế này:
+
+> [!IMPORTANT]  
+> System Design không phải là phép màu.  
+> Bạn không cần 10 năm kinh nghiệm.  
+> Bạn không cần thuộc lòng sơ đồ của Gaurav Sen.
+
+Bạn chỉ cần:
+
+- Bắt đầu từ nền tảng
+- Nghĩ bằng các bài toán đời thực
+- Xây dựng một cấu trúc suy nghĩ của riêng mình
+- Luyện tập đều đặn mỗi tuần
+- Hỏi “tại sao” phía sau mỗi lựa chọn
+- Và kiên nhẫn cải thiện từng chút một
+
+Chỉ cần mỗi ngày 30 phút, sau 3 tháng, bạn sẽ thấy sự khác biệt.
+
+## Lời kết: Quan trọng không phải “đáp án”, mà là “cách tiếp cận”
+
+Trong System Design, bạn sẽ rất hay có cảm giác không chắc chắn.  
+Điều đó là **bình thường**.
+
+Điều quan trọng là **cách bạn tiếp cận vấn đề.**
+
+Khi bạn có thể nói rõ:
+
+- Quy mô (scale) là gì?
+- Nút thắt cổ chai (bottleneck) ở đâu?
+- Trade-off giữa hai lựa chọn DB / kiến trúc là gì?
+- Điều gì xảy ra nếu một service trong hệ thống chết?
+
+Chính những điều đó làm bạn trở thành một kỹ sư mạnh mẽ,  
+chứ không phải số lượng diagram bạn đã thuộc lòng.
+
+Vậy nên hãy tiếp tục.
+
+Hãy bắt đầu từ câu hỏi: **“Chuyện gì xảy ra khi gõ một URL trên trình duyệt?”**  
+Và rồi một ngày, bạn sẽ có thể tự tin thiết kế cả Instagram.
+
+Bạn sẽ bất ngờ với chặng đường mình đã đi được — **từng hệ thống một.**
+
+## Nếu bạn đọc đến đây, cảm ơn bạn ❤️
+
+Mình sẽ tiếp tục chia sẻ những bài học thực tế từ backend trên hành trình của mình.

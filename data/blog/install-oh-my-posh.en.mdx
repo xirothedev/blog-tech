@@ -6,6 +6,7 @@ tags: ["terminal", "productivity", "windows", "linux", "shell"]
 draft: false
 summary: "End-to-end guide to install Oh My Posh on Windows, macOS, and Linux, wire it into PowerShell, Bash, Zsh, and Fish, and ship a custom JSON theme that keeps your prompt informative without the clutter."
 authors: ["default"]
+locale: "en"
 images: ["/static/images/install-oh-my-posh/thumbnail.png"]
 ---
 
@@ -15,35 +16,35 @@ You stare at your terminal all day—might as well make it useful and beautiful.
 > Already have a prompt framework? You can still use Oh My Posh purely as a renderer by piping environment variables into custom segments.
 
 <TOCInline
-  toc={[
-    { value: "Why customize your prompt?", url: "#why-customize-your-prompt", depth: 2 },
-    { value: "Prerequisites", url: "#prerequisites", depth: 2 },
-    { value: "Install the Nerd Font first", url: "#install-the-nerd-font-first", depth: 2 },
-    { value: "Windows", url: "#windows", depth: 3 },
-    { value: "macOS", url: "#macos", depth: 3 },
-    { value: "Linux (JetBrainsMono Nerd Font)", url: "#linux-jetbrainsmono-nerd-font", depth: 3 },
-    { value: "Install Oh My Posh", url: "#install-oh-my-posh", depth: 2 },
-    {
-      value: "Windows (PowerShell, CMD, Windows Terminal)",
-      url: "#windows-powershell-cmd-windows-terminal",
-      depth: 3,
-    },
-    { value: "macOS (homebrew, MacPorts)", url: "#macos-homebrew-macports", depth: 3 },
-    { value: "Linux distros", url: "#linux-distros", depth: 3 },
-    { value: "Wire it into your shell", url: "#wire-it-into-your-shell", depth: 2 },
-    { value: "PowerShell (5.x or 7+)", url: "#powershell-5x-or-7", depth: 3 },
-    { value: "Windows CMD", url: "#windows-cmd", depth: 3 },
-    { value: "Bash", url: "#bash", depth: 3 },
-    { value: "Zsh", url: "#zsh", depth: 3 },
-    { value: "Fish", url: "#fish", depth: 3 },
-    { value: "Pick or craft a theme", url: "#pick-or-craft-a-theme", depth: 2 },
-    { value: "Sample JSON configuration i using", url: "#sample-json-configuration-i-using", depth: 3 },
-    { value: "Test & troubleshoot", url: "#test-troubleshoot", depth: 2 },
-    { value: "Keep the config sharable", url: "#keep-the-config-sharable", depth: 2 },
-    { value: "Wrap-up", url: "#wrap-up", depth: 2 },
-  ]}
-  asDisclosure={true}
-  collapse={false}
+	toc={[
+		{ value: "Why customize your prompt?", url: "#why-customize-your-prompt", depth: 2 },
+		{ value: "Prerequisites", url: "#prerequisites", depth: 2 },
+		{ value: "Install the Nerd Font first", url: "#install-the-nerd-font-first", depth: 2 },
+		{ value: "Windows", url: "#windows", depth: 3 },
+		{ value: "macOS", url: "#macos", depth: 3 },
+		{ value: "Linux (JetBrainsMono Nerd Font)", url: "#linux-jetbrainsmono-nerd-font", depth: 3 },
+		{ value: "Install Oh My Posh", url: "#install-oh-my-posh", depth: 2 },
+		{
+			value: "Windows (PowerShell, CMD, Windows Terminal)",
+			url: "#windows-powershell-cmd-windows-terminal",
+			depth: 3,
+		},
+		{ value: "macOS (homebrew, MacPorts)", url: "#macos-homebrew-macports", depth: 3 },
+		{ value: "Linux distros", url: "#linux-distros", depth: 3 },
+		{ value: "Wire it into your shell", url: "#wire-it-into-your-shell", depth: 2 },
+		{ value: "PowerShell (5.x or 7+)", url: "#powershell-5x-or-7", depth: 3 },
+		{ value: "Windows CMD", url: "#windows-cmd", depth: 3 },
+		{ value: "Bash", url: "#bash", depth: 3 },
+		{ value: "Zsh", url: "#zsh", depth: 3 },
+		{ value: "Fish", url: "#fish", depth: 3 },
+		{ value: "Pick or craft a theme", url: "#pick-or-craft-a-theme", depth: 2 },
+		{ value: "Sample JSON configuration i using", url: "#sample-json-configuration-i-using", depth: 3 },
+		{ value: "Test & troubleshoot", url: "#test-troubleshoot", depth: 2 },
+		{ value: "Keep the config sharable", url: "#keep-the-config-sharable", depth: 2 },
+		{ value: "Wrap-up", url: "#wrap-up", depth: 2 },
+	]}
+	asDisclosure={true}
+	collapse={false}
 />
 
 ## Why customize your prompt?
@@ -66,10 +67,8 @@ Oh My Posh themes rely on [Nerd Fonts](https://www.nerdfonts.com/) for icons. Pi
 
 ### Windows
 
-
 > 💡 **Direct Microsoft Store install:**  
 > Prefer using Windows Terminal? Install JetBrainsMono Nerd Font straight from the [Microsoft Store](https://apps.microsoft.com/detail/xp8k0hkjfrxgck?mode=mini&hl=en-US&gl=VN) for easier setup and automatic updates.
-
 
 ```powershell
 winget install --id=ryanoasis.nerdfont.JetBrainsMono -e
@@ -116,7 +115,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object
 choco install oh-my-posh
 ```
 
-> [!NOTE] 
+> [!NOTE]
 > The binary ends up in `%LOCALAPPDATA%\Programs\oh-my-posh\oh-my-posh.exe`. Add that directory to your PATH if your profile cannot find it automatically.
 
 ### macOS (homebrew, MacPorts)
@@ -133,7 +132,7 @@ Updating is done via:
 brew update && brew upgrade oh-my-posh
 ```
 
-> [!TIP] 
+> [!TIP]
 > In case you see [strange behaviour](https://github.com/JanDeDobbeleer/oh-my-posh/issues/1287) in your shell, reload it after upgrading Oh My Posh. For example in zsh:
 
 ```bash
@@ -227,75 +226,80 @@ oh-my-posh print-config --config <theme-name> | less
 
 ### Sample JSON configuration i using
 
-<Image src="/static/images/install-oh-my-posh/catppuccin_mocha_theme.png" alt="Sample image of the Catppuccin Mocha theme" width={1000} height={1000} />
+<Image
+	src="/static/images/install-oh-my-posh/catppuccin_mocha_theme.png"
+	alt="Sample image of the Catppuccin Mocha theme"
+	width={1000}
+	height={1000}
+/>
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
-  "palette": {
-        "os": "#ACB0BE",
-        "closer": "p:os",
-        "pink": "#F5C2E7",
-        "lavender": "#B4BEFE",
-        "blue":  "#89B4FA"
-  },
-  "blocks": [
-    {
-      "alignment": "left",
-      "segments": [
-        {
-          "foreground": "p:os",
-          "style": "plain",
-          "template": "{{.Icon}} ",
-          "type": "os"
-        },
-        {
-          "foreground": "p:blue",
-          "style": "plain",
-          "template": "{{ .UserName }}@{{ .HostName }} ",
-          "type": "session"
-        },
-        {
-          "foreground": "p:pink",
-          "properties": {
-            "folder_icon": "..\ue5fe..",
-            "home_icon": "~",
-            "style": "agnoster_short"
-          },
-          "style": "plain",
-          "template": "{{ .Path }} ",
-          "type": "path"
-        },
-        {
-          "foreground": "p:lavender",
-          "properties": {
-            "branch_icon": "\ue725 ",
-            "cherry_pick_icon": "\ue29b ",
-            "commit_icon": "\uf417 ",
-            "fetch_status": false,
-            "fetch_upstream_icon": false,
-            "merge_icon": "\ue727 ",
-            "no_commits_icon": "\uf0c3 ",
-            "rebase_icon": "\ue728 ",
-            "revert_icon": "\uf0e2 ",
-            "tag_icon": "\uf412 "
-          },
-          "template": "{{ .HEAD }} ",
-          "style": "plain",
-          "type": "git"
-        },
-        {
-          "style": "plain",
-          "foreground": "p:closer",
-          "template": "\uf105",
-          "type": "text"
-        }
-      ],
-      "type": "prompt"
-    }
-  ],
-  "final_space": true,
-  "version": 3
+	"$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+	"palette": {
+		"os": "#ACB0BE",
+		"closer": "p:os",
+		"pink": "#F5C2E7",
+		"lavender": "#B4BEFE",
+		"blue": "#89B4FA"
+	},
+	"blocks": [
+		{
+			"alignment": "left",
+			"segments": [
+				{
+					"foreground": "p:os",
+					"style": "plain",
+					"template": "{{.Icon}} ",
+					"type": "os"
+				},
+				{
+					"foreground": "p:blue",
+					"style": "plain",
+					"template": "{{ .UserName }}@{{ .HostName }} ",
+					"type": "session"
+				},
+				{
+					"foreground": "p:pink",
+					"properties": {
+						"folder_icon": "..\ue5fe..",
+						"home_icon": "~",
+						"style": "agnoster_short"
+					},
+					"style": "plain",
+					"template": "{{ .Path }} ",
+					"type": "path"
+				},
+				{
+					"foreground": "p:lavender",
+					"properties": {
+						"branch_icon": "\ue725 ",
+						"cherry_pick_icon": "\ue29b ",
+						"commit_icon": "\uf417 ",
+						"fetch_status": false,
+						"fetch_upstream_icon": false,
+						"merge_icon": "\ue727 ",
+						"no_commits_icon": "\uf0c3 ",
+						"rebase_icon": "\ue728 ",
+						"revert_icon": "\uf0e2 ",
+						"tag_icon": "\uf412 "
+					},
+					"template": "{{ .HEAD }} ",
+					"style": "plain",
+					"type": "git"
+				},
+				{
+					"style": "plain",
+					"foreground": "p:closer",
+					"template": "\uf105",
+					"type": "text"
+				}
+			],
+			"type": "prompt"
+		}
+	],
+	"final_space": true,
+	"version": 3
 }
 ```
 
@@ -305,7 +309,7 @@ Reload the shell to apply the changes. Every segment is documented at [ohmyposh.
 
 1. **Verify the binary** – `oh-my-posh --version` should return the installed version.
 2. **Check fonts** – If icons show as squares, re-apply the Nerd Font in your terminal profile.
-3. **Profile order** – In Zsh, Oh My Posh must run *after* `compinit` and plugin sourcing to avoid being overwritten.
+3. **Profile order** – In Zsh, Oh My Posh must run _after_ `compinit` and plugin sourcing to avoid being overwritten.
 4. **Permissions** – On Linux, ensure `~/.config/oh-my-posh/{theme}.omp.json` is readable; on Windows, unblock scripts with `Unblock-File`.
 5. **Performance** – Disable heavy segments (e.g., big git repos) or set `auto_disable` to keep slow prompts snappy.
 

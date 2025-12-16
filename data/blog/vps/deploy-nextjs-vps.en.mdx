@@ -1,0 +1,929 @@
+---
+title: "Deploying Next.js to a VPS: Self-hosting with Docker and Nginx"
+date: "2025-11-02"
+lastmod: "2025-11-02"
+tags: ["nextjs", "deployment", "vps", "docker", "nginx", "self-hosting"]
+draft: false
+summary: "Step-by-step guide to deploying a Next.js application to a VPS using Docker, PostgreSQL, and Nginx, from server setup to production deployment."
+authors: ["default"]
+locale: "en"
+images: ["/static/images/vps/deploy-nextjs-vps/thumbnail.png"]
+---
+
+Deploying Next.js to a VPS is an important skill for developers who want to manage their own infrastructure. Compared to platforms like Vercel, self-hosting on a VPS gives you full control, high customizability, and potentially lower costs. This article walks you through deploying a Next.js app to a [VPS](/blog/vps) using Docker, PostgreSQL, and Nginx.
+
+<TOCInline
+	toc={[
+		{ value: "Overview", url: "#overview", depth: 2 },
+		{ value: "Prerequisites", url: "#prerequisites", depth: 2 },
+		{ value: "Deployment Architecture", url: "#deployment-architecture", depth: 2 },
+		{ value: "Server Setup", url: "#server-setup", depth: 2 },
+		{ value: "Install Docker and Docker Compose", url: "#install-docker-and-docker-compose", depth: 2 },
+		{ value: "Nginx Setup", url: "#nginx-setup", depth: 2 },
+		{ value: "Configure the Next.js Application", url: "#configure-the-nextjs-application", depth: 2 },
+		{ value: "Configure PostgreSQL", url: "#configure-postgresql", depth: 2 },
+		{ value: "Deploy Script", url: "#deploy-script", depth: 2 },
+		{ value: "SSL Certificate with Let's Encrypt", url: "#ssl-certificate-with-lets-encrypt", depth: 2 },
+		{ value: "Rate Limiting and Security", url: "#rate-limiting-and-security", depth: 2 },
+		{ value: "Updates and Maintenance", url: "#updates-and-maintenance", depth: 2 },
+		{ value: "Troubleshooting", url: "#troubleshooting", depth: 2 },
+		{ value: "Best Practices", url: "#best-practices", depth: 2 },
+		{ value: "Conclusion", url: "#conclusion", depth: 2 },
+	]}
+	asDisclosure={true}
+	collapse={false}
+/>
+
+## Overview
+
+This guide is based on Lee Robinson’s [next-self-host repository](https://github.com/leerob/next-self-host), which shows how to deploy a Next.js app with a PostgreSQL database on an Ubuntu server using Docker and Nginx.
+
+### Tech stack
+
+| Component            | Technology              | Purpose                                      |
+| -------------------- | ----------------------- | -------------------------------------------- |
+| **Application**      | Next.js                 | React framework with SSR/SSG                 |
+| **Database**         | PostgreSQL              | Relational database                          |
+| **Containerization** | Docker & Docker Compose | Isolate and manage containers                |
+| **Web Server**       | Nginx                   | Reverse proxy, SSL termination, static files |
+| **SSL**              | Let's Encrypt           | HTTPS encryption                             |
+| **OS**               | Ubuntu Linux            | Server operating system                      |
+
+### Why self‑hosting?
+
+**Pros:**
+
+- ✅ Full control over your infrastructure
+- ✅ Potentially lower cost (no usage‑based pricing from platforms)
+- ✅ High flexibility (install any software you want)
+- ✅ Deep understanding of how your system works
+- ✅ Not limited by platform rules
+
+**Cons:**
+
+- ❌ You must manage and maintain the server
+- ❌ You are responsible for security and updates
+- ❌ Requires DevOps knowledge
+- ❌ No automatic managed scaling
+
+## Prerequisites
+
+Before you start, you should prepare:
+
+### 1. **Domain name**
+
+Purchase a domain name and configure DNS:
+
+- Create an A record pointing to your VPS IP
+- Propagation time: usually 5–30 minutes, up to 48 hours
+
+### 2. **VPS server**
+
+Minimum requirements for a Next.js app:
+
+- **RAM**: 2 GB+ (4 GB+ recommended)
+- **CPU**: 2 cores+ (4 cores recommended)
+- **Storage**: 20 GB+ (40 GB+ recommended)
+- **OS**: Ubuntu 20.04 LTS or newer
+
+**Where to buy a VPS:**
+
+- DigitalOcean (Droplets)
+- AWS EC2
+- Azure VMs
+- Linode
+- Vultr
+
+### 3. **Basic knowledge**
+
+- SSH and command line
+- Git basics
+- Basic understanding of Docker
+- Familiarity with Next.js
+
+## Deployment Architecture
+
+<Image
+	width={1000}
+	height={600}
+	src="/static/images/vps/deploy-nextjs-vps/architecture.svg"
+	alt="Deployment architecture"
+/>
+
+### Request flow:
+
+```
+User → Domain → DNS → Nginx (Port 80/443)
+                        ↓
+                   Docker Network
+                        ↓
+              ┌─────────┴─────────┐
+              ↓                   ↓
+         Next.js App         PostgreSQL DB
+        (Port 3000)         (Port 5432)
+```
+
+### Components:
+
+1. **Nginx**: Reverse proxy, handles SSL, serves static files
+2. **Next.js container**: Runs the Next.js application
+3. **PostgreSQL container**: Database server
+4. **Docker network**: Connects the containers
+
+## Server Setup
+
+### 1. **SSH into the server**
+
+```bash
+ssh root@your_server_ip
+# or if you use a non-root user
+ssh user@your_server_ip
+```
+
+### 2. **Update the system**
+
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+### 3. **Install basic packages**
+
+```bash
+sudo apt install -y curl wget git build-essential
+```
+
+## Install Docker and Docker Compose
+
+### Install Docker
+
+```bash
+# Remove old versions
+for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+
+# Install latest version
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Start Docker service
+sudo systemctl status docker
+sudo systemctl start docker
+
+# Verify installation
+docker --version
+```
+
+### Add your user to the docker group (optional)
+
+```bash
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+## Nginx Setup
+
+This section shows how to install and configure Nginx on Ubuntu 20.04, following the official [DigitalOcean guide](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-20-04).
+
+### Install Nginx
+
+```bash
+# Update package index
+sudo apt update
+
+# Install Nginx
+sudo apt install nginx
+
+# Verify installation
+nginx -v
+```
+
+### Adjust the firewall
+
+Before testing Nginx, adjust the firewall to allow traffic:
+
+```bash
+# Check firewall status
+sudo ufw status
+
+# If the firewall is not active, enable it
+sudo ufw enable
+
+# Allow OpenSSH (important – otherwise you may lock yourself out)
+sudo ufw allow 'OpenSSH'
+
+# Allow Nginx traffic
+sudo ufw allow 'Nginx Full'
+# Or allow HTTP/HTTPS separately:
+# sudo ufw allow 'Nginx HTTP'
+# sudo ufw allow 'Nginx HTTPS'
+
+# Or allow by port:
+# sudo ufw allow 80/tcp
+# sudo ufw allow 443/tcp
+
+# Verify firewall rules
+sudo ufw status
+```
+
+> [!WARNING]
+> **Important**: Always allow OpenSSH before enabling the firewall, or you may lock yourself out of the server!
+
+### Check the web server
+
+After installing and configuring the firewall:
+
+```bash
+# Check Nginx status
+sudo systemctl status nginx
+
+# If it's not running, start Nginx
+sudo systemctl start nginx
+
+# Enable Nginx to start automatically on reboot
+sudo systemctl enable nginx
+```
+
+Verify that Nginx is working:
+
+- Visit `http://your_server_ip` in your browser
+- Or use curl: `curl http://localhost`
+
+You should see the Nginx welcome page if the installation was successful.
+
+### Manage the Nginx process
+
+Common commands to manage Nginx:
+
+| Command                        | Description                                |
+| ------------------------------ | ------------------------------------------ |
+| `sudo systemctl stop nginx`    | Stop Nginx                                 |
+| `sudo systemctl start nginx`   | Start Nginx                                |
+| `sudo systemctl restart nginx` | Restart Nginx                              |
+| `sudo systemctl reload nginx`  | Reload config without stopping the service |
+| `sudo systemctl status nginx`  | Check status                               |
+| `sudo systemctl disable nginx` | Disable auto‑start                         |
+| `sudo systemctl enable nginx`  | Enable auto‑start                          |
+
+**Reload vs Restart:**
+
+- `reload`: Load new configuration without dropping connections (recommended for production)
+- `restart`: Stop and start the service (may drop connections)
+
+### Configure server blocks
+
+Server blocks let you host multiple domains on one server. Create a server block for your Next.js app:
+
+```bash
+# Create a config file for your domain
+sudo nano /etc/nginx/sites-available/your-domain.com
+```
+
+Basic server block config for Next.js:
+
+```nginx
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name your-domain.com www.your-domain.com;
+
+    # Logging
+    access_log /var/log/nginx/your-domain.access.log;
+    error_log /var/log/nginx/your-domain.error.log;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+### Enable the server block
+
+After creating the config file:
+
+```bash
+# Create a symbolic link to enable the site
+sudo ln -s /etc/nginx/sites-available/your-domain.com /etc/nginx/sites-enabled/
+
+# Test Nginx config (important – check syntax)
+sudo nginx -t
+
+# If the test passes, reload Nginx
+sudo systemctl reload nginx
+
+# Remove default site (optional)
+sudo rm /etc/nginx/sites-enabled/default
+```
+
+### Important Nginx files and directories
+
+| File/Directory                | Description                              |
+| ----------------------------- | ---------------------------------------- |
+| `/etc/nginx/nginx.conf`       | Main Nginx config file                   |
+| `/etc/nginx/sites-available/` | Contains (inactive) server block configs |
+| `/etc/nginx/sites-enabled/`   | Symbolic links to active server blocks   |
+| `/var/www/html/`              | Default web root directory               |
+| `/var/log/nginx/access.log`   | Access logs                              |
+| `/var/log/nginx/error.log`    | Error logs                               |
+| `/etc/nginx/snippets/`        | Reusable config snippets                 |
+
+### Validate the configuration
+
+```bash
+# Test configuration (always run before reload – very important)
+sudo nginx -t
+
+# If there are errors, check the error log
+sudo tail -f /var/log/nginx/error.log
+
+# View access log
+sudo tail -f /var/log/nginx/access.log
+```
+
+> [!TIP]
+> Always run `sudo nginx -t` before reloading/restarting Nginx to avoid taking the server down due to a bad config!
+
+## Configure the Next.js Application
+
+### 1. **Clone the repository**
+
+```bash
+git clone https://github.com/leerob/next-self-host.git
+cd next-self-host
+```
+
+### 2. **Project structure**
+
+Based on the [next-self-host repo](https://github.com/leerob/next-self-host), the project has the following structure:
+
+```
+next-self-host/
+├── app/                   # Next.js app directory
+├── public/                # Static files
+├── Dockerfile             # Container definition
+├── docker-compose.yml     # Multi-container setup
+├── deploy.sh              # Deployment script
+├── update.sh              # Update script
+├── next.config.ts         # Next.js configuration
+├── package.json           # Dependencies
+└── .env                   # Environment variables
+```
+
+### 3. **Dockerfile**
+
+Sample Dockerfile for a Next.js app:
+
+```dockerfile
+FROM oven/bun:alpine AS base
+
+# Stage 1: Install dependencies
+FROM base AS deps
+WORKDIR /app
+COPY package.json bun.lockb ./
+RUN bun install --frozen-lockfile
+
+# Stage 2: Build the application
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN bun run build
+
+# Stage 3: Production server
+FROM base AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+
+EXPOSE 3000
+CMD ["bun", "run", "server.js"]
+```
+
+### 4. **docker-compose.yml**
+
+```yaml
+services:
+    web:
+        build: .
+        ports:
+            - "3000:3000"
+        environment:
+            - NODE_ENV=production
+        depends_on:
+            - db
+        networks:
+            - my_network
+
+    db:
+        image: postgres:latest
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        networks:
+            - my_network
+
+    cron:
+        image: alpine/curl
+        command: >
+            sh -c "
+              echo '*/10 * * * * curl -X POST http://web:3000/db/clear' > /etc/crontabs/root && \
+              crond -f -l 2
+            "
+        depends_on:
+            - web
+        networks:
+            - my_network
+
+volumes:
+    postgres_data:
+
+networks:
+    my_network:
+        name: my_network
+        driver: bridge
+```
+
+## Configure PostgreSQL
+
+### Database setup
+
+After the containers are running, set up the database schema:
+
+```bash
+# Enter the PostgreSQL container
+docker exec -it myapp-db-1 sh
+
+# Install PostgreSQL client
+apk add --no-cache postgresql-client
+
+# Connect to the database
+psql -U myuser -d mydatabase
+
+# Create a table (example)
+CREATE TABLE IF NOT EXISTS "todos" (
+  "id" serial PRIMARY KEY NOT NULL,
+  "content" varchar(255) NOT NULL,
+  "completed" boolean DEFAULT false,
+  "created_at" timestamp DEFAULT now()
+);
+```
+
+### Using Drizzle ORM
+
+If your project uses Drizzle (like in the repo):
+
+```bash
+# Install dependencies
+npm install
+
+# Run migrations
+npm run db:migrate
+
+# Or use Drizzle Studio
+npm run db:studio
+```
+
+## Deploy Script
+
+The deploy script automates the entire deployment process. It’s based on [deploy.sh from the repo](https://github.com/leerob/next-self-host/blob/main/deploy.sh):
+
+### Steps performed by the script:
+
+| Step                     | Task                   | Details                                  |
+| ------------------------ | ---------------------- | ---------------------------------------- |
+| **1. Setup packages**    | Install dependencies   | curl, git, Docker, Docker Compose, Nginx |
+| **2. Clone repository**  | Download source code   | Clone from GitHub or from local          |
+| **3. Generate SSL**      | Create SSL certificate | Use Certbot (Let's Encrypt)              |
+| **4. Build application** | Build the Next.js app  | Docker build with the Dockerfile         |
+| **5. Configure Nginx**   | Setup reverse proxy    | Configure HTTPS and rate limiting        |
+| **6. Setup database**    | Initialize PostgreSQL  | Create database and tables               |
+| **7. Start services**    | Start containers       | `docker-compose up -d`                   |
+| **8. Setup cron**        | Automated tasks        | Periodic jobs (optional)                 |
+
+### Using the deploy script
+
+```bash
+# Download the script
+curl -o ~/deploy.sh https://raw.githubusercontent.com/leerob/next-self-host/main/deploy.sh
+
+# Edit variables
+nano ~/deploy.sh
+# Change: EMAIL, DOMAIN_NAME
+
+# Run the script
+chmod +x ~/deploy.sh
+./deploy.sh
+```
+
+### Example `deploy.sh` (custom)
+
+```bash
+#!/bin/bash
+
+set -e
+
+# Configuration
+EMAIL="your-email@example.com"
+DOMAIN="your-domain.com"
+PROJECT_DIR="/opt/nextjs-app"
+
+echo "Starting deployment..."
+
+# Update system
+apt update && apt upgrade -y
+
+# Install Docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+
+# Install Docker Compose
+curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
+# Install Nginx
+apt install -y nginx
+
+# Clone repository
+git clone https://github.com/leerob/next-self-host.git $PROJECT_DIR
+cd $PROJECT_DIR
+
+# Generate SSL certificate
+apt install -y certbot python3-certbot-nginx
+certbot --nginx -d $DOMAIN --non-interactive --agree-tos -m $EMAIL
+
+# Build and start containers
+docker-compose build
+docker-compose up -d
+
+echo "Deployment completed!"
+```
+
+## SSL Certificate with Let's Encrypt
+
+### Install Certbot
+
+```bash
+sudo apt install -y certbot python3-certbot-nginx
+```
+
+### Generate SSL certificate
+
+```bash
+# Automatic configuration with Nginx
+sudo certbot --nginx -d your-domain.com
+
+# Or only generate the certificate
+sudo certbot certonly --nginx -d your-domain.com
+```
+
+### Auto-renewal
+
+Certbot automatically sets up a cron job to renew the certificate:
+
+```bash
+# Test renewal
+sudo certbot renew --dry-run
+
+# Check renewal status
+sudo systemctl status certbot.timer
+```
+
+## Rate Limiting and Security
+
+### Nginx rate limiting
+
+Configure rate limiting in Nginx to protect the server:
+
+```nginx
+# /etc/nginx/nginx.conf
+http {
+    limit_req_zone $binary_remote_addr zone=api_limit:10m rate=10r/s;
+
+    server {
+        location /api {
+            limit_req zone=api_limit burst=20 nodelay;
+            proxy_pass http://localhost:3000;
+        }
+    }
+}
+```
+
+### Security headers
+
+Add security headers in the Nginx config:
+
+```nginx
+server {
+    # SSL configuration
+    ssl_certificate /etc/letsencrypt/live/your-domain.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/your-domain.com/privkey.pem;
+
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+    # Proxy settings
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+### Firewall configuration
+
+```bash
+# Install UFW (if not installed)
+sudo apt install -y ufw
+
+# Allow SSH
+sudo ufw allow 22/tcp
+
+# Allow HTTP and HTTPS
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+
+# Enable firewall
+sudo ufw enable
+
+# Check status
+sudo ufw status
+```
+
+## Updates and Maintenance
+
+### Update script
+
+Use `update.sh` to update the application:
+
+```bash
+#!/bin/bash
+
+set -e
+
+cd /opt/nextjs-app
+
+# Pull latest code
+git pull origin main
+
+# Rebuild containers
+docker-compose build
+
+# Restart services
+docker-compose up -d
+
+# Clean up old images
+docker image prune -f
+
+echo "Update completed!"
+```
+
+### Maintenance commands
+
+| Purpose                     | Command                                         | Description                        |
+| --------------------------- | ----------------------------------------------- | ---------------------------------- |
+| **Check containers**        | `docker-compose ps`                             | View container status              |
+| **View logs**               | `docker-compose logs web`                       | View logs of the Next.js app       |
+| **View DB logs**            | `docker-compose logs db`                        | View PostgreSQL logs               |
+| **Restart services**        | `docker-compose restart`                        | Restart all services               |
+| **Stop services**           | `docker-compose down`                           | Stop and remove containers         |
+| **Start services**          | `docker-compose up -d`                          | Start containers in the background |
+| **Restart Nginx**           | `sudo systemctl restart nginx`                  | Restart Nginx                      |
+| **Enter Next.js container** | `docker exec -it myapp-web-1 sh`                | Enter the app container            |
+| **Enter DB container**      | `docker exec -it myapp-db-1 psql -U user -d db` | Enter PostgreSQL CLI               |
+
+### Backup strategy
+
+| Backup type               | Frequency      | How to perform                         |
+| ------------------------- | -------------- | -------------------------------------- |
+| **Database backup**       | Daily          | `pg_dump` or Docker volume backup      |
+| **Application code**      | Per deployment | Git repository                         |
+| **Environment variables** | On changes     | Secure storage (vault, encrypted file) |
+| **Docker volumes**        | Weekly         | Volume backup scripts                  |
+
+### Backup database
+
+```bash
+# Backup PostgreSQL
+docker exec myapp-db-1 pg_dump -U myuser mydatabase > backup_$(date +%Y%m%d).sql
+
+# Restore from backup
+docker exec -i myapp-db-1 psql -U myuser mydatabase < backup_20250101.sql
+```
+
+## Troubleshooting
+
+### Common issues
+
+| Issue                         | Possible cause              | Solution                                              |
+| ----------------------------- | --------------------------- | ----------------------------------------------------- |
+| **Container not starting**    | Docker service not running  | `sudo systemctl start docker`                         |
+| **Port already in use**       | Ports 3000/80/443 are taken | `sudo lsof -i :3000` and kill the process             |
+| **SSL certificate fail**      | DNS not yet propagated      | Wait for DNS update, check with `dig your-domain.com` |
+| **Database connection error** | Wrong connection string     | Check `DATABASE_URL` in `.env`                        |
+| **Nginx 502 Bad Gateway**     | Next.js app not running     | Check `docker-compose logs web`                       |
+| **Build failed**              | Dependency issues           | Delete `node_modules` and rebuild                     |
+| **Permission denied**         | User lacks permissions      | `sudo chown -R user:user /opt/nextjs-app`             |
+
+### Debug commands
+
+```bash
+# Check Docker containers
+docker ps -a
+
+# Check Docker logs
+docker-compose logs --tail=100 web
+
+# Check Nginx logs
+sudo tail -f /var/log/nginx/error.log
+sudo tail -f /var/log/nginx/access.log
+
+# Check system resources
+htop
+df -h  # Disk space
+free -h  # Memory
+
+# Check network
+sudo netstat -tulpn | grep :3000
+sudo netstat -tulpn | grep :80
+```
+
+### Common fixes
+
+**Issue: Next.js app not responding**
+
+```bash
+# Restart containers
+docker-compose restart
+
+# Rebuild containers
+docker-compose build --no-cache
+docker-compose up -d
+```
+
+**Issue: Database connection refused**
+
+```bash
+# Check database container
+docker-compose ps db
+
+# Check database logs
+docker-compose logs db
+
+# Verify connection string
+docker exec myapp-web-1 env | grep DATABASE_URL
+```
+
+**Issue: SSL certificate not renewing**
+
+```bash
+# Manual renewal
+sudo certbot renew
+
+# Check certificate expiry
+sudo certbot certificates
+```
+
+## Best Practices
+
+### 1. **Environment Variables**
+
+| Biến            | Mô tả                                | Bảo mật                    |
+| --------------- | ------------------------------------ | -------------------------- |
+| `DATABASE_URL`  | PostgreSQL connection string         | ✅ Không commit vào Git    |
+| `NODE_ENV`      | Environment (production/development) | ✅ Set trong Docker        |
+| `NEXT_PUBLIC_*` | Public environment variables         | ⚠️ Sẽ exposed trong client |
+| `API_KEYS`      | Third-party API keys                 | ✅ Không expose public     |
+
+**Security:**
+
+- Sử dụng `.env` file và thêm vào `.gitignore`
+- Không commit sensitive data
+- Sử dụng secrets management (AWS Secrets, Vault)
+
+### 2. **Docker Best Practices**
+
+| Practice               | Lý do                       | Implementation                   |
+| ---------------------- | --------------------------- | -------------------------------- |
+| **Multi-stage builds** | Giảm image size             | Separate build và runtime stages |
+| **Non-root user**      | Security                    | Run container với non-root user  |
+| **.dockerignore**      | Faster builds               | Exclude node_modules, .git       |
+| **Health checks**      | Auto-recovery               | Healthcheck trong docker-compose |
+| **Resource limits**    | Prevent resource exhaustion | Set CPU/memory limits            |
+
+### 3. **Next.js Optimization**
+
+| Feature                                   | Benefit            | Configuration               |
+| ----------------------------------------- | ------------------ | --------------------------- |
+| **Image Optimization**                    | Reduce bandwidth   | Next/Image với image loader |
+| **Static Generation**                     | Faster pages       | `generateStaticParams`      |
+| **ISR (Incremental Static Regeneration)** | Fresh content      | `revalidate` option         |
+| **Caching**                               | Better performance | Cache headers, Redis        |
+| **Middleware**                            | Request processing | `middleware.ts`             |
+
+### 4. **Monitoring**
+
+Setup monitoring để theo dõi:
+
+| Metric               | Tool                 | Purpose                 |
+| -------------------- | -------------------- | ----------------------- |
+| **Server Resources** | htop, Prometheus     | CPU, RAM, Disk usage    |
+| **Application Logs** | Docker logs, ELK     | Debug và error tracking |
+| **Uptime**           | UptimeRobot, Pingdom | Monitor availability    |
+| **Performance**      | New Relic, Datadog   | APM monitoring          |
+| **Errors**           | Sentry               | Error tracking          |
+
+### 5. **Backup và Disaster Recovery**
+
+| Component               | Backup Method            | Frequency  |
+| ----------------------- | ------------------------ | ---------- |
+| **Database**            | pg_dump                  | Daily      |
+| **Docker Volumes**      | Volume backup            | Weekly     |
+| **Configuration Files** | Git repository           | On changes |
+| **SSL Certificates**    | Let's Encrypt auto-renew | Automatic  |
+
+### 6. **Security Checklist**
+
+- ✅ Keep system updated
+- ✅ Use strong passwords
+- ✅ Enable firewall (UFW)
+- ✅ SSH key authentication (disable password)
+- ✅ Regular security audits
+- ✅ Monitor logs for suspicious activity
+- ✅ Use HTTPS only
+- ✅ Security headers trong Nginx
+- ✅ Rate limiting
+- ✅ Database access restrictions
+
+## Kết luận
+
+Deploy Next.js lên VPS là một quá trình phức tạp nhưng mang lại nhiều lợi ích: kiểm soát hoàn toàn, chi phí linh hoạt và học hỏi về infrastructure. Với Docker và Nginx, bạn có thể setup một production-ready deployment tương tự như các managed platforms.
+
+### Điểm mấu chốt
+
+- ✅ **Docker simplifies deployment** - Containerization giúp dễ quản lý và scale
+- ✅ **Nginx as reverse proxy** - Xử lý SSL, static files, và load balancing
+- ✅ **PostgreSQL for data** - Reliable database solution
+- ✅ **Automation is key** - Deploy scripts giúp tiết kiệm thời gian
+- ✅ **Security matters** - SSL, firewall, và monitoring là bắt buộc
+
+### Tài nguyên tham khảo
+
+- 📦 [next-self-host Repository](https://github.com/leerob/next-self-host) - Source code mẫu
+- 📹 [Self Hosting Tutorial Video](https://www.youtube.com/watch?v=sIVL4JMqRfc) - Video hướng dẫn chi tiết
+- 📚 [Next.js Deployment Docs](https://nextjs.org/docs/deployment)
+- 🐳 [Docker Documentation](https://docs.docker.com/)
+- 🌐 [Nginx Documentation](https://nginx.org/en/docs/)
+
+### Bước tiếp theo
+
+1. **Setup VPS**: Mua và cấu hình VPS server
+2. **Deploy thử nghiệm**: Chạy deploy script trên test environment
+3. **Customize**: Tùy chỉnh theo nhu cầu của bạn
+4. **Monitor**: Setup monitoring và alerting
+5. **Optimize**: Tối ưu performance và costs
+
+> [!TIP]
+> **Bắt đầu với staging**: Trước khi deploy production, hãy test trên staging environment để đảm bảo mọi thứ hoạt động đúng!
+
+> [!NOTE]
+>
+> - [Next.js Self-Host Repository](https://github.com/leerob/next-self-host)
+> - [Next.js Docker Deployment Guide](https://nextjs.org/docs/deployment#docker-image)
+> - [Docker Compose Documentation](https://docs.docker.com/compose/)

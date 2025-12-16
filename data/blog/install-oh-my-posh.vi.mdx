@@ -1,0 +1,324 @@
+---
+title: "Cài đặt Oh My Posh: Nâng cấp Prompt đa nền tảng"
+date: "2025-11-25"
+lastmod: "2025-11-25"
+tags: ["terminal", "productivity", "windows", "linux", "shell"]
+draft: false
+summary: "Hướng dẫn chi tiết cách cài đặt Oh My Posh trên Windows, macOS và Linux, tích hợp vào PowerShell, Bash, Zsh và Fish, cùng với theme JSON tùy chỉnh giúp prompt của bạn thông tin hữu ích mà không rối mắt."
+authors: ["default"]
+locale: "vi"
+images: ["/static/images/install-oh-my-posh/thumbnail.png"]
+---
+
+Bạn nhìn vào terminal cả ngày—vậy thì hãy làm cho nó hữu ích và đẹp mắt. **Oh My Posh** là một prompt engine nhanh, đa nền tảng, trang trí shell với các segments nhận biết ngữ cảnh (git status, kubectl context, Azure subscription, v.v.) trong khi vẫn giữ tính di động. Hướng dẫn này sẽ đưa bạn qua việc cài đặt trên ba hệ điều hành chính, tích hợp vào các shell phổ biến, và quản lý cấu hình bằng version control.
+
+> [!TIP]
+> Đã có một prompt framework? Bạn vẫn có thể sử dụng Oh My Posh như một renderer thuần túy bằng cách pipe các biến môi trường vào custom segments.
+
+<TOCInline
+	toc={[
+		{ value: "Tại sao nên tùy chỉnh prompt?", url: "#tại-sao-nên-tùy-chỉnh-prompt", depth: 2 },
+		{ value: "Yêu cầu", url: "#yêu-cầu", depth: 2 },
+		{ value: "Cài đặt Nerd Font trước", url: "#cài-đặt-nerd-font-trước", depth: 2 },
+		{ value: "Windows", url: "#windows", depth: 3 },
+		{ value: "macOS", url: "#macos", depth: 3 },
+		{ value: "Linux (JetBrainsMono Nerd Font)", url: "#linux-jetbrainsmono-nerd-font", depth: 3 },
+		{ value: "Cài đặt Oh My Posh", url: "#cài-đặt-oh-my-posh", depth: 2 },
+		{
+			value: "Windows (PowerShell, CMD, Windows Terminal)",
+			url: "#windows-powershell-cmd-windows-terminal",
+			depth: 3,
+		},
+		{ value: "macOS (homebrew, MacPorts)", url: "#macos-homebrew-macports", depth: 3 },
+		{ value: "Các bản phân phối Linux", url: "#các-bản-phân-phối-linux", depth: 3 },
+		{ value: "Tích hợp vào shell của bạn", url: "#tích-hợp-vào-shell-của-bạn", depth: 2 },
+		{ value: "PowerShell (5.x hoặc 7+)", url: "#powershell-5x-hoặc-7", depth: 3 },
+		{ value: "Windows CMD", url: "#windows-cmd", depth: 3 },
+		{ value: "Bash", url: "#bash", depth: 3 },
+		{ value: "Zsh", url: "#zsh", depth: 3 },
+		{ value: "Fish", url: "#fish", depth: 3 },
+		{ value: "Chọn hoặc tạo theme", url: "#chọn-hoặc-tạo-theme", depth: 2 },
+		{ value: "Cấu hình JSON mẫu tôi đang sử dụng", url: "#cấu-hình-json-mẫu-tôi-đang-sử-dụng", depth: 3 },
+		{ value: "Kiểm tra và xử lý sự cố", url: "#kiểm-tra-và-xử-lý-sự-cố", depth: 2 },
+		{ value: "Giữ cấu hình có thể chia sẻ", url: "#giữ-cấu-hình-có-thể-chia-sẻ", depth: 2 },
+		{ value: "Tổng kết", url: "#tổng-kết", depth: 2 },
+	]}
+	asDisclosure={true}
+	collapse={false}
+/>
+
+## Tại sao nên tùy chỉnh prompt?
+
+- **Ngữ cảnh tức thì** – Hiển thị git status, background jobs, node version, hoặc cloud profile mà không cần chạy thêm lệnh.
+- **Nhất quán** – Oh My Posh chạy trên Windows, macOS và Linux, nên prompt của bạn trông và hoạt động giống nhau ở mọi nơi.
+- **Năng suất** – Màu sắc giúp giảm tải nhận thức; bạn sẽ nhận thấy thay đổi chưa commit hoặc Kubernetes namespace sai ngay lập tức.
+- **Thú vị** – Thành thật mà nói, một prompt phát sáng làm thời gian làm việc với shell cảm thấy ít giống công việc hơn.
+
+## Yêu cầu
+
+1. **Terminal hỗ trợ UTF-8 và ligatures** (Windows Terminal, WezTerm, iTerm2, Kitty, Alacritty, v.v.).
+2. **Quyền truy cập package manager** – `winget`, `brew`, `apt`, `dnf`, hoặc `scoop`. Khi tất cả đều thất bại, tải binary thuần cũng hoạt động.
+3. **Quyền ghi profile** – Khả năng chỉnh sửa `Microsoft.PowerShell_profile.ps1`, `.bashrc`, `.zshrc`, hoặc `config.fish`.
+4. **Nerd Font** – Cần thiết cho các glyph mà segments sử dụng. Cài đặt cái này trước khi xử lý sự cố bất cứ thứ gì khác.
+
+## Cài đặt Nerd Font trước
+
+Các theme Oh My Posh dựa vào [Nerd Fonts](https://www.nerdfonts.com/) cho các icon. Chọn một font bạn thích; [Meslo](https://www.programmingfonts.org/#meslo) và [JetBrainsMono](https://www.programmingfonts.org/#jetbrainsmono) là các lựa chọn mặc định an toàn.
+
+### Windows
+
+> 💡 **Cài đặt trực tiếp từ Microsoft Store:**  
+> Thích sử dụng Windows Terminal? Cài đặt JetBrainsMono Nerd Font trực tiếp từ [Microsoft Store](https://apps.microsoft.com/detail/xp8k0hkjfrxgck?mode=mini&hl=en-US&gl=VN) để thiết lập dễ dàng hơn và tự động cập nhật.
+
+```powershell
+winget install --id=ryanoasis.nerdfont.JetBrainsMono -e
+# Chọn font trong Windows Terminal → Settings → Defaults → Appearance.
+```
+
+### macOS
+
+```bash
+brew tap homebrew/cask-fonts
+brew install --cask font-meslo-lg-nerd-font
+```
+
+### Linux (JetBrainsMono Nerd Font)
+
+```bash
+mkdir -p ~/.local/share/fonts
+curl -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip -o /tmp/jbm.zip
+unzip -o /tmp/jbm.zip -d ~/.local/share/fonts
+fc-cache -fv
+```
+
+Sau khi cài đặt font, hãy đặt nó trong terminal profile của bạn trước khi tiếp tục.
+
+## Cài đặt Oh My Posh
+
+### Windows (PowerShell, CMD, Windows Terminal)
+
+#### winget
+
+```bash
+winget install JanDeDobbeleer.OhMyPosh --source winget
+```
+
+#### Thủ công
+
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://ohmyposh.dev/install.ps1'))
+```
+
+#### Chocolatey
+
+```bash
+choco install oh-my-posh
+```
+
+> [!NOTE]
+> Binary sẽ được đặt tại `%LOCALAPPDATA%\Programs\oh-my-posh\oh-my-posh.exe`. Thêm thư mục đó vào PATH của bạn nếu profile không thể tìm thấy nó tự động.
+
+### macOS (homebrew, MacPorts)
+
+Có sẵn [Homebrew](https://brew.sh/) Formula và Cask để cài đặt dễ dàng.
+
+```bash
+brew install jandedobbeleer/oh-my-posh/oh-my-posh
+```
+
+Cập nhật được thực hiện qua:
+
+```bash
+brew update && brew upgrade oh-my-posh
+```
+
+> [!TIP]
+> Trong trường hợp bạn thấy [hành vi lạ](https://github.com/JanDeDobbeleer/oh-my-posh/issues/1287) trong shell của mình, hãy reload nó sau khi nâng cấp Oh My Posh. Ví dụ trong zsh:
+
+```bash
+brew update && brew upgrade && exec zsh
+```
+
+### Các bản phân phối Linux
+
+> [!IMPORTANT]
+> Trước khi chạy các lệnh bên dưới, hãy đảm bảo rằng bạn đã cập nhật curl và client certificate store trên máy đích.
+
+Cài đặt phiên bản mới nhất cho hệ thống của bạn bằng cách chạy lệnh sau:
+
+```bash
+curl -s https://ohmyposh.dev/install.sh | bash -s
+```
+
+Theo mặc định, script sẽ cài đặt vào `~/bin` hoặc `~/.local/bin` tùy thuộc vào cái nào tồn tại, hoặc thư mục cài đặt của Oh My Posh executable hiện có. Nếu bạn muốn cài đặt vào một vị trí khác, bạn có thể chỉ định nó bằng cờ `-d`:
+
+```bash
+curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/bin
+```
+
+## Tích hợp vào shell của bạn
+
+Chọn mọi shell bạn sử dụng và thêm đoạn khởi tạo.
+
+### PowerShell (5.x hoặc 7+)
+
+```powershell
+# Mở profile của bạn, tạo nó nếu cần
+if (!(Test-Path $PROFILE)) { New-Item -Type File -Path $PROFILE -Force }
+notepad $PROFILE
+```
+
+Thêm vào:
+
+```powershell
+oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\bubbles.omp.json" | Invoke-Expression
+```
+
+Thay `bubbles` bằng theme bạn chọn. Khởi động lại PowerShell hoặc chạy `. $PROFILE`.
+
+### Windows CMD
+
+```cmd
+oh-my-posh init cmd --config %POSH_THEMES_PATH%\powerlevel10k_classic.omp.json | call
+```
+
+Lưu dòng này vào `%CMDER_ROOT%\config\user-profile.cmd` hoặc `C:\Users\<you>\Documents\cmdrc.cmd` nếu bạn sử dụng clink.
+
+### Bash
+
+Thêm vào `~/.bashrc`:
+
+```bash
+eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/{theme}.omp.json)"
+```
+
+### Zsh
+
+```bash
+eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/{theme}.omp.json)"
+```
+
+Đặt nó gần cuối file `.zshrc`, sau các plugin managers để các export màu được tôn trọng.
+
+### Fish
+
+```fish
+oh-my-posh init fish --config ~/.config/oh-my-posh/{theme}.omp.json | source
+```
+
+Lưu nó vào `~/.config/fish/config.fish`.
+
+## Chọn hoặc tạo theme
+
+Bắt đầu bằng cách sao chép một theme hiện có vào thư mục config của bạn:
+
+```bash
+mkdir -p ~/.config/oh-my-posh
+cp "$(oh-my-posh print-config --config minimal)" ~/.config/oh-my-posh/{theme}.omp.json
+```
+
+Xem trước tất cả các theme chính thức:
+
+```bash
+oh-my-posh query theme list
+oh-my-posh print-config --config <theme-name> | less
+```
+
+### Cấu hình JSON mẫu tôi đang sử dụng
+
+<Image
+	src="/static/images/install-oh-my-posh/catppuccin_mocha_theme.png"
+	alt="Hình ảnh mẫu của theme Catppuccin Mocha"
+	width={1000}
+	height={1000}
+/>
+
+```json
+{
+	"$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+	"palette": {
+		"os": "#ACB0BE",
+		"closer": "p:os",
+		"pink": "#F5C2E7",
+		"lavender": "#B4BEFE",
+		"blue": "#89B4FA"
+	},
+	"blocks": [
+		{
+			"alignment": "left",
+			"segments": [
+				{
+					"foreground": "p:os",
+					"style": "plain",
+					"template": "{{.Icon}} ",
+					"type": "os"
+				},
+				{
+					"foreground": "p:blue",
+					"style": "plain",
+					"template": "{{ .UserName }}@{{ .HostName }} ",
+					"type": "session"
+				},
+				{
+					"foreground": "p:pink",
+					"properties": {
+						"folder_icon": "..\ue5fe..",
+						"home_icon": "~",
+						"style": "agnoster_short"
+					},
+					"style": "plain",
+					"template": "{{ .Path }} ",
+					"type": "path"
+				},
+				{
+					"foreground": "p:lavender",
+					"properties": {
+						"branch_icon": "\ue725 ",
+						"cherry_pick_icon": "\ue29b ",
+						"commit_icon": "\uf417 ",
+						"fetch_status": false,
+						"fetch_upstream_icon": false,
+						"merge_icon": "\ue727 ",
+						"no_commits_icon": "\uf0c3 ",
+						"rebase_icon": "\ue728 ",
+						"revert_icon": "\uf0e2 ",
+						"tag_icon": "\uf412 "
+					},
+					"template": "{{ .HEAD }} ",
+					"style": "plain",
+					"type": "git"
+				},
+				{
+					"style": "plain",
+					"foreground": "p:closer",
+					"template": "\uf105",
+					"type": "text"
+				}
+			],
+			"type": "prompt"
+		}
+	],
+	"final_space": true,
+	"version": 3
+}
+```
+
+Khởi động lại shell để áp dụng các thay đổi. Mỗi segment được tài liệu hóa tại [ohmyposh.dev/docs](https://ohmyposh.dev/docs) với các thuộc tính riêng—trộn và kết hợp để chỉ giữ lại các điểm dữ liệu quan trọng.
+
+## Kiểm tra và xử lý sự cố
+
+1. **Xác minh binary** – `oh-my-posh --version` sẽ trả về phiên bản đã cài đặt.
+2. **Kiểm tra fonts** – Nếu các icon hiển thị dưới dạng hình vuông, hãy áp dụng lại Nerd Font trong terminal profile của bạn.
+3. **Thứ tự profile** – Trong Zsh, Oh My Posh phải chạy _sau_ `compinit` và plugin sourcing để tránh bị ghi đè.
+4. **Quyền** – Trên Linux, đảm bảo `~/.config/oh-my-posh/{theme}.omp.json` có thể đọc được; trên Windows, unblock scripts bằng `Unblock-File`.
+5. **Hiệu suất** – Tắt các segments nặng (ví dụ: git repos lớn) hoặc đặt `auto_disable` để giữ prompt nhanh nhẹn.
+
+## Giữ cấu hình có thể chia sẻ
+
+- Theo dõi `~/.config/oh-my-posh/{theme}.omp.json` (hoặc phiên bản Windows tương đương) trong dotfiles repo của bạn.
+- Trỏ cờ `--config` đến một đường dẫn tương đối trong thư mục dotfiles của bạn (ví dụ: `$env:POSH_CONFIG = "$HOME\.dotfiles\omp\main.omp.json"`).
+- Đồng bộ trên các thiết bị với Git, sau đó chạy một bootstrap script tạo symlink cho config và cài đặt binary.
+
+## Tổng kết
+
+Với fonts, binary và shell hooks đã được thiết lập, prompt của bạn trở thành một dashboard: git status, cloud context, runtimes và thông tin thời gian có ngay khi bạn nhấn `<Enter>`. Hãy xử lý file JSON như bất kỳ đoạn code nào khác—review, version và test nó. Khi một đồng nghiệp hỏi làm sao terminal của bạn trông đẹp như vậy, hãy chỉ họ đến hướng dẫn này và để Oh My Posh tự nói.

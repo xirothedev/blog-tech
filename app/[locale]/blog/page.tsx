@@ -5,14 +5,21 @@ import ListLayout from "@/layouts/ListLayoutWithTags";
 import { setRequestLocale } from "next-intl/server";
 import { Metadata } from "next";
 
+import type { Locale } from "@/i18n/config";
+
 const POSTS_PER_PAGE = 5;
 
 export const metadata: Metadata = genPageMetadata({ title: "Blog" });
 
 export default async function BlogPage({ params }: { params: { locale: string } }) {
-	setRequestLocale(params.locale);
+	const localeValue = params.locale as Locale;
+	setRequestLocale(localeValue);
+
+	const localeBlogs = allBlogs.filter((b) => b.locale === localeValue);
+	const sourceBlogs = localeBlogs.length > 0 ? localeBlogs : allBlogs;
+
 	const posts = allCoreContent(
-		sortPosts(allBlogs).sort((a, b) => {
+		sortPosts(sourceBlogs).sort((a, b) => {
 			const ap = a.pinned ? 1 : 0;
 			const bp = b.pinned ? 1 : 0;
 			if (ap !== bp) return bp - ap;
@@ -20,7 +27,7 @@ export default async function BlogPage({ params }: { params: { locale: string } 
 		}),
 	).map((p) => ({
 		...p,
-		pinned: allBlogs.find((b) => b._raw.flattenedPath === p.path)?.pinned ?? false,
+		pinned: sourceBlogs.find((b) => b._raw.flattenedPath === p.path)?.pinned ?? false,
 	}));
 	const pageNumber = 1;
 	const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
