@@ -1,29 +1,34 @@
 import { Metadata } from "next";
 import siteMetadata from "@/data/siteMetadata";
+import { getSiteMetadata } from "@/data/getSiteMetadata";
+import type { Locale } from "@/i18n/config";
 
 interface PageSEOProps {
 	title: string;
 	description?: string;
 	image?: string;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	[key: string]: any;
+	locale?: Locale;
+	[key: string]: unknown;
 }
 
-export function genPageMetadata({ title, description, image, ...rest }: PageSEOProps): Metadata {
+export async function genPageMetadata({ title, description, image, locale, ...rest }: PageSEOProps): Promise<Metadata> {
+	const metadata = locale ? await getSiteMetadata(locale) : siteMetadata;
+	const ogLocale = locale === "vi" ? "vi_VN" : "en_US";
+
 	return {
 		title,
-		description: description || siteMetadata.description,
+		description: description || metadata.description,
 		openGraph: {
-			title: `${title} | ${siteMetadata.title}`,
-			description: description || siteMetadata.description,
+			title: `${title} | ${metadata.title}`,
+			description: description || metadata.description,
 			url: "./",
-			siteName: siteMetadata.title,
+			siteName: metadata.title,
 			images: image ? [image] : [siteMetadata.socialBanner],
-			locale: "en_US",
+			locale: ogLocale,
 			type: "website",
 		},
 		twitter: {
-			title: `${title} | ${siteMetadata.title}`,
+			title: `${title} | ${metadata.title}`,
 			card: "summary_large_image",
 			images: image ? [image] : [siteMetadata.socialBanner],
 		},

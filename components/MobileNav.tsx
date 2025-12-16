@@ -6,10 +6,12 @@ import { Fragment, useState, useEffect, useRef } from "react";
 import headerNavLinks from "@/data/headerNavLinks";
 import { Link } from "@/i18n/routing";
 import LanguageToggle from "./LanguageToggle";
+import { useTranslations } from "next-intl";
 
 const MobileNav = () => {
 	const [navShow, setNavShow] = useState(false);
 	const navRef = useRef(null);
+	const t = useTranslations("common.nav");
 
 	const onToggleNav = () => {
 		setNavShow((status) => {
@@ -29,7 +31,7 @@ const MobileNav = () => {
 
 	return (
 		<>
-			<button aria-label="Toggle Menu" onClick={onToggleNav} className="sm:hidden">
+			<button aria-label={t("toggleMenu")} onClick={onToggleNav} className="sm:hidden">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 20 20"
@@ -90,7 +92,7 @@ const MobileNav = () => {
 
 							<button
 								className="hover:text-primary-500 dark:hover:text-primary-400 fixed top-7 right-4 z-80 h-16 w-16 p-4 text-gray-900 dark:text-gray-100"
-								aria-label="Toggle Menu"
+								aria-label={t("toggleMenu")}
 								onClick={onToggleNav}
 							>
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">

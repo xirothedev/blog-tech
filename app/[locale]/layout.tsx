@@ -11,6 +11,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import SectionContainer from "@/components/SectionContainer";
 import siteMetadata from "@/data/siteMetadata";
+import { getSiteMetadata } from "@/data/getSiteMetadata";
 import { defaultLocale, type Locale, locales, messages } from "@/i18n/config";
 import { ThemeProviders } from "../theme-providers";
 
@@ -29,19 +30,20 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 	const { locale } = await params;
 	const localeValue = (locale as Locale) ?? defaultLocale;
 	const ogLocale = localeValue === "vi" ? "vi_VN" : "en_US";
+	const metadata = await getSiteMetadata(localeValue);
 
 	return {
 		metadataBase: new URL(siteMetadata.siteUrl),
 		title: {
-			default: siteMetadata.title,
+			default: metadata.title,
 			template: `%s | Xiro The Dev`,
 		},
-		description: siteMetadata.description,
+		description: metadata.description,
 		openGraph: {
-			title: siteMetadata.title,
-			description: siteMetadata.description,
+			title: metadata.title,
+			description: metadata.description,
 			url: `/${localeValue}`,
-			siteName: siteMetadata.title,
+			siteName: metadata.title,
 			images: [siteMetadata.socialBanner],
 			locale: ogLocale,
 			type: "website",
@@ -68,7 +70,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 			},
 		},
 		twitter: {
-			title: siteMetadata.title,
+			title: metadata.title,
 			card: "summary_large_image",
 			images: [siteMetadata.socialBanner],
 		},

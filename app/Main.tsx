@@ -1,19 +1,22 @@
 import { Link } from "@/i18n/routing";
 import Image from "next/image";
 import Tag from "@/components/Tag";
-import siteMetadata from "@/data/siteMetadata";
+import { getSiteMetadata } from "@/data/getSiteMetadata";
 import { formatDate } from "pliny/utils/formatDate";
 import NewsletterForm from "pliny/ui/NewsletterForm";
+import { getTranslations } from "next-intl/server";
 
 const MAX_DISPLAY = 10;
 
-export default function Home({ posts }) {
+export default async function Home({ posts, locale }) {
+	const t = await getTranslations("common.home");
+	const siteMetadata = await getSiteMetadata(locale);
 	return (
 		<>
 			<div>
 				<div className="space-y-2 pt-6 pb-8 md:space-y-5">
 					<h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14 dark:text-gray-100">
-						Web & Discord Bot Developer
+						{t("title")}
 					</h1>
 					<p className="text-lg leading-7 text-gray-500 dark:text-gray-400">{siteMetadata.description}</p>
 				</div>
@@ -38,12 +41,12 @@ export default function Home({ posts }) {
 								)}
 							</div>
 							<div className="flex flex-col justify-center md:col-span-2">
-								<div className="text-primary-500 mb-2 text-sm font-medium">Latest writing</div>
+								<div className="text-primary-500 mb-2 text-sm font-medium">{t("latestWriting")}</div>
 								<h2 className="mb-2 text-2xl leading-8 font-bold tracking-tight text-gray-900 dark:text-gray-100">
 									<Link href={`/blog/${posts[0].slug}`}>{posts[0].title}</Link>
 								</h2>
 								<div className="mb-3 text-sm text-gray-500 dark:text-gray-400">
-									{formatDate(posts[0].date, siteMetadata.locale)}
+									{formatDate(posts[0].date, locale)}
 								</div>
 								{posts[0].summary && (
 									<p className="line-clamp-3 text-gray-600 dark:text-gray-300">{posts[0].summary}</p>
@@ -52,9 +55,9 @@ export default function Home({ posts }) {
 									<Link
 										href={`/blog/${posts[0].slug}`}
 										className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-										aria-label={`Read more: "${posts[0].title}"`}
+										aria-label={`${t("readMore")}: "${posts[0].title}"`}
 									>
-										Read more →
+										{t("readMore")} →
 									</Link>
 								</div>
 							</div>
@@ -63,7 +66,7 @@ export default function Home({ posts }) {
 				)}
 
 				<ul className="divide-y divide-gray-200 dark:divide-gray-700">
-					{!posts.length && "No posts found."}
+					{!posts.length && t("noPostsFound")}
 					{posts.slice(1, MAX_DISPLAY).map((post) => {
 						const { slug, date, title, summary, tags } = post;
 						return (
@@ -71,9 +74,9 @@ export default function Home({ posts }) {
 								<article>
 									<div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
 										<dl>
-											<dt className="sr-only">Published on</dt>
+											<dt className="sr-only">{t("publishedOn")}</dt>
 											<dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
-												<time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+												<time dateTime={date}>{formatDate(date, locale)}</time>
 											</dd>
 										</dl>
 										<div className="space-y-5 xl:col-span-3">
@@ -90,7 +93,7 @@ export default function Home({ posts }) {
 													<div className="flex flex-wrap items-center gap-2">
 														{post.pinned && (
 															<span className="mr-3 inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-semibold text-yellow-800 ring-1 ring-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-200 dark:ring-yellow-800/60">
-																Pinned
+																{t("pinned")}
 															</span>
 														)}
 														{tags.map((tag) => (
@@ -106,9 +109,9 @@ export default function Home({ posts }) {
 												<Link
 													href={`/blog/${slug}`}
 													className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-													aria-label={`Read more: "${title}"`}
+													aria-label={`${t("readMore")}: "${title}"`}
 												>
-													Read more &rarr;
+													{t("readMore")} &rarr;
 												</Link>
 											</div>
 										</div>
@@ -124,9 +127,9 @@ export default function Home({ posts }) {
 					<Link
 						href="/blog"
 						className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-						aria-label="All posts"
+						aria-label={t("allPostsAria")}
 					>
-						All Posts &rarr;
+						{t("allPosts")} &rarr;
 					</Link>
 				</div>
 			)}

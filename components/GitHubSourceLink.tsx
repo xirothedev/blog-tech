@@ -1,5 +1,8 @@
+"use client";
+
 import siteMetadata from "@/data/siteMetadata";
 import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
 interface GitHubSourceLinkProps {
 	path: string;
@@ -12,10 +15,12 @@ interface GitHubSourceLinkProps {
  * Similar to editUrl in PostLayout.tsx but for examples and other files
  *
  * @param path - Relative path from the root of the repo (e.g. "examples/php-simple-app")
- * @param text - Text to display (default: "View on GitHub")
+ * @param text - Text to display (default: uses translation)
  * @param branch - Branch of the repo (default: "main")
  */
-export default function GitHubSourceLink({ path, text = "View on GitHub", branch = "main" }: GitHubSourceLinkProps) {
+export default function GitHubSourceLink({ path, text, branch = "main" }: GitHubSourceLinkProps) {
+	const t = useTranslations("common.github");
+	const displayText = text || t("viewOnGitHub");
 	const githubUrl = `${siteMetadata.siteRepo}/blob/${branch}/${path}`;
 
 	return (
@@ -39,7 +44,7 @@ export default function GitHubSourceLink({ path, text = "View on GitHub", branch
 					clipRule="evenodd"
 				/>
 			</svg>
-			{text}
+			{displayText}
 		</Link>
 	);
 }

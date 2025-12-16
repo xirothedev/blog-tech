@@ -12,6 +12,7 @@ import PostLayout from "@/layouts/PostLayout";
 import PostBanner from "@/layouts/PostBanner";
 import { Metadata } from "next";
 import siteMetadata from "@/data/siteMetadata";
+import { getSiteMetadata } from "@/data/getSiteMetadata";
 import { notFound } from "next/navigation";
 import { locales, type Locale } from "@/i18n/config";
 import { setRequestLocale } from "next-intl/server";
@@ -29,6 +30,7 @@ export async function generateMetadata(props: {
 	const params = await props.params;
 	const slug = decodeURI(params.slug.join("/"));
 	const localeValue = params.locale as Locale;
+	const metadata = await getSiteMetadata(localeValue);
 	const localeBlogs = allBlogs.filter((b) => b.locale === localeValue);
 	const sourceBlogs = localeBlogs.length > 0 ? localeBlogs : allBlogs;
 	const post = sourceBlogs.find((p) => p.slug === slug);
@@ -60,14 +62,14 @@ export async function generateMetadata(props: {
 		openGraph: {
 			title: post.title,
 			description: post.summary,
-			siteName: siteMetadata.title,
+			siteName: metadata.title,
 			locale: params.locale === "vi" ? "vi_VN" : "en_US",
 			type: "article",
 			publishedTime: publishedAt,
 			modifiedTime: modifiedAt,
 			url: `/${params.locale}/blog/${slug}`,
 			images: ogImages,
-			authors: authors.length > 0 ? authors : [siteMetadata.author],
+			authors: authors.length > 0 ? authors : [metadata.author],
 		},
 		twitter: {
 			card: "summary_large_image",

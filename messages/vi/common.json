@@ -1,11 +1,84 @@
 {
 	"appName": "My App",
+	"siteMetadata": {
+		"title": "Xiro The Dev - Blog Tech",
+		"author": "Xiro The Dev",
+		"headerTitle": "Xiro The Dev | Blog",
+		"description": "Một blog được tạo bởi Xiro The Dev để chia sẻ kiến thức và kinh nghiệm của tôi với cộng đồng"
+	},
 	"nav": {
 		"dashboard": "Bảng điều khiển",
-		"settings": "Cài đặt"
+		"settings": "Cài đặt",
+		"toggleMenu": "Chuyển đổi menu"
 	},
 	"auth": {
 		"signIn": "Đăng nhập",
 		"signOut": "Đăng xuất"
+	},
+	"home": {
+		"title": "Nhà phát triển Web & Discord Bot",
+		"latestWriting": "Bài viết mới nhất",
+		"readMore": "Đọc thêm",
+		"noPostsFound": "Không tìm thấy bài viết nào.",
+		"publishedOn": "Được xuất bản vào",
+		"pinned": "Đã ghim",
+		"allPosts": "Tất cả bài viết",
+		"allPostsAria": "Tất cả bài viết"
+	},
+	"notFound": {
+		"title": "404",
+		"message": "Xin lỗi, chúng tôi không tìm thấy trang này.",
+		"description": "Nhưng đừng lo lắng, bạn có thể tìm thấy nhiều thứ khác trên trang chủ của chúng tôi.",
+		"backToHomepage": "Quay về trang chủ"
+	},
+	"footer": {
+		"home": "Trang chủ"
+	},
+	"card": {
+		"linkTo": "Liên kết đến",
+		"learnMore": "Tìm hiểu thêm"
+	},
+	"scroll": {
+		"scrollToComment": "Cuộn đến phần bình luận",
+		"scrollToTop": "Cuộn lên đầu trang"
+	},
+	"search": {
+		"search": "Tìm kiếm"
+	},
+	"github": {
+		"viewOnGitHub": "Xem trên GitHub"
+	},
+	"video": {
+		"notSupported": "Trình duyệt của bạn không hỗ trợ thẻ video."
+	},
+	"vpsChecker": {
+		"intro": "Hãy trả lời các câu hỏi sau để xác định xem VPS có phù hợp với bạn không:",
+		"yes": "Có",
+		"no": "Không",
+		"points": "điểm",
+		"totalScore": "Tổng điểm:",
+		"answered": "Đã trả lời",
+		"questionsLabel": "câu hỏi",
+		"reset": "Làm lại",
+		"recommendations": {
+			"pleaseAnswer": "Vui lòng trả lời các câu hỏi để nhận đề xuất",
+			"shouldChoose": "✅ Nên chọn VPS - VPS phù hợp với nhu cầu của bạn",
+			"consider": "⚠️ Cân nhắc - Có thể bắt đầu với shared hosting hoặc VPS cấu hình thấp",
+			"notNeeded": "❌ Chưa cần VPS - Shared hosting sẽ phù hợp hơn"
+		},
+		"questions": {
+			"traffic": "Website/App của tôi có traffic cao hoặc đang tăng trưởng?",
+			"control": "Tôi cần kiểm soát hoàn toàn server (root access)?",
+			"knowledge": "Tôi có kiến thức về Linux/Windows Server hoặc sẵn sàng học?",
+			"software": "Tôi cần cài đặt phần mềm đặc biệt hoặc cấu hình riêng?",
+			"budget": "Budget của tôi cho phép chi trả $10-50/tháng?",
+			"outgrow": "Shared hosting không còn đáp ứng nhu cầu?",
+			"performance": "Tôi cần hiệu năng tốt hơn shared hosting?",
+			"business": "Website/App của tôi là e-commerce hoặc business critical?",
+			"dev": "Tôi cần development/staging environment?",
+			"small": "Website của tôi rất nhỏ, chỉ là blog/portfolio cá nhân?",
+			"noLearning": "Tôi không muốn học về server management?",
+			"lowBudget": "Budget của tôi rất hạn chế (dưới $5/tháng)?"
+		}
 	}
 }

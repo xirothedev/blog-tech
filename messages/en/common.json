@@ -1,11 +1,84 @@
 {
 	"appName": "My App",
+	"siteMetadata": {
+		"title": "Xiro The Dev - Blog Tech",
+		"author": "Xiro The Dev",
+		"headerTitle": "Xiro The Dev | Blog",
+		"description": "A blog created by Xiro The Dev to share my knowledge and experiences with the community"
+	},
 	"nav": {
 		"dashboard": "Dashboard",
-		"settings": "Settings"
+		"settings": "Settings",
+		"toggleMenu": "Toggle Menu"
 	},
 	"auth": {
 		"signIn": "Sign in",
 		"signOut": "Sign out"
+	},
+	"home": {
+		"title": "Web & Discord Bot Developer",
+		"latestWriting": "Latest writing",
+		"readMore": "Read more",
+		"noPostsFound": "No posts found.",
+		"publishedOn": "Published on",
+		"pinned": "Pinned",
+		"allPosts": "All Posts",
+		"allPostsAria": "All posts"
+	},
+	"notFound": {
+		"title": "404",
+		"message": "Sorry we couldn't find this page.",
+		"description": "But don't worry, you can find plenty of other things on our homepage.",
+		"backToHomepage": "Back to homepage"
+	},
+	"footer": {
+		"home": "Home"
+	},
+	"card": {
+		"linkTo": "Link to",
+		"learnMore": "Learn more"
+	},
+	"scroll": {
+		"scrollToComment": "Scroll To Comment",
+		"scrollToTop": "Scroll To Top"
+	},
+	"search": {
+		"search": "Search"
+	},
+	"github": {
+		"viewOnGitHub": "View on GitHub"
+	},
+	"video": {
+		"notSupported": "Your browser does not support the video tag."
+	},
+	"vpsChecker": {
+		"intro": "Please answer the following questions to determine if VPS is right for you:",
+		"yes": "Yes",
+		"no": "No",
+		"points": "points",
+		"totalScore": "Total score:",
+		"answered": "Answered",
+		"questionsLabel": "questions",
+		"reset": "Reset",
+		"recommendations": {
+			"pleaseAnswer": "Please answer the questions to get a recommendation",
+			"shouldChoose": "✅ Should choose VPS - VPS fits your needs",
+			"consider": "⚠️ Consider - Can start with shared hosting or low-config VPS",
+			"notNeeded": "❌ Don't need VPS yet - Shared hosting will be more suitable"
+		},
+		"questions": {
+			"traffic": "Does your Website/App have high traffic or growing traffic?",
+			"control": "Do you need full server control (root access)?",
+			"knowledge": "Do you have Linux/Windows Server knowledge or willing to learn?",
+			"software": "Do you need to install special software or custom configuration?",
+			"budget": "Does your budget allow $10-50/month?",
+			"outgrow": "Has shared hosting stopped meeting your needs?",
+			"performance": "Do you need better performance than shared hosting?",
+			"business": "Is your Website/App e-commerce or business critical?",
+			"dev": "Do you need development/staging environment?",
+			"small": "Is your website very small, just a personal blog/portfolio?",
+			"noLearning": "Don't you want to learn about server management?",
+			"lowBudget": "Is your budget very limited (under $5/month)?"
+		}
 	}
 }

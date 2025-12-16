@@ -14,7 +14,6 @@ export default async function Page({ params }: PageProps) {
 	const localeValue = locale as Locale;
 	setRequestLocale(localeValue);
 
-	// Lọc blog theo locale, fallback về tất cả nếu chưa có bản dịch
 	const localeBlogs = allBlogs.filter((b) => b.locale === localeValue);
 	const sourceBlogs = localeBlogs.length > 0 ? localeBlogs : allBlogs;
 
@@ -30,5 +29,5 @@ export default async function Page({ params }: PageProps) {
 		pinned: sortedPosts.find((b) => b._raw.flattenedPath === p.path)?.pinned ?? false,
 	}));
 
-	return <Main posts={posts} />;
+	return <Main posts={posts} locale={localeValue} />;
 }

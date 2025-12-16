@@ -1,12 +1,19 @@
 import { connection } from "next/server";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import siteMetadata from "@/data/siteMetadata";
+import { getSiteMetadata } from "@/data/getSiteMetadata";
 import SocialIcon from "@/components/social-icons";
+import { getTranslations } from "next-intl/server";
+import { getLocale } from "next-intl/server";
+import type { Locale } from "@/i18n/config";
 
 export default async function Footer() {
 	// Defer to request-time before using non-deterministic Date per Cache Components requirements
 	await connection();
 	const currentYear = new Date().getFullYear();
+	const locale = (await getLocale()) as Locale;
+	const metadata = await getSiteMetadata(locale);
+	const t = await getTranslations("common.footer");
 
 	return (
 		<footer>
@@ -25,11 +32,11 @@ export default async function Footer() {
 					{/* <SocialIcon kind="medium" href={siteMetadata.medium} size={6} /> */}
 				</div>
 				<div className="mb-2 flex space-x-2 text-sm text-gray-500 dark:text-gray-400">
-					<div>{siteMetadata.author}</div>
+					<div>{metadata.author}</div>
 					<div>{` • `}</div>
 					<div>{`© ${currentYear}`}</div>
 					<div>{` • `}</div>
-					<Link href="https://xirothedev.site">Home</Link>
+					<Link href="https://xirothedev.site">{t("home")}</Link>
 				</div>
 			</div>
 		</footer>

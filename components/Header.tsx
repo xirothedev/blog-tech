@@ -1,13 +1,19 @@
 import headerNavLinks from "@/data/headerNavLinks";
 import siteMetadata from "@/data/siteMetadata";
+import { getSiteMetadata } from "@/data/getSiteMetadata";
 import { Link } from "@/i18n/routing";
 import MobileNav from "./MobileNav";
 import SearchButton from "./SearchButton";
 import ThemeSwitch from "./ThemeSwitch";
 import LanguageToggle from "./LanguageToggle";
 import { cn } from "@/libs/utils";
+import { getLocale } from "next-intl/server";
+import type { Locale } from "@/i18n/config";
 
-const Header = () => {
+const Header = async () => {
+	const locale = (await getLocale()) as Locale;
+	const metadata = await getSiteMetadata(locale);
+
 	let headerClass = cn(
 		"flex items-center w-full justify-between py-4 px-5 mt-4",
 		// Glass/blurred translucent background
@@ -23,12 +29,12 @@ const Header = () => {
 
 	return (
 		<header className={headerClass}>
-			<Link href="/" aria-label={siteMetadata.headerTitle}>
+			<Link href="/" aria-label={metadata.headerTitle}>
 				<div className="flex items-center justify-between">
-					{typeof siteMetadata.headerTitle === "string" ? (
-						<div className="hidden text-2xl font-semibold sm:block">{siteMetadata.headerTitle}</div>
+					{typeof metadata.headerTitle === "string" ? (
+						<div className="hidden text-2xl font-semibold sm:block">{metadata.headerTitle}</div>
 					) : (
-						siteMetadata.headerTitle
+						metadata.headerTitle
 					)}
 				</div>
 			</Link>

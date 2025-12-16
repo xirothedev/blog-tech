@@ -3,7 +3,6 @@ const headerNavLinks = [
 	{ href: "https://xirothedev.site", title: "Portfolio", target: "_blank" },
 	{ href: "/blog", title: "Blog" },
 	{ href: "/tags", title: "Tags" },
-	// { href: '/projects', title: 'Projects' },
 	{ href: "/about", title: "About" },
 ];
 

@@ -1,6 +1,7 @@
 import { slug } from "github-slugger";
 import { allCoreContent, sortPosts } from "pliny/utils/contentlayer";
 import siteMetadata from "@/data/siteMetadata";
+import { getSiteMetadata } from "@/data/getSiteMetadata";
 import ListLayout from "@/layouts/ListLayoutWithTags";
 import { allBlogs } from "contentlayer/generated";
 import tagData from "app/tag-data.json";
@@ -13,11 +14,14 @@ const POSTS_PER_PAGE = 5;
 
 export async function generateMetadata(props: { params: Promise<{ locale: string; tag: string }> }): Promise<Metadata> {
 	const params = await props.params;
+	const localeValue = params.locale as Locale;
+	const metadata = await getSiteMetadata(localeValue);
 	const tag = decodeURI(params.tag);
 	const canonicalPath = `/${params.locale}/tags/${tag}`;
 	return genPageMetadata({
 		title: tag,
-		description: `${siteMetadata.title} ${tag} tagged content`,
+		description: `${metadata.title} ${tag} tagged content`,
+		locale: localeValue,
 		alternates: {
 			canonical: canonicalPath,
 			types: {
