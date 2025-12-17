@@ -15,15 +15,17 @@ export const generateStaticParams = async () =>
 		return Array.from({ length: totalPages }, (_, i) => ({ locale, page: (i + 1).toString() }));
 	});
 
-export default async function Page({ params }: { params: { locale: string; page: string } }) {
-	const localeValue = params.locale as Locale;
+export default async function Page({ params }: { params: Promise<{ locale: string; page: string }> }) {
+	const { locale, page } = await params;
+
+	const localeValue = locale as Locale;
 	setRequestLocale(localeValue);
 
 	const localeBlogs = allBlogs.filter((b) => b.locale === localeValue);
 	const sourceBlogs = localeBlogs.length > 0 ? localeBlogs : allBlogs;
 
 	const posts = allCoreContent(sortPosts(sourceBlogs));
-	const pageNumber = parseInt(params.page);
+	const pageNumber = parseInt(page);
 	const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
 
 	// Return 404 for invalid page numbers or empty pages

@@ -8,8 +8,9 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = genPageMetadata({ title: "Tags", description: "Things I blog about" });
 
-export default async function Page({ params }: { params: { locale: string } }) {
-	setRequestLocale(params.locale);
+export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
+	const { locale } = await params;
+	setRequestLocale(locale);
 	const tagCounts = tagData as Record<string, number>;
 	const tagKeys = Object.keys(tagCounts);
 	const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a]);
