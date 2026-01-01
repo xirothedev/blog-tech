@@ -1,4 +1,6 @@
 onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - '@swc/core'
   - contentlayer2
   - esbuild
   - protobufjs
