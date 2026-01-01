@@ -78,14 +78,16 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 }
 
 async function LocaleContent({ children, params }: LocaleLayoutProps) {
-	const { locale } = await params;
-	const localeValue = (locale as Locale) ?? defaultLocale;
+	const resolvedParams = await params;
+	const locale = resolvedParams.locale;
+
+	// Ensure we have a valid locale string
+	let localeValue: Locale = defaultLocale;
+	if (typeof locale === "string" && locales.includes(locale as Locale)) {
+		localeValue = locale as Locale;
+	}
 
 	setRequestLocale(localeValue);
-
-	if (!locales.includes(localeValue)) {
-		return <>{children}</>;
-	}
 
 	const localeMessages = messages[localeValue];
 
