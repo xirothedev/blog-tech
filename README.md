@@ -1,42 +1,49 @@
-# Portfolio Blog Starter
+# Xiro The Dev - Personal Blog
 
-This is a porfolio site template complete with a blog. Includes:
+Personal blog and portfolio of **Xiro The Dev**, a Full Stack Developer specializing in Next.js, NestJS, and LLM-integrated projects.
 
-- MDX and Markdown support
-- Optimized for SEO (sitemap, robots, JSON-LD schema)
-- RSS Feed
-- Dynamic OG images
-- Syntax highlighting
-- Tailwind v4
-- Vercel Speed Insights / Web Analytics
-- Geist font
+## About
 
-## Demo
+This blog showcases my journey in building valuable AI-powered solutions for the community. Here I share insights, tutorials, and updates about my projects.
 
-https://portfolio-blog-starter.vercel.app
+## Tech Stack
 
-## How to Use
+- **Framework**: Next.js 16+ with App Router
+- **Styling**: Tailwind CSS v4
+- **Content**: MDX and Markdown support
+- **Typography**: Geist Sans & Geist Mono
+- **Analytics**: Vercel Analytics & Speed Insights
+- **Code Highlighting**: Sugar High
 
-You can choose from one of the following two methods to use this repository:
+## Features
 
-### One-Click Deploy
+- 📝 MDX/Markdown blog posts
+- 🎨 Dark mode support
+- 🚀 Optimized for performance
+- 📱 Fully responsive
+- 🔍 SEO optimized (sitemap, robots.txt, JSON-LD)
+- 📊 RSS feed
+- 🖼️ Dynamic OG images
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/examples/tree/main/solutions/blog&project-name=blog&repository-name=blog)
-
-### Clone and Deploy
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [pnpm](https://pnpm.io/installation) to bootstrap the example:
+## Development
 
 ```bash
-pnpm create next-app --example https://github.com/vercel/examples/tree/main/solutions/blog blog
-```
+# Install dependencies
+pnpm install
 
-Then, run Next.js in development mode:
-
-```bash
+# Run development server
 pnpm dev
+
+# Build for production
+pnpm build
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/templates) ([Documentation](https://nextjs.org/docs/app/building-your-application/deploying)).
+## Contact
+
+- **GitHub**: [@xirothedev](https://github.com/xirothedev)
+- **X/Twitter**: [@xirothedev](https://x.com/xirothedev)
+- **Email**: lethanhtrung.trungle@gmail.com
+
+---
+
+Built with Next.js and deployed on Vercel.
