@@ -29,13 +29,13 @@ This blog showcases my journey in building valuable AI-powered solutions for the
 
 ```bash
 # Install dependencies
-pnpm install
+bun install
 
 # Run development server
-pnpm dev
+bun dev
 
 # Build for production
-pnpm build
+bun run build
 ```
 
 ## Contact

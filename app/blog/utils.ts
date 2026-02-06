@@ -1,5 +1,5 @@
-import fs from 'fs'
-import path from 'path'
+import { readdirSync, readFileSync } from 'fs'
+import { basename, extname, join } from 'path'
 
 type Metadata = {
   title: string
@@ -27,19 +27,19 @@ function parseFrontmatter(fileContent: string) {
 }
 
 function getMDXFiles(dir) {
-  return fs.readdirSync(dir).filter((file) => path.extname(file) === '.mdx')
+  return readdirSync(dir).filter((file) => extname(file) === '.mdx')
 }
 
 function readMDXFile(filePath) {
-  let rawContent = fs.readFileSync(filePath, 'utf-8')
+  let rawContent = readFileSync(filePath, 'utf-8')
   return parseFrontmatter(rawContent)
 }
 
 function getMDXData(dir) {
   let mdxFiles = getMDXFiles(dir)
   return mdxFiles.map((file) => {
-    let { metadata, content } = readMDXFile(path.join(dir, file))
-    let slug = path.basename(file, path.extname(file))
+    let { metadata, content } = readMDXFile(join(dir, file))
+    let slug = basename(file, extname(file))
 
     return {
       metadata,
@@ -50,7 +50,7 @@ function getMDXData(dir) {
 }
 
 export function getBlogPosts() {
-  return getMDXData(path.join(process.cwd(), 'app', 'blog', 'posts'))
+  return getMDXData(join(process.cwd(), 'app', 'blog', 'posts'))
 }
 
 export function formatDate(date: string, includeRelative = false) {
