@@ -1,8 +1,8 @@
 import { getBlogPosts } from 'app/blog/utils'
 
-export const baseUrl = 'http://localhost:3000'
+export const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
 
-export default async function sitemap() {
+export default function sitemap() {
   let blogs = getBlogPosts().map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: post.metadata.publishedAt,
