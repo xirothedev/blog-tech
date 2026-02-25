@@ -79,7 +79,6 @@ html {
 }
 
 .prose img {
-  /* Don't apply styles to next/image */
   @apply m-0;
 }
 
@@ -116,7 +115,6 @@ html {
 }
 
 .prose > :first-child {
-  /* Override removing top margin, causing layout shift */
   margin-top: 1.25em !important;
   margin-bottom: 1.25em !important;
 }
@@ -126,11 +124,10 @@ pre::-webkit-scrollbar {
 }
 
 pre {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Remove Safari input shadow on mobile */
 input[type='text'],
 input[type='email'] {
   -webkit-appearance: none;
@@ -138,41 +135,77 @@ input[type='email'] {
   appearance: none;
 }
 
-table {
-  display: block;
-  max-width: fit-content;
-  overflow-x: auto;
-  white-space: nowrap;
-}
-
 .title {
   text-wrap: balance;
 }
 
-/* Table styles */
+/* Table styles - must come after base styles */
 .prose table {
-  @apply w-full border-collapse my-6 text-sm;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
   display: table;
-  max-width: 100%;
-  overflow-x: auto;
 }
 
 .prose thead {
-  @apply border-b border-neutral-300 dark:border-neutral-700;
+  border-bottom: 2px solid rgb(212 212 212);
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose thead {
+    border-bottom-color: rgb(64 64 64);
+  }
 }
 
 .prose th {
-  @apply px-4 py-3 text-left font-semibold text-neutral-900 dark:text-neutral-100;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: rgb(23 23 23);
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose th {
+    color: rgb(245 245 245);
+  }
 }
 
 .prose td {
-  @apply px-4 py-3 border-b border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgb(229 229 229);
+  color: rgb(64 64 64);
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose td {
+    border-bottom-color: rgb(38 38 38);
+    color: rgb(163 163 163);
+  }
 }
 
 .prose tbody tr:hover {
-  @apply bg-neutral-50 dark:bg-neutral-900/50;
+  background-color: rgb(250 250 250);
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose tbody tr:hover {
+    background-color: rgba(23, 23, 23, 0.5);
+  }
 }
 
 .prose table + em {
-  @apply block text-center text-sm text-neutral-500 dark:text-neutral-400 -mt-4 mb-6;
+  display: block;
+  text-align: center;
+  font-size: 0.875rem;
+  color: rgb(115 115 115);
+  margin-top: -1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose table + em {
+    color: rgb(163 163 163);
+  }
 }
