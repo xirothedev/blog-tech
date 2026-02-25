@@ -1,0 +1,102 @@
+---
+title: 'Claude Code: Agentic Coding in Your Terminal'
+publishedAt: '2026-02-25'
+summary: 'Claude Code is Anthropic's official terminal-based coding agent that understands your codebase, handles git workflows, and executes routine tasks through natural language. Here's what makes it different from other AI coding tools.'
+---
+
+Most AI coding assistants live in your browser or IDE. **Claude Code** lives in your terminal—and that changes everything.
+
+## What is Claude Code?
+
+Claude Code is an **agentic coding tool** from Anthropic that:
+
+- Lives in your terminal (no browser needed)
+- Understands your entire codebase
+- Handles git workflows (commits, PRs, branches)
+- Executes routine tasks through natural language
+- Can be tagged directly on GitHub (`@claude`)
+
+It's not just autocomplete. It's a full coding agent that can read your code, understand context, and make changes across multiple files.
+
+## Installation
+
+```bash
+# MacOS/Linux (Recommended)
+curl -fsSL https://claude.ai/install.sh | bash
+
+# Homebrew
+brew install --cask claude-code
+
+# Windows
+irm https://claude.ai/install.ps1 | iex
+```
+
+Then navigate to your project and run:
+
+```bash
+cd your-project
+claude
+```
+
+## Key Features
+
+### Codebase Understanding
+
+Claude Code reads your entire project structure, understands imports, dependencies, and patterns. Ask it to explain complex code or find where a function is defined.
+
+### Git Workflows
+
+```bash
+# Natural language git operations
+"Create a branch for the auth feature and commit these changes"
+"Open a PR with these changes"
+"Explain what changed in the last 5 commits"
+```
+
+### Multi-file Edits
+
+Make coordinated changes across multiple files—rename a function and update all imports in one command.
+
+### GitHub Integration
+
+Tag `@claude` on GitHub issues and PRs. The agent can read context and suggest fixes directly.
+
+## Why Terminal-First Matters
+
+**No context switching** - Stay in your development environment
+**Scriptable** - Integrate with your existing shell workflows
+**Works over SSH** - Use on remote servers and VPS
+**Lightweight** - No heavy IDE plugins or browser tabs
+
+## Plugins Ecosystem
+
+Claude Code supports plugins for custom commands and agents. Check the [plugins directory](https://github.com/anthropics/claude-code/blob/main/plugins/README.md) for community extensions.
+
+## Data & Privacy
+
+Anthropic collects usage data (accept/reject rates, conversation data) but:
+- Limited retention for sensitive info
+- Restricted access to session data
+- No training on your code without consent
+
+## When to Use Claude Code
+
+| Use Case | Good Fit? |
+|----------|-----------|
+| Refactoring large codebases | ✅ Excellent |
+| Understanding legacy code | ✅ Excellent |
+| Routine git operations | ✅ Great |
+| Quick prototypes | ✅ Good |
+| Browser-based work | ❌ Use v0 instead |
+| Multi-step deployments | ❌ Use CI/CD |
+
+## Bottom Line
+
+Claude Code brings agentic coding to where developers already live: the terminal. If you're comfortable with CLI workflows, it's worth adding to your toolkit alongside browser-based tools like v0.
+
+---
+
+**Links:**
+- [Official Documentation](https://code.claude.com/docs/en/overview)
+- [GitHub Repository](https://github.com/anthropics/claude-code)
+- [Claude Developers Discord](https://anthropic.com/discord)
