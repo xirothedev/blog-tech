@@ -26,6 +26,37 @@ function Table({ data }) {
   )
 }
 
+// Standard markdown table elements with proper styling
+function Td({ children }) {
+  return <td className="px-4 py-3 border-b border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300">{children}</td>
+}
+
+function Th({ children }) {
+  return <th className="px-4 py-3 text-left font-semibold text-neutral-900 dark:text-neutral-100">{children}</th>
+}
+
+function Tr({ children }) {
+  return <tr className="border-b border-neutral-200 dark:border-neutral-700 last:border-0">{children}</tr>
+}
+
+function Thead({ children }) {
+  return <thead className="border-b border-neutral-300 dark:border-neutral-700">{children}</thead>
+}
+
+function Tbody({ children }) {
+  return <tbody>{children}</tbody>
+}
+
+function TableWrapper({ children }) {
+  return (
+    <div className="overflow-x-auto my-6">
+      <table className="w-full border-collapse text-sm">
+        {children}
+      </table>
+    </div>
+  )
+}
+
 function CustomLink(props) {
   let href = props.href
 
@@ -57,23 +88,23 @@ function slugify(str) {
   return str
     .toString()
     .toLowerCase()
-    .trim() // Remove whitespace from both ends of a string
-    .replace(/\s+/g, '-') // Replace spaces with -
-    .replace(/&/g, '-and-') // Replace & with 'and'
-    .replace(/[^\w\-]+/g, '') // Remove all non-word characters except for -
-    .replace(/\-\-+/g, '-') // Replace multiple - with single -
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/&/g, '-and-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
 }
 
 function createHeading(level) {
   const Heading = ({ children }) => {
     let slug = slugify(children)
     return React.createElement(
-      `h${level}`,
+      "h" + level,
       { id: slug },
       [
         React.createElement('a', {
-          href: `#${slug}`,
-          key: `link-${slug}`,
+          href: "#" + slug,
+          key: "link-" + slug,
           className: 'anchor',
         }),
       ],
@@ -81,7 +112,7 @@ function createHeading(level) {
     )
   }
 
-  Heading.displayName = `Heading${level}`
+  Heading.displayName = "Heading" + level
 
   return Heading
 }
@@ -97,6 +128,13 @@ let components = {
   a: CustomLink,
   code: Code,
   Table,
+  // Standard markdown table elements
+  table: TableWrapper,
+  thead: Thead,
+  tbody: Tbody,
+  tr: Tr,
+  th: Th,
+  td: Td,
 }
 
 export function CustomMDX(props) {

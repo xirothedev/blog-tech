@@ -148,3 +148,31 @@ table {
 .title {
   text-wrap: balance;
 }
+
+/* Table styles */
+.prose table {
+  @apply w-full border-collapse my-6 text-sm;
+  display: table;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.prose thead {
+  @apply border-b border-neutral-300 dark:border-neutral-700;
+}
+
+.prose th {
+  @apply px-4 py-3 text-left font-semibold text-neutral-900 dark:text-neutral-100;
+}
+
+.prose td {
+  @apply px-4 py-3 border-b border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300;
+}
+
+.prose tbody tr:hover {
+  @apply bg-neutral-50 dark:bg-neutral-900/50;
+}
+
+.prose table + em {
+  @apply block text-center text-sm text-neutral-500 dark:text-neutral-400 -mt-4 mb-6;
+}
