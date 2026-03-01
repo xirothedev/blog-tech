@@ -11,7 +11,23 @@ type Metadata = {
 function parseFrontmatter(fileContent: string) {
   let frontmatterRegex = /---\s*([\s\S]*?)\s*---/
   let match = frontmatterRegex.exec(fileContent)
-  let frontMatterBlock = match![1]
+  
+  if (!match) {
+    // No frontmatter - extract title from first # heading and date from **date** pattern
+    let titleMatch = fileContent.match(/^#\s+(.+)$/m)
+    let dateMatch = fileContent.match(/\*\*(.+?\d{4})\*\*/)
+    
+    return {
+      metadata: {
+        title: titleMatch ? titleMatch[1].trim() : 'Untitled',
+        publishedAt: dateMatch ? dateMatch[1].trim() : new Date().toISOString().split('T')[0],
+        summary: '',
+      },
+      content: fileContent,
+    }
+  }
+  
+  let frontMatterBlock = match[1]
   let content = fileContent.replace(frontmatterRegex, '').trim()
   let frontMatterLines = frontMatterBlock.trim().split('\n')
   let metadata: Partial<Metadata> = {}
