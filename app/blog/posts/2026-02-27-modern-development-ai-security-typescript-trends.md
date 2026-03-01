@@ -1,3 +1,9 @@
+---
+title: 'Tech Pulse: AI Agents at Scale, Security-First DevOps, and the TypeScript Renaissance'
+publishedAt: '2026-02-27'
+summary: "The tech industry is experiencing a fundamental shift. Today's developments reveal three critical trends: the maturation of AI agents, the convergence of security and DevOps, and TypeScript's emergence as the universal language of modern development."
+---
+
 # Tech Pulse: AI Agents at Scale, Security-First DevOps, and the TypeScript Renaissance
 
 **February 27, 2026**
@@ -153,7 +159,7 @@ Retrieval-Augmented Generation is maturing:
 
 AI models need fresh data. New patterns enable real-time feature computation:
 
-- **Streaming Feature Stores** - Features computed on Kafka/Kinesis streams, served with <10ms latency
+- **Streaming Feature Stores** - Features computed on Kafka/Kinesis streams, served with under 10ms latency
 - **Online/Offline Feature Sync** - Training data (offline) and serving data (online) from the same source
 - **Feature Discovery** - AI agents that can query available features and select relevant ones
 

@@ -72,12 +72,29 @@ export function getBlogPosts() {
   return getMDXData(join(process.cwd(), 'app', 'blog', 'posts'))
 }
 
-export function formatDate(date: string, includeRelative = false) {
-  let currentDate = new Date()
-  if (!date.includes('T')) {
-    date = `${date}T00:00:00`
+export function formatDate(date: string | undefined, includeRelative = false) {
+  if (!date) {
+    return 'Unknown date'
   }
-  let targetDate = new Date(date)
+  
+  let currentDate = new Date()
+  let targetDate: Date
+  
+  // Try parsing different date formats
+  if (date.includes('T')) {
+    targetDate = new Date(date)
+  } else if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    // ISO format: 2026-03-01
+    targetDate = new Date(`${date}T00:00:00`)
+  } else {
+    // Try parsing as natural language: "February 26, 2026"
+    targetDate = new Date(date)
+  }
+  
+  // Check if date is valid
+  if (isNaN(targetDate.getTime())) {
+    return 'Invalid date'
+  }
 
   let yearsAgo = currentDate.getFullYear() - targetDate.getFullYear()
   let monthsAgo = currentDate.getMonth() - targetDate.getMonth()

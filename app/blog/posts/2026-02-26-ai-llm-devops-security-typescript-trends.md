@@ -1,3 +1,9 @@
+---
+title: 'Tech Pulse: AI Hallucination Detection, On-Device LLMs, and the New DevOps Paradigm'
+publishedAt: '2026-02-26'
+summary: 'The tech landscape is evolving from "AI everywhere" to "AI that actually works in production." This week: hallucination mitigation tools, on-device AI going mainstream, MCP becoming the integration standard, and more.'
+---
+
 # Tech Pulse: AI Hallucination Detection, On-Device LLMs, and the New DevOps Paradigm
 
 **February 26, 2026**
