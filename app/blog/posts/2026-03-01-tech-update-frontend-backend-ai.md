@@ -8,22 +8,26 @@ March 2026 brings significant shifts in the frontend and backend landscape. From
 
 ## Frontend Highlights
 
-### Next.js 16 & 15.5
+### Next.js 15.5 → 16 → 16.1
 
-**Next.js 16** has landed with a clear focus: **AI coding agents as first-class users**. Key features include:
-
-- Native MCP (Model Context Protocol) integration
-- Improved logging for agent workflows
-- Enhanced support for AI-driven development patterns
-
-**Next.js 15.5** brings:
+**Next.js 15.5** (August 2025):
 - Turbopack builds (beta) - faster development experience
 - Node.js middleware (stable)
 - TypeScript improvements
 
+**Next.js 16** (December 2025):
+- Major release with breaking changes
+- Focus on **AI coding agents as first-class users**
+- Native MCP (Model Context Protocol) integration
+- Improved logging for agent workflows
+
+**Next.js 16.1** (December 2025):
+- Security fixes for React Server Components
+- Performance improvements
+
 ### ⚠️ Critical Security Alert
 
-**CVE-2025-66478** - A critical RCE vulnerability (CVSS 10.0) in React Server Components was discovered in December 2025.
+**CVE-2025-66478** - A critical RCE vulnerability (CVSS 10.0) in React Server Components.
 
 Additional vulnerabilities:
 - CVE-2025-55184 - DoS vulnerability
@@ -33,35 +37,40 @@ Additional vulnerabilities:
 
 ### React 19 & React Foundation
 
-**React 19.2** introduces:
+**React 19.2** (October 2025):
 - Activity API for better state management
 - React Performance Tracks for profiling
 - `useEffectEvent` hook
 
-**React Compiler v1.0** is now stable (October 2025), bringing automatic memoization without manual `useMemo` and `useCallback`.
+**React Compiler v1.0** (October 2025) - Now stable with automatic memoization.
 
-**Big news**: The **React Foundation** officially launched under the Linux Foundation in February 2026, ensuring long-term governance and sustainability.
+**React Foundation** (February 2026) - Officially launched under the Linux Foundation, ensuring long-term governance.
 
-**Note**: Create React App has been **sunset**. Migrate to Vite or a framework like Next.js.
+**Note**: Create React App was **deprecated** (February 2025). Migrate to Vite or a framework.
 
 ### Tailwind CSS 4
 
-**Tailwind CSS 4.0 and 4.1** deliver:
-- Text shadows and masks
-- Performance improvements via the new **Oxide engine**
-- Reimagined configuration system
-- Tailwind UI rebranded to **Tailwind Plus**
+**v4.0** (January 2025) - Oxide engine: high performance, reimagined configuration
 
-### TypeScript 6.0 Beta & The Go Port
+**v4.1** (April 2025) - Text shadows, masks, more utilities
 
-**TypeScript 6.0 Beta** (February 2026) is the final release based on the JavaScript codebase.
+**v4.2** (Latest) - Continuous improvements
 
-The big news: **TypeScript 7 is being ported to Go**, promising:
+**Tailwind Plus** (March 2025) - Rebrand from Tailwind UI
+
+### TypeScript 5.8 → 5.9 → 6.0 Beta → 7
+
+**TypeScript 5.8** (February 2025) - Granular branch checks
+
+**TypeScript 5.9** (August 2025) - Minimal tsconfig, improved tooling
+
+**TypeScript 6.0 Beta** (February 2026) - Final release on JavaScript codebase
+
+**🔥 TypeScript 7** (Coming):
+- Native port to **Go**
 - **10x faster** compilation
 - Shared-memory parallelism
-- Native toolchain integration
-
-TypeScript Native Previews are already available for early testing.
+- Native previews already available
 
 ---
 
@@ -69,11 +78,12 @@ TypeScript Native Previews are already available for early testing.
 
 ### Bun 1.3 🔥
 
-**Bun 1.3** brings compelling features:
+**Bun v1.3.x** series brings massive improvements:
+- Native REPL, Windows ARM64 support
+- `Bun.markdown` - built-in CommonMark parser
 - Zero-config frontend builds
 - Unified SQL API for database operations
 - Built-in Redis client
-- New APIs: `Bun.markdown`, `Bun.JSON5`, `Bun.JSONC`, `Bun.Archive`
 
 Performance gains:
 - 500x faster `postMessage`
@@ -82,14 +92,7 @@ Performance gains:
 
 **Major announcement**: **Bun joins Anthropic** (December 2025). Bun will power Claude Code and future AI coding products.
 
-**Vercel now supports Bun runtime natively**, making it a first-class option for deployment.
-
-### tRPC v11
-
-**tRPC v11** is officially released with:
-- New TanStack React Query integration
-- Simpler, more native APIs
-- Improved type inference
+**Vercel now supports Bun runtime natively**.
 
 ---
 
@@ -99,12 +102,11 @@ Performance gains:
 
 The **Vercel AI SDK** continues to evolve:
 - Unified API for multiple LLM providers (OpenAI, Anthropic, Google, xAI, etc.)
-- Agent building primitives: ToolLoopAgent, MCP tools, subagents
+- Agent building: ToolLoopAgent, MCP tools, subagents
 - Video generation, image, speech, and transcription APIs
+- **WebStreams are 10-14x faster** in Next.js rendering
 
-Performance highlight: **WebStreams are 10-14x faster** in Next.js rendering workloads.
-
-### v0 Redesigned
+### v0 Redesigned (February 2026)
 
 **v0 by Vercel** has been completely redesigned:
 - Production-ready AI coding with git workflows
@@ -112,11 +114,10 @@ Performance highlight: **WebStreams are 10-14x faster** in Next.js rendering wor
 - Composite AI pipeline with dynamic system prompts
 - LLM Suspense and autofixers
 
-Real-world proof: **Stripe built a complete app in a single flight** using the new v0.
+Real-world proof: **Stripe built a complete app in a single flight**.
 
-### Vercel Sandbox GA
+### Vercel Sandbox GA (January 2026)
 
-**Vercel Sandbox** is now generally available:
 - Run untrusted code safely
 - Filesystem snapshots
 - Perfect for AI-generated code execution
@@ -127,10 +128,10 @@ Real-world proof: **Stripe built a complete app in a single flight** using the n
 
 ### Claude & Anthropic
 
-With **Bun joining Anthropic**, expect tighter integration between:
-- Claude Code CLI
-- Bun runtime
+With **Bun joining Anthropic**, expect tighter integration:
+- Claude Code CLI powered by Bun runtime
 - AI-powered development tools
+- First-class agent support in frameworks
 
 ### GitHub Copilot
 
@@ -152,8 +153,6 @@ New agentic workflows in technical preview:
 
 **Affected versions**: Next.js 15.x and 16.x
 
-**Recommendation**: Update to the latest patch version immediately.
-
 ---
 
 ## What to Watch
@@ -165,6 +164,17 @@ New agentic workflows in technical preview:
 | Next.js 16 AI focus | Medium | Explore MCP integration |
 | v0 production-ready | Medium | Try for rapid prototyping |
 | React Foundation | Low | Monitor governance changes |
+
+---
+
+## Stack Recommendations
+
+For new projects in 2026:
+
+✅ **Frontend**: Next.js 16 + React 19 + TypeScript 5.9/6.0
+✅ **Styling**: Tailwind CSS 4 với Oxide engine
+✅ **Runtime**: Bun cho projects mới
+✅ **AI Features**: Vercel AI SDK
 
 ---
 
@@ -184,4 +194,3 @@ March 2026 marks a pivotal moment. TypeScript's move to Go signals a performance
 - [Bun Blog](https://bun.sh/blog)
 - [Vercel Blog](https://vercel.com/blog)
 - [Vercel AI SDK](https://ai-sdk.dev)
-- [tRPC Blog](https://trpc.io/blog)
